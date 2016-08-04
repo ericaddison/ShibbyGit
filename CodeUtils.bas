@@ -161,3 +161,11 @@ End Select
  'Resume error checking
    On Error GoTo 0
 End Function
+
+
+Public Sub importForm()
+Dim path As String
+path = "C:\Users\Audrey\Documents\Rin\ShibbyGit\src\SetExportDirectoryForm.frm"
+Application.VBE.ActiveVBProject.VBComponents.Import path
+End Sub
+

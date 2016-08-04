@@ -3,27 +3,39 @@ Public Const GIT_PATH_PROPERTY As String = "code_GitExecutablePath"
 
 
 Public Sub GitCommit(ByVal message As String)
-    GitOther ("commit -am """ & message & """")
+    Dim message As String
+    message = GitOther("commit -am """ & message & """")
+    MsgBox message
 End Sub
 
 Public Sub GitStatus()
-    GitOther ("status")
+    Dim message As String
+    message = GitOther("status")
+    MsgBox message
 End Sub
 
 
 Public Sub GitLog()
-    GitOther ("log")
+    Dim message As String
+    message = GitOther("log")
+    MsgBox message
 End Sub
 
 Public Sub GitAddAll()
-    GitOther ("add -A")
+    Dim message As String
+    message = GitOther("add -A")
+    If message = "" Then
+        MsgBox "Added files"
+    Else
+        MsgBox "Git response: " & vbCrLf & message
+    End If
 End Sub
 
 
 ' Main function to call git ... calls "git -C <path> options",
 ' where the options come from the incoming string, and the
 ' path is from the export directory
-Public Sub GitOther(ByVal options As String)
+Public Function GitOther(ByVal options As String) As String
     
     ' get the git executable path
     Dim gitExe As String
@@ -31,13 +43,13 @@ Public Sub GitOther(ByVal options As String)
     
     If gitExe = "" Or IsNull(gitExe) Then
         MsgBox "Please set the git executable path"
-        Exit Sub
+        Exit Function
     End If
     
     ' bad directory check
     If FileOrDirExists(gitExe) = False Then
         MsgBox "Cannot find git executable: " & gitExe
-        Exit Sub
+        Exit Function
     End If
     
     ' get the working directory path
@@ -51,13 +63,13 @@ Public Sub GitOther(ByVal options As String)
     
     ' browse cancelled, exit
     If (workingDir = "") Then
-        Exit Sub
+        Exit Function
     End If
         
     ' bad directory check
     If FileOrDirExists(workingDir) = False Then
         MsgBox "Cannot find folder: " & workingDir
-        Exit Sub
+        Exit Function
     End If
         
     ' crate the parameter string
@@ -68,6 +80,6 @@ Public Sub GitOther(ByVal options As String)
     Dim output As String
     output = ShellRedirect.Redirect(gitExe, parms)
     
-    MsgBox output
-End Sub
+    GitOther = output
+End Function
 

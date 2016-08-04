@@ -1,14 +1,14 @@
 Attribute VB_Name = "UI"
 Public Sub ShowSetExportDirectoryForm()
-    Load SetExportDirectoryForm
+    Load SetWorkingDirectoryForm
     
     On Error Resume Next
         Dim dir As String
-        dir = DocPropIO.GetItemFromDocProperties(Constants.EXPORT_DIRECTORY_PROPERTY)
-        SetExportDirectoryForm.DirTextBox.Text = dir
+        dir = DocPropIO.GetItemFromDocProperties(CodeUtils.EXPORT_DIRECTORY_PROPERTY)
+        SetWorkingDirectoryForm.DirTextBox.Text = dir
     On Error GoTo 0
         
-    SetExportDirectoryForm.Show
+    SetWorkingDirectoryForm.Show
 End Sub
 
 
@@ -34,8 +34,8 @@ End Sub
 
 Public Sub ShowGitOtherForm()
     
-    Load GitOtherForm
-    GitOtherForm.Show
+    Load GitConsoleForm
+    GitConsoleForm.Show
     
 End Sub
 

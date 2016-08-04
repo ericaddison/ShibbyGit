@@ -1,6 +1,28 @@
 Attribute VB_Name = "Git"
 Public Const GIT_PATH_PROPERTY As String = "code_GitExecutablePath"
 
+Private Sub test()
+
+    ' get the git executable path
+    Dim gitExe As String
+    gitExe = GetSetting("CVX_CodeUtils", "FileInfo", Git.GIT_PATH_PROPERTY, "")
+ 
+     ' get the working directory path
+    Dim workingDir As String
+    workingDir = DocPropIO.GetItemFromDocProperties(CodeUtils.EXPORT_DIRECTORY_PROPERTY)
+    
+ 
+     ' crate the parameter string
+    Dim parms As String
+    parms = " -C """ & workingDir & """ push origin master"
+    
+    Debug.Print gitExe & parms
+    
+ Shell gitExe & parms, 1
+ 
+
+End Sub
+
 
 Public Sub GitCommit(ByVal message As String)
     Dim message As String

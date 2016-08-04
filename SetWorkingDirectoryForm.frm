@@ -14,13 +14,6 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
-
-
-
-
-
-
-
 Private Sub BrowseButton_Click()
     Dim fd As FileDialog
     Set fd = Application.FileDialog(msoFileDialogFolderPicker)
@@ -32,7 +25,7 @@ Private Sub BrowseButton_Click()
 End Sub
 
 Private Sub CancelButton_Click()
-    SetExportDirectoryForm.Hide
+    SetWorkingDirectoryForm.Hide
 End Sub
 
 Private Sub OKButton_Click()
@@ -46,7 +39,7 @@ Private Sub OKButton_Click()
     End If
 
     DocPropIO.AddStringToDocProperties CodeUtils.EXPORT_DIRECTORY_PROPERTY, newPath
-    SetExportDirectoryForm.Hide
+    SetWorkingDirectoryForm.Hide
 End Sub
 
 Private Sub TitleLabel_Click()

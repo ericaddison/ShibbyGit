@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} GitConsoleForm 
-   Caption         =   "User Git Command"
+   Caption         =   "VB Git Console"
    ClientHeight    =   6375
    ClientLeft      =   30
    ClientTop       =   360
@@ -21,20 +21,6 @@ Private Sub CommandBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shi
       message = Git.GitOther(CommandBox.Text)
       OutputBox.value = message
   End If
-End Sub
-
-
-Private Sub OKButton_Click()
-    Dim options As String
-    options = OptionsBox.Text
-    
-    If options = "" Then
-        MsgBox "Please enter git options"
-        Exit Sub
-    End If
-    
-    Git.GitOther (options)
-        
 End Sub
 
 

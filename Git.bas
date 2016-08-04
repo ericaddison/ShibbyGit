@@ -25,31 +25,31 @@ End Sub
 
 
 Public Sub GitCommit(ByVal message As String)
-    Dim message As String
-    message = GitOther("commit -am """ & message & """")
-    MsgBox message
+    Dim out As String
+    out = GitOther("commit -am """ & message & """")
+    MsgBox out
 End Sub
 
 Public Sub GitStatus()
-    Dim message As String
-    message = GitOther("status")
-    MsgBox message
+    Dim out As String
+    out = GitOther("status")
+    MsgBox out
 End Sub
 
 
 Public Sub GitLog()
-    Dim message As String
-    message = GitOther("log")
-    MsgBox message
+    Dim out As String
+    out = GitOther("log")
+    MsgBox out
 End Sub
 
 Public Sub GitAddAll()
-    Dim message As String
-    message = GitOther("add -A")
-    If message = "" Then
+    Dim out As String
+    out = GitOther("add -A")
+    If out = "" Then
         MsgBox "Added files"
     Else
-        MsgBox "Git response: " & vbCrLf & message
+        MsgBox "Git response: " & vbCrLf & out
     End If
 End Sub
 

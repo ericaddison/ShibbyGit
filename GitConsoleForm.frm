@@ -26,4 +26,6 @@ End Sub
 
 Private Sub OutputBox_Enter()
     CommandBox.SetFocus
+    CommandBox.SelStart = 0
+    CommandBox.SelLength = Len(CommandBox.value)
 End Sub

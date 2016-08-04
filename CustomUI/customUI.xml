@@ -1,0 +1,21 @@
+<customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui"> 
+  <ribbon> 
+    <tabs> 
+      <tab id="CodeTab" label="Code-DEV"> 
+        <group id="CodeUtils" label="Code Utils"> 
+          <button id="ExportAllButton" label="Export All" size="large" onAction="CodeUtils.ExportAll" imageMso="ExportSavedExports" /> 
+          <button id="ImportAllButton" label="Import All" size="large" onAction="CodeUtils.ImportAll" imageMso="ImportSavedImports" /> 
+	  <button id="SetFolderButton" label="Set Folder" size="large" onAction="UI.ShowSetExportDirectoryForm" imageMso="FileManageMenu" /> 
+        </group > 
+        <group id="Git" label="Git"> 
+	  <button id="SetGitPathButton" label="Git Path" size="large" onAction="UI.ShowSetGitPathForm" imageMso="FileManageMenu" /> 
+	  <button id="GitCommitButton" label="Commit" size="large" onAction="UI.ShowGitCommitForm" imageMso="FileManageMenu" /> 
+	  <button id="GitStatusButton" label="Status" size="large" onAction="Git.GitStatus" imageMso="FileManageMenu" />
+	  <button id="GitLogButton" label="Log" size="large" onAction="Git.GitLog" imageMso="FileManageMenu" />
+	  <button id="GitAddAllButton" label="Add All" size="large" onAction="Git.GitAddAll" imageMso="FileManageMenu" />
+	  <button id="GitOtherButton" label="Other Git Command" size="large" onAction="UI.ShowGitOtherForm" imageMso="FileManageMenu" />
+        </group > 
+      </tab> 
+    </tabs> 
+  </ribbon> 
+</customUI> 

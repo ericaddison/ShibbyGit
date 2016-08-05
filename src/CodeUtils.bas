@@ -4,19 +4,20 @@ Option Explicit
 
 Public Const EXPORT_DIRECTORY_PROPERTY As String = "code_ExportDirectory"
 Public Const APPNAME As String = "ShibbyGit"
-
-' component type constants
-Private Const Module As Integer = 1
-Private Const ClassModule As Integer = 2
-Private Const Form As Integer = 3
-Private Const Document As Integer = 100
-Private Const Padding As Integer = 24
-Private Const OldTag As String = "_OLD"
+Private Const OldTag As String = "O"
 
 
-Public Sub ExportAll()
-    
+Public Sub ExportAllMsgBox()
+    MsgBox ExportAll
+End Sub
 
+Public Sub ImportAllMsgBox()
+    MsgBox ImportAll
+End Sub
+
+
+
+Public Function ExportAll() As String
     
     ' get the export directory
     Dim exportDir As String
@@ -29,54 +30,53 @@ Public Sub ExportAll()
     
     ' browse cancelled, exit
     If (exportDir = "") Then
-        Exit Sub
+        Exit Function
     End If
     
     ' bad directory
     If FileOrDirExists(exportDir) = False Then
         MsgBox "Cannot find folder: " & exportDir
-        Exit Sub
+        Exit Function
     End If
     
     ' write files
-    With Application.VBE.ActiveVBProject.VBComponents
+    Dim projectInd As Integer
+    projectInd = FindActiveFileVBProject
+    If projectInd = -1 Then
+        ExportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.Name
+        Exit Function
+    End If
+    With Application.VBE.VBProjects.Item(projectInd).VBComponents
     
-    Dim ind As Integer
-    Dim filesWritten As String
-    Dim extension As String
-    For ind = 1 To .Count
-        extension = ""
-        Select Case .Item(ind).Type
-           Case ClassModule
-               extension = ".cls"
-           Case Form
-               extension = ".frm"
-           Case Module
-               extension = ".bas"
-        End Select
-        
-        If (extension <> "") Then
-            .Item(ind).Export (exportDir & "\" & .Item(ind).Name & extension)
-            filesWritten = filesWritten & vbCrLf & .Item(ind).Name & extension
-        End If
-    Next ind
+        Dim ind As Integer
+        Dim filesWritten As String
+        Dim extension As String
+        For ind = 1 To .Count
+            extension = ""
+            Select Case .Item(ind).Type
+               Case .Item("dummyClass").Type
+                   extension = ".cls"
+               Case .Item("dummyForm").Type
+                   extension = ".frm"
+               Case .Item("dummyModule").Type
+                   extension = ".bas"
+            End Select
+            
+            If (extension <> "") Then
+                .Item(ind).Export (exportDir & "\" & .Item(ind).Name & extension)
+                filesWritten = filesWritten & vbCrLf & .Item(ind).Name & extension
+            End If
+        Next ind
     
     End With
-    
-    MsgBox "Code Exported to " & exportDir & vbCrLf & filesWritten
+     
+    ExportAll = "ShibbyGit: " & vbCrLf & "Code Exported to " & exportDir & vbCrLf & filesWritten
 
-End Sub
+End Function
 
 
-Public Sub ImportAll()
-    
-    ' component type constants
-    Const Module = 1
-    Const ClassModule = 2
-    Const Form = 3
-    Const Document = 100
-    Const Padding = 24
-    
+Public Function ImportAll() As String
+
     ' get the export directory
     Dim importDir As String
     importDir = DocPropIO.GetItemFromDocProperties(EXPORT_DIRECTORY_PROPERTY)
@@ -88,23 +88,29 @@ Public Sub ImportAll()
     
     ' browse cancelled, exit
     If (importDir = "") Then
-        Exit Sub
+        Exit Function
     End If
     
     ' bad directory check
     If FileOrDirExists(importDir) = False Then
         MsgBox "Cannot find folder: " & importDir
-        Exit Sub
+        Exit Function
     End If
     
     ' import files
-    With Application.VBE.ActiveVBProject.VBComponents
-
+    Dim projectInd As Integer
+    projectInd = FindActiveFileVBProject
+    If projectInd = -1 Then
+        ExportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.Name
+        Exit Function
+    End If
+    With Application.VBE.VBProjects.Item(projectInd).VBComponents
+    
 
         ' first loop through files and delete modules to be imported
         Dim file As String
-        Dim Imported As New Collection
         Dim ModuleName As String
+        Dim filesRead As String
         file = dir(importDir & "\")
         While file <> ""
             If CheckCodeType(file) <> -1 And file <> "CodeUtils.bas" Then
@@ -114,26 +120,32 @@ Public Sub ImportAll()
                     .Remove .Item(ModuleName & OldTag)
                     .Import importDir & "\" & file
                 On Error GoTo 0
+                filesRead = filesRead & vbCrLf & ModuleName
             End If
             file = dir
         Wend
         
     End With
 
-End Sub
+    ImportAll = "ShibbyGit Modules Loaded: " & filesRead
+
+End Function
 
 Private Function CheckCodeType(ByVal file As String) As Integer
 
-    If file Like "*.bas" Then
-        CheckCodeType = Module
-    ElseIf file Like "*.frm" Then
-        CheckCodeType = Form
-    ElseIf file Like "*.cls" Then
-        CheckCodeType = ClassModule
-    Else
-        CheckCodeType = -1
-    End If
-    
+    With Application.VBE.ActiveVBProject.VBComponents
+        
+        If file Like "*.bas" Then
+            CheckCodeType = .Item("dummyModule").Type
+        ElseIf file Like "*.frm" Then
+            CheckCodeType = .Item("dummyForm").Type
+        ElseIf file Like "*.cls" Then
+            CheckCodeType = .Item("dummyClass").Type
+        Else
+            CheckCodeType = -1
+        End If
+        
+    End With
 End Function
 
 
@@ -164,9 +176,19 @@ End Select
 End Function
 
 
-Public Sub importForm()
-Dim path As String
-path = "C:\Users\Audrey\Documents\Rin\ShibbyGit\src\SetExportDirectoryForm.frm"
-Application.VBE.ActiveVBProject.VBComponents.Import path
-End Sub
+' Find the index of the VBProject corresponding to
+' the active presentation
+Private Function FindActiveFileVBProject() As Integer
+
+    With Application
+        Dim ind As Integer
+        For ind = 1 To .VBE.VBProjects.Count
+            If .VBE.VBProjects.Item(ind).FileName = .ActivePresentation.FullName Then
+                FindActiveFileVBProject = ind
+                Exit Function
+            End If
+        Next ind
+    End With
+    FindActiveFileVBProject = -1
+End Function
 

@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} GitExePathForm 
    Caption         =   "Git Executable Path"
    ClientHeight    =   2715
-   ClientLeft      =   30
+   ClientLeft      =   36
    ClientTop       =   360
-   ClientWidth     =   6930
+   ClientWidth     =   6924
    OleObjectBlob   =   "GitExePathForm.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -14,9 +14,10 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
+
 Private Sub BrowseButton_Click()
     Dim fd As FileDialog
-    Set fd = Application.FileDialog(msoFileDialogFolderPicker)
+    Set fd = Application.FileDialog(msoFileDialogFilePicker)
     With fd
         If .Show = -1 Then
             DirTextBox.Text = .SelectedItems(1)

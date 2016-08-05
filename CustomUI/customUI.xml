@@ -1,21 +1,21 @@
 <customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui"> 
   <ribbon> 
     <tabs> 
-      <tab id="CodeTab" label="Code-DEV"> 
+      <tab id="CodeTab" label="ShibbyGit"> 
         <group id="CodeUtils" label="Code Utils"> 
           <button id="ExportAllButton" label="Export All" size="large" onAction="CodeUtils.ExportAll" imageMso="ExportSavedExports" /> 
           <button id="ImportAllButton" label="Import All" size="large" onAction="CodeUtils.ImportAll" imageMso="ImportSavedImports" /> 
 	  <button id="SetFolderButton" label="Set Folder" size="large" onAction="UI.ShowSetExportDirectoryForm" imageMso="FileManageMenu" /> 
         </group > 
         <group id="Git" label="Git"> 
-		  <button id="SetGitPathButton" label="Git Path" size="large" onAction="UI.ShowSetGitPathForm" imageMso="FileManageMenu" />
-	      <button id="SetGitExeButton" label="git.exe" size="large" onAction="UI.ShowSetGitExePathForm" imageMso="FileManageMenu" />
+	  <button id="SetGitPathButton" label="Git Path" size="large" onAction="UI.ShowSetGitPathForm" imageMso="FileManageMenu" />
+	  <button id="SetGitExeButton" label="git.exe" size="large" onAction="UI.ShowSetGitExePathForm" imageMso="FileManageMenu" />
           <button id="GitOtherButton" label="Git Console"  onAction="UI.ShowGitOtherForm" imageMso="FileManageMenu" />	  
-	      <button id="GitCommitButton" label="Commit" onAction="UI.ShowGitCommitForm" imageMso="FileManageMenu" /> 
-	      <button id="GitStatusButton" label="Status" onAction="Git.GitStatus" imageMso="FileManageMenu" />
-	      <button id="GitLogButton" label="Log" onAction="Git.GitLog" imageMso="FileManageMenu" />
-	      <button id="GitAddAllButton" label="Add All" onAction="Git.GitAddAll" imageMso="FileManageMenu" />
-		  <button id="GitRemoteButton" label="Remotes" onAction="Git.GitRemotes" imageMso="FileManageMenu" />
+	  <button id="GitCommitButton" label="Commit" onAction="UI.ShowGitCommitForm" imageMso="FileManageMenu" /> 
+	  <button id="GitStatusButton" label="Status" onAction="Git.GitStatus" imageMso="FileManageMenu" />
+	  <button id="GitLogButton" label="Log" onAction="Git.GitLog" imageMso="FileManageMenu" />
+	  <button id="GitAddAllButton" label="Add All" onAction="Git.GitAddAll" imageMso="FileManageMenu" />
+	  <button id="GitRemoteButton" label="Remotes" onAction="Git.GitRemotes" imageMso="FileManageMenu" />
         </group > 
       </tab> 
     </tabs> 

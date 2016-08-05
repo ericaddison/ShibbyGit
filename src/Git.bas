@@ -20,12 +20,10 @@ Public Sub GitRemotes()
      ' crate the parameter string
     Dim parms As String
     parms = " -C """ & workingDir & """ push origin master"
-    
-    Debug.Print gitExe & parms
-    
- Shell gitExe & parms, 1
- 
 
+    Dim objShell As Object
+    Set objShell = CreateObject("WScript.shell")
+    objShell.Run "%comspec% /c " & gitExe & parms & " & pause", 1, True
 End Sub
 
 

@@ -6,6 +6,13 @@ Public Const EXPORT_DIRECTORY_PROPERTY As String = "code_ExportDirectory"
 Public Const APPNAME As String = "ShibbyGit"
 Private Const OldTag As String = "O"
 
+' component type constants
+Private Const Module As Integer = 1
+Private Const ClassModule As Integer = 2
+Private Const Form As Integer = 3
+Private Const Document As Integer = 100
+Private Const Padding As Integer = 24
+
 
 Public Sub ExportAllMsgBox()
     MsgBox ExportAll
@@ -63,11 +70,11 @@ Public Function ExportAll() As String
             Debug.Print "Comp " & ind & " = " & .Item(ind).Name
             extension = ""
             Select Case .Item(ind).Type
-               Case .Item("dummyClass").Type
+               Case ClassModule
                    extension = ".cls"
-               Case .Item("dummyForm").Type
+               Case Form
                    extension = ".frm"
-               Case .Item("dummyModule").Type
+               Case Module
                    extension = ".bas"
             End Select
             
@@ -144,19 +151,16 @@ End Function
 
 Private Function CheckCodeType(ByVal file As String) As Integer
 
-    With Application.VBE.ActiveVBProject.VBComponents
-        
-        If file Like "*.bas" Then
-            CheckCodeType = .Item("dummyModule").Type
-        ElseIf file Like "*.frm" Then
-            CheckCodeType = .Item("dummyForm").Type
-        ElseIf file Like "*.cls" Then
-            CheckCodeType = .Item("dummyClass").Type
-        Else
-            CheckCodeType = -1
-        End If
-        
-    End With
+    If file Like "*.bas" Then
+        CheckCodeType = Module
+    ElseIf file Like "*.frm" Then
+        CheckCodeType = Form
+    ElseIf file Like "*.cls" Then
+        CheckCodeType = ClassModule
+    Else
+        CheckCodeType = -1
+    End If
+
 End Function
 
 

@@ -105,7 +105,7 @@ Public Function GitOther(ByVal options As String) As String
     
     ' call git
     Dim output As String
-    output = ShellRedirect.Redirect(gitExe, parms)
+    output = ShellRedirect.Redirect(gitExe, parms, 1000)
     
     GitOther = output
 End Function

@@ -51,7 +51,7 @@ Private Declare Function GetExitCodeProcess Lib "kernel32" (ByVal hProcess As Lo
 Private Declare Sub GetStartupInfo Lib "kernel32" Alias "GetStartupInfoA" (lpStartupInfo As STARTUPINFO)
 Private Declare Function GetFileSize Lib "kernel32" (ByVal hFile As Long, lpFileSizeHigh As Long) As Long
 
-Public Function Redirect(szBinaryPath As String, szCommandLn As String) As String
+Public Function Redirect(szBinaryPath As String, szCommandLn As String, szWaitTime As Long) As String
 
 Dim tSA_CreatePipe              As SECURITY_ATTRIBUTES
 Dim tSA_CreateProcessPrc        As SECURITY_ATTRIBUTES
@@ -89,7 +89,7 @@ If (CreatePipe(hRead, hWrite, tSA_CreatePipe, 0&) <> 0&) Then
     lngResult = CreateProcess(0&, szFullCommand, tSA_CreateProcessPrc, tSA_CreateProcessThrd, True, 0&, 0&, vbNullString, tStartupInfo, tSA_CreateProcessPrcInfo)
 
     If (lngResult <> 0&) Then
-        lngResult = WaitForSingleObject(tSA_CreateProcessPrcInfo.hProcess, WAIT_INFINITE)
+        lngResult = WaitForSingleObject(tSA_CreateProcessPrcInfo.hProcess, szWaitTime)
         lngSizeOf = GetFileSize(hRead, 0&)
         If (lngSizeOf > 0) Then
             ReDim abytBuff(lngSizeOf - 1)
@@ -102,7 +102,7 @@ If (CreatePipe(hRead, hWrite, tSA_CreatePipe, 0&) <> 0&) Then
         CloseHandle tSA_CreateProcessPrcInfo.hProcess
                 
         ' Commenting out so errors are reported directly
-        'If (lngExitCode <> 0&) Then Err.Raise vbObject + 1235&, "GetExitCodeProcess", "Non-zero Application exist code"
+        'If (lngExitCode <> 0&) Then Err.Raise vbObject + 1235&, "GetExitCodeProcess", "Non-zero Application exit code"
         
         CloseHandle hWrite
         CloseHandle hRead

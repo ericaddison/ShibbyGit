@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} GitConsoleForm 
    Caption         =   "VB Git Console"
-   ClientHeight    =   6375
+   ClientHeight    =   6372
    ClientLeft      =   36
    ClientTop       =   360
    ClientWidth     =   6204

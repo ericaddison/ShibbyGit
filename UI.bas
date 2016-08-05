@@ -35,6 +35,7 @@ End Sub
 Public Sub ShowGitOtherForm()
     
     Load GitConsoleForm
+    GitConsoleForm.OutputBox.ScrollBars = fmScrollBarsVertical
     GitConsoleForm.Show
     
 End Sub

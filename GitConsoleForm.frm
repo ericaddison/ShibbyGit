@@ -24,7 +24,14 @@ Private Sub CommandBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shi
 End Sub
 
 
-Private Sub OutputBox_Enter()
+Private Sub OutputBox_AfterUpdate()
+    CommandBox.SetFocus
+    CommandBox.SelStart = 0
+    CommandBox.SelLength = Len(CommandBox.value)
+End Sub
+
+
+Private Sub OutputBox_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
     CommandBox.SetFocus
     CommandBox.SelStart = 0
     CommandBox.SelLength = Len(CommandBox.value)

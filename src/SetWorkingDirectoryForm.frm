@@ -16,6 +16,7 @@ Attribute VB_Exposed = False
 
 
 
+
 Private Sub BrowseButton_Click()
     Dim fd As FileDialog
     Set fd = Application.FileDialog(msoFileDialogFolderPicker)
@@ -44,6 +45,3 @@ Private Sub OKButton_Click()
     SetWorkingDirectoryForm.Hide
 End Sub
 
-Private Sub TitleLabel_Click()
-
-End Sub

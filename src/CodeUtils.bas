@@ -19,6 +19,8 @@ End Sub
 
 Public Function ExportAll() As String
     
+    Debug.Print "ExportAll()"
+    
     ' get the export directory
     Dim exportDir As String
     exportDir = DocPropIO.GetItemFromDocProperties(EXPORT_DIRECTORY_PROPERTY)
@@ -39,6 +41,8 @@ Public Function ExportAll() As String
         Exit Function
     End If
     
+    Debug.Print "Done with file checking"
+    
     ' write files
     Dim projectInd As Integer
     projectInd = FindActiveFileVBProject
@@ -46,12 +50,17 @@ Public Function ExportAll() As String
         ExportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.Name
         Exit Function
     End If
+    
+    Debug.Print "Working with VBProject for file " & Application.VBE.VBProjects.Item(projectInd).FileName
+
     With Application.VBE.VBProjects.Item(projectInd).VBComponents
     
         Dim ind As Integer
         Dim filesWritten As String
         Dim extension As String
+        Debug.Print "Project has " & .Count & " components"
         For ind = 1 To .Count
+            Debug.Print "Comp " & ind & " = " & .Item(ind).Name
             extension = ""
             Select Case .Item(ind).Type
                Case .Item("dummyClass").Type
@@ -61,6 +70,8 @@ Public Function ExportAll() As String
                Case .Item("dummyModule").Type
                    extension = ".bas"
             End Select
+            
+            Debug.Print ind & ": Exporting file " & .Item(ind).Name & extension
             
             If (extension <> "") Then
                 .Item(ind).Export (exportDir & "\" & .Item(ind).Name & extension)
@@ -101,7 +112,7 @@ Public Function ImportAll() As String
     Dim projectInd As Integer
     projectInd = FindActiveFileVBProject
     If projectInd = -1 Then
-        ExportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.Name
+        ImportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.Name
         Exit Function
     End If
     With Application.VBE.VBProjects.Item(projectInd).VBComponents

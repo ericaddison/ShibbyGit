@@ -52,7 +52,7 @@ Public Sub GitAddAll()
     Dim out As String
     out = GitOther("add -A")
     If out = "" Then
-        MsgBox "Added files"
+        MsgBox "Staged all files for commit"
     Else
         MsgBox "Git response: " & vbCrLf & out
     End If

@@ -26,8 +26,6 @@ End Sub
 
 Public Function ExportAll() As String
     
-    Debug.Print "ExportAll()"
-    
     ' get the export directory
     Dim exportDir As String
     exportDir = DocPropIO.GetItemFromDocProperties(EXPORT_DIRECTORY_PROPERTY)
@@ -48,8 +46,6 @@ Public Function ExportAll() As String
         Exit Function
     End If
     
-    Debug.Print "Done with file checking"
-    
     ' write files
     Dim projectInd As Integer
     projectInd = FindActiveFileVBProject
@@ -58,16 +54,12 @@ Public Function ExportAll() As String
         Exit Function
     End If
     
-    Debug.Print "Working with VBProject for file " & Application.VBE.VBProjects.Item(projectInd).FileName
-
     With Application.VBE.VBProjects.Item(projectInd).VBComponents
     
         Dim ind As Integer
         Dim filesWritten As String
         Dim extension As String
-        Debug.Print "Project has " & .Count & " components"
         For ind = 1 To .Count
-            Debug.Print "Comp " & ind & " = " & .Item(ind).Name
             extension = ""
             Select Case .Item(ind).Type
                Case ClassModule
@@ -77,9 +69,7 @@ Public Function ExportAll() As String
                Case Module
                    extension = ".bas"
             End Select
-            
-            Debug.Print ind & ": Exporting file " & .Item(ind).Name & extension
-            
+
             If (extension <> "") Then
                 .Item(ind).Export (exportDir & "\" & .Item(ind).Name & extension)
                 filesWritten = filesWritten & vbCrLf & .Item(ind).Name & extension

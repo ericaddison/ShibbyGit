@@ -12,17 +12,29 @@ Public Sub ShowSetExportDirectoryForm()
 End Sub
 
 
-
 Public Sub ShowSetGitPathForm()
     Load GitPathForm
     
     On Error Resume Next
-        Dim gitExe As String
-        gitExe = GetSetting("CVX_CodeUtils", "FileInfo", Git.GIT_PATH_PROPERTY, "")
-        GitPathForm.DirTextBox.Text = gitExe
+        Dim gitPath As String
+        gitPath = DocPropIO.GetItemFromDocProperties(Git.PROJECT_PATH_PROPERTY)
+        GitPathForm.DirTextBox.Text = gitPath
     On Error GoTo 0
         
     GitPathForm.Show
+End Sub
+
+
+Public Sub ShowSetGitExePathForm()
+    Load GitExePathForm
+    
+    On Error Resume Next
+        Dim gitExe As String
+        gitExe = GetSetting(CodeUtils.APPNAME, "FileInfo", Git.EXE_PATH_PROPERTY, "")
+        GitExePathForm.DirTextBox.Text = gitExe
+    On Error GoTo 0
+        
+    GitExePathForm.Show
 End Sub
 
 Public Sub ShowGitCommitForm()
@@ -36,7 +48,7 @@ Public Sub ShowGitOtherForm()
     
     Load GitConsoleForm
     GitConsoleForm.OutputBox.ScrollBars = fmScrollBarsVertical
-    GitConsoleForm.Show
+    GitConsoleForm.Show False
     
 End Sub
 

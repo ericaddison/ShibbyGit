@@ -8,12 +8,14 @@
 	  <button id="SetFolderButton" label="Set Folder" size="large" onAction="UI.ShowSetExportDirectoryForm" imageMso="FileManageMenu" /> 
         </group > 
         <group id="Git" label="Git"> 
-	  <button id="SetGitPathButton" label="Git Path" size="large" onAction="UI.ShowSetGitPathForm" imageMso="FileManageMenu" /> 
-	  <button id="GitCommitButton" label="Commit" size="large" onAction="UI.ShowGitCommitForm" imageMso="FileManageMenu" /> 
-	  <button id="GitStatusButton" label="Status" size="large" onAction="Git.GitStatus" imageMso="FileManageMenu" />
-	  <button id="GitLogButton" label="Log" size="large" onAction="Git.GitLog" imageMso="FileManageMenu" />
-	  <button id="GitAddAllButton" label="Add All" size="large" onAction="Git.GitAddAll" imageMso="FileManageMenu" />
-	  <button id="GitOtherButton" label="Other Git Command" size="large" onAction="UI.ShowGitOtherForm" imageMso="FileManageMenu" />
+		  <button id="SetGitPathButton" label="Git Path" size="large" onAction="UI.ShowSetGitPathForm" imageMso="FileManageMenu" />
+	      <button id="SetGitExeButton" label="git.exe" size="large" onAction="UI.ShowSetGitExePathForm" imageMso="FileManageMenu" />
+          <button id="GitOtherButton" label="Git Console"  onAction="UI.ShowGitOtherForm" imageMso="FileManageMenu" />	  
+	      <button id="GitCommitButton" label="Commit" onAction="UI.ShowGitCommitForm" imageMso="FileManageMenu" /> 
+	      <button id="GitStatusButton" label="Status" onAction="Git.GitStatus" imageMso="FileManageMenu" />
+	      <button id="GitLogButton" label="Log" onAction="Git.GitLog" imageMso="FileManageMenu" />
+	      <button id="GitAddAllButton" label="Add All" onAction="Git.GitAddAll" imageMso="FileManageMenu" />
+		  <button id="GitRemoteButton" label="Remotes" onAction="Git.GitRemotes" imageMso="FileManageMenu" />
         </group > 
       </tab> 
     </tabs> 

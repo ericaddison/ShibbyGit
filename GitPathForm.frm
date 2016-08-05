@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} GitPathForm 
-   Caption         =   "Git Path"
-   ClientHeight    =   2712
+   Caption         =   "Git Project Path"
+   ClientHeight    =   2715
    ClientLeft      =   30
    ClientTop       =   360
    ClientWidth     =   6930
@@ -13,13 +13,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-
-
-
 Private Sub BrowseButton_Click()
     Dim fd As FileDialog
-    Set fd = Application.FileDialog(msoFileDialogFilePicker)
+    Set fd = Application.FileDialog(msoFileDialogFolderPicker)
     With fd
         If .Show = -1 Then
             DirTextBox.Text = .SelectedItems(1)
@@ -42,7 +38,7 @@ Private Sub OKButton_Click()
     End If
 
     'save this one in the registry
-    Call SaveSetting("CVX_CodeUtils", "FileInfo", Git.GIT_PATH_PROPERTY, newPath)
+    DocPropIO.AddStringToDocProperties Git.PROJECT_PATH_PROPERTY, newPath
 
     GitPathForm.Hide
 End Sub

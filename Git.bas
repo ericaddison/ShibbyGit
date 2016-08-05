@@ -1,17 +1,21 @@
 Attribute VB_Name = "Git"
-Public Const GIT_PATH_PROPERTY As String = "code_GitExecutablePath"
+Public Const EXE_PATH_PROPERTY As String = "code_GitExecutablePath"
+Public Const PROJECT_PATH_PROPERTY As String = "code_GitProjectPath"
 
 
 ' testing push origin master for web remote
-Private Sub test()
+Public Sub GitRemotes()
+
+    Debug.Print "Git Remotes"
+    Exit Sub
 
     ' get the git executable path
     Dim gitExe As String
-    gitExe = GetSetting("CVX_CodeUtils", "FileInfo", Git.GIT_PATH_PROPERTY, "")
+    gitExe = GetSetting(CodeUtils.APPNAME, "FileInfo", Git.EXE_PATH_PROPERTY, "")
  
      ' get the working directory path
     Dim workingDir As String
-    workingDir = DocPropIO.GetItemFromDocProperties(CodeUtils.EXPORT_DIRECTORY_PROPERTY)
+    workingDir = DocPropIO.GetItemFromDocProperties(PROJECT_PATH_PROPERTY)
     
  
      ' crate the parameter string
@@ -63,7 +67,7 @@ Public Function GitOther(ByVal options As String) As String
     
     ' get the git executable path
     Dim gitExe As String
-    gitExe = GetSetting("CVX_CodeUtils", "FileInfo", Git.GIT_PATH_PROPERTY, "")
+    gitExe = GetSetting(CodeUtils.APPNAME, "FileInfo", Git.EXE_PATH_PROPERTY, "")
     
     If gitExe = "" Or IsNull(gitExe) Then
         MsgBox "Please set the git executable path"
@@ -78,7 +82,7 @@ Public Function GitOther(ByVal options As String) As String
     
     ' get the working directory path
     Dim workingDir As String
-    workingDir = DocPropIO.GetItemFromDocProperties(CodeUtils.EXPORT_DIRECTORY_PROPERTY)
+    workingDir = DocPropIO.GetItemFromDocProperties(PROJECT_PATH_PROPERTY)
     
     ' not found in doc props, browse for one
     If workingDir = "" Then

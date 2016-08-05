@@ -3,6 +3,7 @@ Attribute VB_Name = "CodeUtils"
 Option Explicit
 
 Public Const EXPORT_DIRECTORY_PROPERTY As String = "code_ExportDirectory"
+Public Const APPNAME As String = "ShibbyGit"
 
 ' component type constants
 Private Const Module As Integer = 1

@@ -1,14 +1,14 @@
 VERSION 5.00
-Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} SetWorkingDirectoryForm 
-   Caption         =   "Set Import/Export Directory"
-   ClientHeight    =   2475
+Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} GitExePathForm 
+   Caption         =   "Git Executable Path"
+   ClientHeight    =   2715
    ClientLeft      =   30
    ClientTop       =   360
-   ClientWidth     =   6195
-   OleObjectBlob   =   "SetWorkingDirectoryForm.frx":0000
+   ClientWidth     =   6930
+   OleObjectBlob   =   "GitExePathForm.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
-Attribute VB_Name = "SetWorkingDirectoryForm"
+Attribute VB_Name = "GitExePathForm"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -25,7 +25,7 @@ Private Sub BrowseButton_Click()
 End Sub
 
 Private Sub CancelButton_Click()
-    SetWorkingDirectoryForm.Hide
+    GitExePathForm.Hide
 End Sub
 
 Private Sub OKButton_Click()
@@ -34,14 +34,12 @@ Private Sub OKButton_Click()
     newPath = DirTextBox.Text
     
     If FileOrDirExists(newPath) = False Then
-        MsgBox "Cannot find folder: " & newPath
+        MsgBox "Cannot find file: " & newPath
         Exit Sub
     End If
 
-    DocPropIO.AddStringToDocProperties CodeUtils.EXPORT_DIRECTORY_PROPERTY, newPath
-    SetWorkingDirectoryForm.Hide
-End Sub
+    'save this one in the registry
+    Call SaveSetting(CodeUtils.APPNAME, "FileInfo", Git.EXE_PATH_PROPERTY, newPath)
 
-Private Sub TitleLabel_Click()
-
+    GitExePathForm.Hide
 End Sub

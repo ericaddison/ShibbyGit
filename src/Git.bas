@@ -7,7 +7,6 @@ Public Const PROJECT_PATH_PROPERTY As String = "code_GitProjectPath"
 Public Sub GitRemotes()
 
     Debug.Print "Git Remotes"
-    Exit Sub
 
     ' get the git executable path
     Dim gitExe As String

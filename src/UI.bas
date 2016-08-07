@@ -1,4 +1,25 @@
 Attribute VB_Name = "UI"
+Public Sub ShowGetRemoteForm()
+
+    Load GitRemoteForm
+    
+    Dim branches As Collection
+    Set branches = GitParser.ParseBranches
+    
+    Dim br As GitBranch
+    For Each br In branches
+        If br.Active Then
+            GitRemoteForm.ListBox1.AddItem "*" & br.Name & "*"
+        Else
+            GitRemoteForm.ListBox1.AddItem br.Name
+        End If
+    Next br
+    
+    GitRemoteForm.Show
+
+End Sub
+
+
 Public Sub ShowSetExportDirectoryForm()
     Load SetWorkingDirectoryForm
     

@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} GitConsoleForm 
    Caption         =   "VB Git Console"
-   ClientHeight    =   6372
-   ClientLeft      =   36
+   ClientHeight    =   6375
+   ClientLeft      =   30
    ClientTop       =   360
-   ClientWidth     =   6204
+   ClientWidth     =   6210
    OleObjectBlob   =   "GitConsoleForm.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -13,6 +13,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 
 
 Private CommandHistory As New Collection
@@ -48,13 +49,13 @@ Private Sub CommandBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shi
         If CommandBox.Text Like "git *" Then
             Dim command As String
             command = Right(CommandBox.Text, Len(CommandBox.Text) - 4)
-            output = Git.GitOther(command)
+            output = GitCommands.GitOther(command)
         ElseIf CommandBox.Text = "export" Then
             output = CodeUtils.ExportAll
         ElseIf CommandBox.Text = "import" Then
             output = CodeUtils.ImportAll
         Else
-            output = Git.GitOther(CommandBox.Text)
+            output = GitCommands.GitOther(CommandBox.Text)
         End If
         
         ' push the command on the history

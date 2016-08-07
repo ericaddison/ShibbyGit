@@ -12,8 +12,8 @@ End Type
 Private Type PROCESS_INFORMATION
     hProcess As Long
     hThread As Long
-    dwProcessId As Long
-    dwThreadId As Long
+    dwProcessID As Long
+    dwThreadID As Long
 End Type
 
 Private Type STARTUPINFO

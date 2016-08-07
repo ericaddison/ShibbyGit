@@ -42,7 +42,7 @@ Private Sub OKButton_Click()
     End If
 
     'save this one in the registry
-    DocPropIO.AddStringToDocProperties Git.PROJECT_PATH_PROPERTY, newPath
+    DocPropIO.AddStringToDocProperties git.PROJECT_PATH_PROPERTY, newPath
 
     GitPathForm.Hide
 End Sub

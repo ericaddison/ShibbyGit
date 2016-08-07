@@ -43,7 +43,7 @@ Private Sub OKButton_Click()
     End If
 
     'save this one in the registry
-    Call SaveSetting(CodeUtils.APPNAME, "FileInfo", Git.EXE_PATH_PROPERTY, newPath)
+    Call SaveSetting(CodeUtils.APPNAME, "FileInfo", git.EXE_PATH_PROPERTY, newPath)
 
     GitExePathForm.Hide
 End Sub

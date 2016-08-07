@@ -1,19 +1,13 @@
 Attribute VB_Name = "UI"
-Public Sub ShowGetRemoteForm()
+Public Sub ShowGitRemoteForm()
 
     Load GitRemoteForm
     
-    Dim branches As Collection
-    Set branches = GitParser.ParseBranches
+    Set GitRemoteForm.branches = GitParser.ParseBranches
+    GitRemoteForm.AddBranchesToList
     
-    Dim br As GitBranch
-    For Each br In branches
-        If br.Active Then
-            GitRemoteForm.ListBox1.AddItem "*" & br.Name & "*"
-        Else
-            GitRemoteForm.ListBox1.AddItem br.Name
-        End If
-    Next br
+    Set GitRemoteForm.remotes = GitParser.ParseRemotes
+    GitRemoteForm.AddPushRemotesToList
     
     GitRemoteForm.Show
 
@@ -38,7 +32,7 @@ Public Sub ShowSetGitPathForm()
     
     On Error Resume Next
         Dim gitPath As String
-        gitPath = DocPropIO.GetItemFromDocProperties(Git.PROJECT_PATH_PROPERTY)
+        gitPath = DocPropIO.GetItemFromDocProperties(git.PROJECT_PATH_PROPERTY)
         GitPathForm.DirTextBox.Text = gitPath
     On Error GoTo 0
         
@@ -51,7 +45,7 @@ Public Sub ShowSetGitExePathForm()
     
     On Error Resume Next
         Dim gitExe As String
-        gitExe = GetSetting(CodeUtils.APPNAME, "FileInfo", Git.EXE_PATH_PROPERTY, "")
+        gitExe = GetSetting(CodeUtils.APPNAME, "FileInfo", git.EXE_PATH_PROPERTY, "")
         GitExePathForm.DirTextBox.Text = gitExe
     On Error GoTo 0
         

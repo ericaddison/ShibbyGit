@@ -29,7 +29,7 @@ Private Sub OKButton_Click()
         Exit Sub
     End If
     
-    Git.GitCommit (commitMessage)
+    git.GitCommit (commitMessage)
         
     GitCommitMessageForm.Hide
         

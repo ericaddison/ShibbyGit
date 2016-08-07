@@ -14,7 +14,6 @@ Public Function ParseBranches() As Collection
             Set newBranch = New GitBranch
             newBranch.Name = branchNames(ind)
             branches.Add newBranch
-            Debug.Print newBranch.Name
         End If
     Next ind
 
@@ -29,19 +28,22 @@ Public Function ParseRemotes() As Collection
     Dim output As String
     output = GitCommands.GitOther("remote -v")
     
-    Dim branchNames() As String
-    branchNames = Split(output, vbLf)
+    Dim remoteInfo() As String
+    remoteInfo = Split(output, vbLf)
     Dim ind As Integer
-    Dim newBranch As GitBranch
-    For ind = LBound(branchNames) To UBound(branchNames)
-        If Not branchNames(ind) = "" Then
-            Set newBranch = New GitBranch
-            newBranch.Name = branchNames(ind)
-            branches.Add newBranch
-            Debug.Print newBranch.Name
+    Dim newRemote As GitRemote
+    For ind = LBound(remoteInfo) To UBound(remoteInfo)
+        If Not remoteInfo(ind) = "" Then
+            Set newRemote = New GitRemote
+            Dim remoteLine() As String
+            remoteInfo(ind) = Replace(remoteInfo(ind), vbTab, " ")
+            remoteLine = Split(remoteInfo(ind), " ")
+            newRemote.Name = remoteLine(0)
+            newRemote.Url = remoteLine(1)
+            newRemote.RemoteType = remoteLine(2)
+            remotes.Add newRemote
         End If
     Next ind
 
-    Set ParseBranches = branches
-
+    Set ParseRemotes = remotes
 End Function

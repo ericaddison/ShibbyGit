@@ -12,10 +12,10 @@
 	  <button id="SetGitExeButton" label="git.exe" size="large" onAction="UI.ShowSetGitExePathForm" imageMso="FileManageMenu" />
           <button id="GitOtherButton" label="Git Console"  onAction="UI.ShowGitOtherForm" imageMso="FileManageMenu" />	  
 	  <button id="GitCommitButton" label="Commit" onAction="UI.ShowGitCommitForm" imageMso="FileManageMenu" /> 
-	  <button id="GitStatusButton" label="Status" onAction="Git.GitStatus" imageMso="FileManageMenu" />
-	  <button id="GitLogButton" label="Log" onAction="Git.GitLog" imageMso="FileManageMenu" />
-	  <button id="GitAddAllButton" label="Add All" onAction="Git.GitAddAll" imageMso="FileManageMenu" />
-	  <button id="GitRemoteButton" label="Remotes" onAction="Git.GitRemotes" imageMso="FileManageMenu" />
+	  <button id="GitStatusButton" label="Status" onAction="GitCommands.GitStatus" imageMso="FileManageMenu" />
+	  <button id="GitLogButton" label="Log" onAction="GitCommands.GitLog" imageMso="FileManageMenu" />
+	  <button id="GitAddAllButton" label="Add All" onAction="GitCommands.GitAddAll" imageMso="FileManageMenu" />
+	  <button id="GitRemoteButton" label="Remotes" onAction="UI.ShowGitRemoteForm" imageMso="FileManageMenu" />
         </group > 
       </tab> 
     </tabs> 

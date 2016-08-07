@@ -1,7 +1,8 @@
 Attribute VB_Name = "GitCommands"
+Option Explicit
 Public Const EXE_PATH_PROPERTY As String = "code_GitExecutablePath"
 Public Const PROJECT_PATH_PROPERTY As String = "code_GitProjectPath"
- Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long) 'For 32 Bit Systems
+Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long) 'For 32 Bit Systems
 
 ' testing push origin master for web remote
 Public Sub GitRemotes()
@@ -10,32 +11,12 @@ Public Sub GitRemotes()
 
     ' get the git executable path
     Dim gitExe As String
-    gitExe = GetSetting(CodeUtils.APPNAME, "FileInfo", Git.EXE_PATH_PROPERTY, "")
+    gitExe = GetSetting(CodeUtils.APPNAME, "FileInfo", git.EXE_PATH_PROPERTY, "")
  
      ' get the working directory path
     Dim workingDir As String
     workingDir = DocPropIO.GetItemFromDocProperties(PROJECT_PATH_PROPERTY)
     
- 
-    ' crate the parameter string
-    Dim command As String
-    command = "cmd /c "
-    If InStr(1, gitExe, " ") Then
-        command = command & """" & gitExe & """ "
-    Else
-        command = command & gitExe & " "
-    End If
-    
-    If InStr(1, workingDir, " ") Then
-        command = command & "-C """ & workingDir & """ "
-    Else
-        command = command & "-C " & workingDir & " "
-    End If
-    
-    Dim file As String
-    file = workingDir & "\tmp.txt"
-    
-    command = command & " push origin master & pause"
     Shell command, 1
 
     
@@ -76,7 +57,62 @@ End Sub
 ' where the options come from the incoming string, and the
 ' path is from the export directory
 Public Function GitOther(ByVal options As String) As String
+
+    Dim gitExe As String
+    gitExe = GetGitExe
     
+    Dim workingDir As String
+    workingDir = GetWorkingDir
+
+    ' crate the parameter string
+    Dim parms As String
+    parms = " -C """ & workingDir & """ " & options
+    
+    ' call git
+    Dim output As String
+    output = ShellRedirect.Redirect(gitExe, parms, 1000)
+    
+    GitOther = output
+End Function
+
+
+' get the gitExe path with the -C working directory parameter added
+Public Function GitExeWithPath() As String
+    GitExeWithPath = ""
+
+    Dim git As String
+    git = GetGitExe
+    If git = "" Then
+        Exit Function
+    End If
+    
+    Dim workingDir As String
+    workingDir = GetWorkingDir
+    If workingDir = "" Then
+        Exit Function
+    End If
+    
+    ' crate the parameter string
+    Dim command As String
+    If InStr(1, git, " ") Then
+        command = """" & git & """"
+    Else
+        command = git
+    End If
+    
+    If InStr(1, workingDir, " ") Then
+        command = command & " -C """ & workingDir & """ "
+    Else
+        command = command & " -C " & workingDir & " "
+    End If
+
+    GitExeWithPath = command
+    
+End Function
+
+Private Function GetGitExe() As String
+    GetGitExe = ""
+
     ' get the git executable path
     Dim gitExe As String
     gitExe = GetSetting(CodeUtils.APPNAME, "FileInfo", GitCommands.EXE_PATH_PROPERTY, "")
@@ -91,6 +127,13 @@ Public Function GitOther(ByVal options As String) As String
         MsgBox "Cannot find git executable: " & gitExe
         Exit Function
     End If
+    
+    GetGitExe = gitExe
+End Function
+
+
+Private Function GetWorkingDir() As String
+    GetWorkingDir = ""
     
     ' get the working directory path
     Dim workingDir As String
@@ -111,15 +154,6 @@ Public Function GitOther(ByVal options As String) As String
         MsgBox "Cannot find folder: " & workingDir
         Exit Function
     End If
-        
-    ' crate the parameter string
-    Dim parms As String
-    parms = "-C """ & workingDir & """ " & options
     
-    ' call git
-    Dim output As String
-    output = ShellRedirect.Redirect(gitExe, parms, 1000)
-    
-    GitOther = output
+    GetWorkingDir = workingDir
 End Function
-

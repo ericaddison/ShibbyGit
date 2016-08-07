@@ -9,7 +9,7 @@ Public Sub ShowGitRemoteForm()
     Set GitRemoteForm.remotes = GitParser.ParseRemotes
     GitRemoteForm.AddPushRemotesToList
     
-    GitRemoteForm.Show
+    GitRemoteForm.Show False
 
 End Sub
 

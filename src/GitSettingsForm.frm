@@ -14,7 +14,6 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Public Sub initialize()
-    
     ' set the gitExe path text
     On Error Resume Next
         Dim gitExe As String
@@ -30,6 +29,10 @@ Public Sub initialize()
     On Error GoTo 0
 End Sub
 
+
+Private Sub CancelButton_Click()
+    GitSettingsForm.Hide
+End Sub
 
 Private Sub OKButton_Click()
     SaveGitExe

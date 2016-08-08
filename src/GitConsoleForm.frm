@@ -48,13 +48,23 @@ Private Sub CommandBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shi
         If CommandBox.Text Like "git *" Then
             Dim command As String
             command = Right(CommandBox.Text, Len(CommandBox.Text) - 4)
-            output = GitGommands.RunGitAsProcess(command)
+            If ShellBox.value = True Then
+                output = "Shell exectution"
+                GitCommands.RunGitInShell (command)
+            Else
+                output = GitCommands.RunGitAsProcess(command, 1500)
+            End If
         ElseIf CommandBox.Text = "export" Then
             output = CodeUtils.ExportAll
         ElseIf CommandBox.Text = "import" Then
             output = CodeUtils.ImportAll
         Else
-            output = GitCommands.RunGitAsProcess(CommandBox.Text)
+            If ShellBox.value = True Then
+                output = "Shell exectution"
+                GitCommands.RunGitInShell (CommandBox.Text)
+            Else
+                output = GitCommands.RunGitAsProcess(CommandBox.Text, 1500)
+            End If
         End If
         
         ' push the command on the history

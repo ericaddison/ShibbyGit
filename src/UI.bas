@@ -1,22 +1,14 @@
 Attribute VB_Name = "UI"
 Public Sub ShowGitSettingsForm()
     Load GitSettingsForm
-    GitSettingsForm.initialize
+    GitSettingsForm.Initialize
     GitSettingsForm.Show
 End Sub
 
 Public Sub ShowGitRemoteForm()
-
     Load GitRemoteForm
-    
-    Set GitRemoteForm.branches = GitParser.ParseBranches
-    GitRemoteForm.AddBranchesToList
-    
-    Set GitRemoteForm.remotes = GitParser.ParseRemotes
-    GitRemoteForm.AddPushRemotesToList
-    
+    GitRemoteForm.Initialize
     GitRemoteForm.Show False
-
 End Sub
 
 

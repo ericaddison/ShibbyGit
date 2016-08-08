@@ -14,7 +14,6 @@ End Sub
 Public Sub GitStatus()
     Dim out As String
     out = RunGitAsProcess("status")
-    Debug.Print "status out = " & out
     MsgBox out
 End Sub
 

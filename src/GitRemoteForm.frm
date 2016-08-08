@@ -17,7 +17,16 @@ Attribute VB_Exposed = False
 Public remotes As Collection
 Public branches As Collection
 
-Public Sub AddPushRemotesToList()
+Public Sub Initialize()
+    Set branches = GitParser.ParseBranches
+    AddBranchesToList
+    
+    Set remotes = GitParser.ParseRemotes
+    AddPushRemotesToList
+End Sub
+
+
+Private Sub AddPushRemotesToList()
     Dim currentInd As Integer
     currentInd = RemoteBox.ListIndex
     
@@ -31,12 +40,12 @@ Public Sub AddPushRemotesToList()
     
     If currentInd <= UBound(RemoteBox.List) And currentInd > LBound(RemoteBox.List) Then
         RemoteBox.ListIndex = currentInd
-    Else
+    ElseIf RemoteBox.ListCount > 0 Then
         RemoteBox.ListIndex = 0
     End If
 End Sub
 
-Public Sub AddFetchRemotesToList()
+Private Sub AddFetchRemotesToList()
     Dim currentInd As Integer
     currentInd = RemoteBox.ListIndex
     
@@ -50,12 +59,12 @@ Public Sub AddFetchRemotesToList()
     
     If currentInd <= UBound(RemoteBox.List) And currentInd > LBound(RemoteBox.List) Then
         RemoteBox.ListIndex = currentInd
-    Else
+    ElseIf RemoteBox.ListCount > 0 Then
         RemoteBox.ListIndex = 0
     End If
 End Sub
 
-Public Sub AddBranchesToList()
+Private Sub AddBranchesToList()
     Dim currentInd As Integer
     currentInd = BranchBox.ListIndex
 

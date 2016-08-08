@@ -49,8 +49,8 @@ End Sub
 ' Run git with specified options ... calls "git -C <path> options",
 ' Launches a new process and returns the output
 ' path to git executable and project directory come from settings
-' VBA will wait "waitTime" milliseconds for the process to complete. Default value is 10000 for 10s
-Public Function RunGitAsProcess(ByVal options As String, Optional ByVal waitTime As Long = 10000) As String
+' VBA will wait "waitTime" milliseconds for the process to complete. Default value is 20000 for 20s
+Public Function RunGitAsProcess(ByVal options As String, Optional ByVal waitTime As Long = 20000) As String
 
     Dim gitExe As String
     gitExe = GetGitExe

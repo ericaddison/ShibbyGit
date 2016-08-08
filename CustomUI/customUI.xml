@@ -8,8 +8,7 @@
 	  <button id="SetFolderButton" label="Set Folder" size="large" onAction="UI.ShowSetExportDirectoryForm" imageMso="FileManageMenu" /> 
         </group > 
         <group id="Git" label="Git"> 
-	  <button id="SetGitPathButton" label="Git Path" size="large" onAction="UI.ShowSetGitPathForm" imageMso="FileManageMenu" />
-	  <button id="SetGitExeButton" label="git.exe" size="large" onAction="UI.ShowSetGitExePathForm" imageMso="FileManageMenu" />
+	  <button id="SetGitPathButton" label="Git Settings" size="large" onAction="UI.ShowGitSettingsForm" imageMso="FileManageMenu" />
           <button id="GitOtherButton" label="Git Console"  onAction="UI.ShowGitOtherForm" imageMso="FileManageMenu" />	  
 	  <button id="GitCommitButton" label="Commit" onAction="UI.ShowGitCommitForm" imageMso="FileManageMenu" /> 
 	  <button id="GitStatusButton" label="Status" onAction="GitCommands.GitStatus" imageMso="FileManageMenu" />

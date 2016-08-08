@@ -13,7 +13,7 @@ End Sub
 
 Public Sub GitStatus()
     Dim out As String
-    out = RunGitAsProcess("status", 1500)
+    out = RunGitAsProcess("status")
     Debug.Print "status out = " & out
     MsgBox out
 End Sub
@@ -65,7 +65,7 @@ Public Function RunGitAsProcess(ByVal options As String, Optional ByVal waitTime
     
     ' call git
     Dim output As String
-    output = ShellRedirect.Redirect(gitExe, parms, 1500)
+    output = ShellRedirect.Redirect(gitExe, parms, waitTime)
     
     RunGitAsProcess = output
 End Function

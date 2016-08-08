@@ -1,4 +1,10 @@
 Attribute VB_Name = "UI"
+Public Sub ShowGitSettingsForm()
+    Load GitSettingsForm
+    GitSettingsForm.initialize
+    GitSettingsForm.Show
+End Sub
+
 Public Sub ShowGitRemoteForm()
 
     Load GitRemoteForm
@@ -27,30 +33,6 @@ Public Sub ShowSetExportDirectoryForm()
 End Sub
 
 
-Public Sub ShowSetGitPathForm()
-    Load GitPathForm
-    
-    On Error Resume Next
-        Dim gitPath As String
-        gitPath = DocPropIO.GetItemFromDocProperties(GitCommands.PROJECT_PATH_PROPERTY)
-        GitPathForm.DirTextBox.Text = gitPath
-    On Error GoTo 0
-        
-    GitPathForm.Show
-End Sub
-
-
-Public Sub ShowSetGitExePathForm()
-    Load GitExePathForm
-    
-    On Error Resume Next
-        Dim gitExe As String
-        gitExe = GetSetting(CodeUtils.APPNAME, "FileInfo", GitCommands.EXE_PATH_PROPERTY, "")
-        GitExePathForm.DirTextBox.Text = gitExe
-    On Error GoTo 0
-        
-    GitExePathForm.Show
-End Sub
 
 Public Sub ShowGitCommitForm()
     

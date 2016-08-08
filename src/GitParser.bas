@@ -3,7 +3,7 @@ Public Function ParseBranches() As Collection
 
     Dim branches As New Collection
     Dim output As String
-    output = GitCommands.GitOther("branch")
+    output = GitCommands.RunGitAsProcess("branch")
     
     Dim branchNames() As String
     branchNames = Split(output, vbLf)
@@ -26,7 +26,7 @@ Public Function ParseRemotes() As Collection
 
     Dim remotes As New Collection
     Dim output As String
-    output = GitCommands.GitOther("remote -v")
+    output = GitCommands.RunGitAsProcess("remote -v")
     
     Dim remoteInfo() As String
     remoteInfo = Split(output, vbLf)

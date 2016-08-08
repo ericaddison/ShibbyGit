@@ -32,7 +32,7 @@ Public Sub ShowSetGitPathForm()
     
     On Error Resume Next
         Dim gitPath As String
-        gitPath = DocPropIO.GetItemFromDocProperties(git.PROJECT_PATH_PROPERTY)
+        gitPath = DocPropIO.GetItemFromDocProperties(GitCommands.PROJECT_PATH_PROPERTY)
         GitPathForm.DirTextBox.Text = gitPath
     On Error GoTo 0
         
@@ -45,7 +45,7 @@ Public Sub ShowSetGitExePathForm()
     
     On Error Resume Next
         Dim gitExe As String
-        gitExe = GetSetting(CodeUtils.APPNAME, "FileInfo", git.EXE_PATH_PROPERTY, "")
+        gitExe = GetSetting(CodeUtils.APPNAME, "FileInfo", GitCommands.EXE_PATH_PROPERTY, "")
         GitExePathForm.DirTextBox.Text = gitExe
     On Error GoTo 0
         

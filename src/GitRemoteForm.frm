@@ -3,8 +3,8 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} GitRemoteForm
    Caption         =   "Git Remote"
    ClientHeight    =   3660
    ClientLeft      =   120
-   ClientTop       =   450
-   ClientWidth     =   5415
+   ClientTop       =   456
+   ClientWidth     =   5412
    OleObjectBlob   =   "GitRemoteForm.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -13,6 +13,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Public remotes As Collection
 Public branches As Collection
 
@@ -105,11 +106,7 @@ Private Sub OKButton_Click()
     Dim gitParms As String
     gitParms = operation & " " & remote & " " & branch
     
-    Dim command As String
-    command = "cmd /c echo Running 'git " & gitParms & "'" & _
-    " & " & GitCommands.GitExeWithPath & " " & gitParms & " & pause"
-    Debug.Print command
-    Shell command, 1
+    GitCommands.RunGitInShell gitParms
 End Sub
 
 Private Sub PushButton_Click()

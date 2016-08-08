@@ -11,7 +11,7 @@ Public Sub GitRemotes()
 
     ' get the git executable path
     Dim gitExe As String
-    gitExe = GetSetting(CodeUtils.APPNAME, "FileInfo", git.EXE_PATH_PROPERTY, "")
+    gitExe = GetSetting(CodeUtils.APPNAME, "FileInfo", GitCommands.EXE_PATH_PROPERTY, "")
  
      ' get the working directory path
     Dim workingDir As String
@@ -25,26 +25,26 @@ End Sub
 
 Public Sub GitCommit(ByVal message As String)
     Dim out As String
-    out = GitOther("commit -am """ & message & """")
+    out = RunGitAsProcess("commit -am """ & message & """")
     MsgBox out
 End Sub
 
 Public Sub GitStatus()
     Dim out As String
-    out = GitOther("status")
+    out = RunGitAsProcess("status")
     MsgBox out
 End Sub
 
 
 Public Sub GitLog()
     Dim out As String
-    out = GitOther("log")
+    out = RunGitAsProcess("log")
     MsgBox out
 End Sub
 
 Public Sub GitAddAll()
     Dim out As String
-    out = GitOther("add -A")
+    out = RunGitAsProcess("add -A")
     If out = "" Then
         MsgBox "Staged all files for commit"
     Else
@@ -53,10 +53,21 @@ Public Sub GitAddAll()
 End Sub
 
 
-' Main function to call git ... calls "git -C <path> options",
-' where the options come from the incoming string, and the
-' path is from the export directory
-Public Function GitOther(ByVal options As String) As String
+' Rin git in a command shell with incoming options.
+' Output is not returned, but full cmd shell interactivity
+' is possible. Ends with a call to "pause" to keep the window open
+Public Sub RunGitInShell(ByVal options As String)
+    Dim command As String
+    command = "cmd /c echo Running 'git " & options & "'" & _
+    " & " & GitCommands.GitExeWithPath & " " & options & " & pause"
+    Shell command, 1
+End Sub
+
+
+' Run git with specified options ... calls "git -C <path> options",
+' Launches a new process and returns the output
+' path to git executable and project directory come from settings
+Public Function RunGitAsProcess(ByVal options As String) As String
 
     Dim gitExe As String
     gitExe = GetGitExe
@@ -72,7 +83,7 @@ Public Function GitOther(ByVal options As String) As String
     Dim output As String
     output = ShellRedirect.Redirect(gitExe, parms, 1000)
     
-    GitOther = output
+    RunGitAsProcess = output
 End Function
 
 

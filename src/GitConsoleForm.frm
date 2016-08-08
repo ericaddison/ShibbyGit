@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} GitConsoleForm 
    Caption         =   "VB Git Console"
-   ClientHeight    =   6375
-   ClientLeft      =   30
+   ClientHeight    =   6372
+   ClientLeft      =   36
    ClientTop       =   360
-   ClientWidth     =   6210
+   ClientWidth     =   6204
    OleObjectBlob   =   "GitConsoleForm.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -13,7 +13,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
 
 
 Private CommandHistory As New Collection
@@ -49,13 +48,13 @@ Private Sub CommandBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shi
         If CommandBox.Text Like "git *" Then
             Dim command As String
             command = Right(CommandBox.Text, Len(CommandBox.Text) - 4)
-            output = GitCommands.GitOther(command)
+            output = GitGommands.RunGitAsProcess(command)
         ElseIf CommandBox.Text = "export" Then
             output = CodeUtils.ExportAll
         ElseIf CommandBox.Text = "import" Then
             output = CodeUtils.ImportAll
         Else
-            output = GitCommands.GitOther(CommandBox.Text)
+            output = GitCommands.RunGitAsProcess(CommandBox.Text)
         End If
         
         ' push the command on the history
@@ -66,7 +65,6 @@ Private Sub CommandBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shi
         
         ' display the output
         OutputBox.value = output
-        CommandBox.Text = ""
         KeyCode.value = 0
         
     ' up key: show previous command
@@ -89,14 +87,23 @@ Private Sub CommandBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shi
 End Sub
 
 
+Private Sub CommandBox_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        GiveCommandBoxFocus
+    End If
+End Sub
+
 Private Sub OutputBox_AfterUpdate()
-    CommandBox.SetFocus
-    CommandBox.SelStart = 0
-    CommandBox.SelLength = Len(CommandBox.value)
+    GiveCommandBoxFocus
 End Sub
 
 
 Private Sub OutputBox_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+    GiveCommandBoxFocus
+End Sub
+
+
+Private Sub GiveCommandBoxFocus()
     CommandBox.SetFocus
     CommandBox.SelStart = 0
     CommandBox.SelLength = Len(CommandBox.value)

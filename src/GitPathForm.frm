@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} GitPathForm 
    Caption         =   "Git Project Path"
    ClientHeight    =   2715
-   ClientLeft      =   30
+   ClientLeft      =   36
    ClientTop       =   360
-   ClientWidth     =   6930
+   ClientWidth     =   6924
    OleObjectBlob   =   "GitPathForm.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -13,7 +13,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
 
 
 
@@ -42,7 +41,7 @@ Private Sub OKButton_Click()
     End If
 
     'save this one in the registry
-    DocPropIO.AddStringToDocProperties git.PROJECT_PATH_PROPERTY, newPath
+    DocPropIO.AddStringToDocProperties GitCommands.PROJECT_PATH_PROPERTY, newPath
 
     GitPathForm.Hide
 End Sub

@@ -13,7 +13,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Public Sub Initialize()
+Public Sub UserForm_Initialize()
     ' set the gitExe path text
     On Error Resume Next
         Dim gitExe As String

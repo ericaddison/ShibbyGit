@@ -1,36 +1,19 @@
 Attribute VB_Name = "UI"
 Public Sub ShowGitSettingsForm()
-    Load GitSettingsForm
-    GitSettingsForm.Initialize
     GitSettingsForm.Show
 End Sub
 
 Public Sub ShowGitRemoteForm()
-    Load GitRemoteForm
-    GitRemoteForm.Initialize
     GitRemoteForm.Show False
 End Sub
 
 
 Public Sub ShowSetExportDirectoryForm()
-    Load SetWorkingDirectoryForm
-    
-    On Error Resume Next
-        Dim dir As String
-        dir = DocPropIO.GetItemFromDocProperties(CodeUtils.EXPORT_DIRECTORY_PROPERTY)
-        SetWorkingDirectoryForm.DirTextBox.Text = dir
-    On Error GoTo 0
-        
     SetWorkingDirectoryForm.Show
 End Sub
 
-
-
 Public Sub ShowGitCommitForm()
-    
-    Load GitCommitMessageForm
     GitCommitMessageForm.Show
-    
 End Sub
 
 Public Sub ShowGitOtherForm()
@@ -40,6 +23,13 @@ Public Sub ShowGitOtherForm()
     GitConsoleForm.Show False
     
 End Sub
+
+Public Sub NonModalMsgBox(ByVal message As String)
+    Load NonModalMsgBoxForm
+    NonModalMsgBoxForm.Show False
+    NonModalMsgBoxForm.Label1.Caption = message
+End Sub
+
 
 Public Function FolderDialog() As String
     Dim fd As FileDialog

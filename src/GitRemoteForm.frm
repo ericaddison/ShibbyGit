@@ -17,7 +17,7 @@ Attribute VB_Exposed = False
 Public remotes As Collection
 Public branches As Collection
 
-Public Sub Initialize()
+Public Sub UserForm_Initialize()
     Set branches = GitParser.ParseBranches
     AddBranchesToList
     

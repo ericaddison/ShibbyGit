@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} SetWorkingDirectoryForm 
    Caption         =   "Set Import/Export Directory"
-   ClientHeight    =   2475
+   ClientHeight    =   2472
    ClientLeft      =   36
    ClientTop       =   360
    ClientWidth     =   6192
@@ -14,7 +14,13 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
-
+Private Sub UserForm_Initialize()
+    On Error Resume Next
+        Dim dir As String
+        dir = DocPropIO.GetItemFromDocProperties(CodeUtils.EXPORT_DIRECTORY_PROPERTY)
+        SetWorkingDirectoryForm.DirTextBox.Text = dir
+    On Error GoTo 0
+End Sub
 
 
 Private Sub BrowseButton_Click()
@@ -44,4 +50,6 @@ Private Sub OKButton_Click()
     DocPropIO.AddStringToDocProperties CodeUtils.EXPORT_DIRECTORY_PROPERTY, newPath
     SetWorkingDirectoryForm.Hide
 End Sub
+
+
 

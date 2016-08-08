@@ -5,6 +5,7 @@ Option Explicit
 Public Const EXPORT_DIRECTORY_PROPERTY As String = "code_ExportDirectory"
 Public Const APPNAME As String = "ShibbyGit"
 Private Const OldTag As String = "O"
+Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
 ' component type constants
 Private Const Module As Integer = 1
@@ -15,7 +16,16 @@ Private Const Padding As Integer = 24
 
 
 Public Sub ExportAllMsgBox()
-    MsgBox ExportAll
+    Dim output As String
+    UI.NonModalMsgBox "Exporting files . . ."
+    Dim i As Integer
+    For i = 1 To 10
+        DoEvents
+        Sleep 2
+    Next i
+    output = ExportAll
+    NonModalMsgBoxForm.Hide
+    MsgBox output
 End Sub
 
 Public Sub ImportAllMsgBox()

@@ -5,7 +5,6 @@ Public Const PROJECT_PATH_PROPERTY As String = "code_GitProjectPath"
 Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long) 'For 32 Bit Systems
 
 
-
 Public Sub GitCommit(ByVal message As String)
     Dim out As String
     out = RunGitAsProcess("commit -am """ & message & """")
@@ -14,7 +13,7 @@ End Sub
 
 Public Sub GitStatus()
     Dim out As String
-    out = RunGitAsProcess("status")
+    out = RunGitAsProcess("status", 1500)
     Debug.Print "status out = " & out
     MsgBox out
 End Sub
@@ -22,7 +21,7 @@ End Sub
 
 Public Sub GitLog()
     Dim out As String
-    out = RunGitAsProcess("log")
+    out = RunGitAsProcess("log --max-count=5")
     MsgBox out
 End Sub
 
@@ -51,7 +50,8 @@ End Sub
 ' Run git with specified options ... calls "git -C <path> options",
 ' Launches a new process and returns the output
 ' path to git executable and project directory come from settings
-Public Function RunGitAsProcess(ByVal options As String) As String
+' VBA will wait "waitTime" milliseconds for the process to complete. Default value is 10000 for 10s
+Public Function RunGitAsProcess(ByVal options As String, Optional ByVal waitTime As Long = 10000) As String
 
     Dim gitExe As String
     gitExe = GetGitExe
@@ -65,7 +65,7 @@ Public Function RunGitAsProcess(ByVal options As String) As String
     
     ' call git
     Dim output As String
-    output = ShellRedirect.Redirect(gitExe, parms, 1000)
+    output = ShellRedirect.Redirect(gitExe, parms, 1500)
     
     RunGitAsProcess = output
 End Function

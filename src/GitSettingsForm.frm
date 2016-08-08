@@ -13,7 +13,12 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Private needGitUserNameUpdate As Boolean
+Private needGitUserEmailUpdate As Boolean
 
+
+'****************************************************************
+' initialize
 
 Public Sub UserForm_Initialize()
     ' set the gitExe path text
@@ -33,17 +38,26 @@ Public Sub UserForm_Initialize()
     ' set the username and email fields
     Dim userName As String
     userName = GitCommands.RunGitAsProcess("config user.name")
-    userName = Left(userName, Len(userName) - 1)
+    If Len(userName) > 0 Then
+        userName = Left(userName, Len(userName) - 1)
+    End If
     UserNameBox.value = userName
     
     Dim userEmail As String
     userEmail = GitCommands.RunGitAsProcess("config user.email")
-    userEmail = Left(userEmail, Len(userEmail) - 1)
+    If Len(userEmail) > 0 Then
+        userEmail = Left(userEmail, Len(userEmail) - 1)
+    End If
     UserEmailBox.value = userEmail
     
+    needGitUserNameUpdate = False
+    needGitUserEmailUpdate = False
     
 End Sub
 
+
+'****************************************************************
+' component callbacks
 
 Private Sub CancelButton_Click()
     GitSettingsForm.Hide
@@ -55,6 +69,14 @@ Private Sub OKButton_Click()
     SaveUserName
     SaveUserEmail
     GitSettingsForm.Hide
+End Sub
+
+Private Sub UserEmailBox_Change()
+    needGitUserEmailUpdate = True
+End Sub
+
+Private Sub UserNameBox_Change()
+    needGitUserNameUpdate = True
 End Sub
 
 
@@ -79,6 +101,9 @@ Private Sub ProjectPathBrowseButton_Click()
     End With
 End Sub
 
+
+'****************************************************************
+' save methods
 
 ' Save the project path as a document property
 Private Sub SaveProjectPath()
@@ -111,11 +136,17 @@ End Sub
 
 ' save the user email to the git repo
 Private Sub SaveUserEmail()
-    GitCommands.RunGitAsProcess ("config --local user.email """ & UserEmailBox.value & """")
+    If needGitUserEmailUpdate Then
+        GitCommands.RunGitAsProcess ("config --local user.email """ & UserEmailBox.value & """")
+    End If
+    needGitUserEmailUpdate = False
 End Sub
 
 
 ' save the user name to the git repo
 Private Sub SaveUserName()
-    GitCommands.RunGitAsProcess ("config --local user.name """ & UserNameBox.value & """")
+    If needGitUserNameUpdate Then
+        GitCommands.RunGitAsProcess ("config --local user.name """ & UserNameBox.value & """")
+    End If
+    needGitUserNameUpdate = False
 End Sub

@@ -28,9 +28,7 @@ Private Sub OKButton_Click()
         Exit Sub
     End If
     
-    Dim output As String
-    output = GitCommands.GitCommit(commitMessage)
-    MsgBox output
+    GitCommands.GitCommit (commitMessage)
     GitCommitMessageForm.Hide
 End Sub
 

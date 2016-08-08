@@ -4,23 +4,6 @@ Public Const EXE_PATH_PROPERTY As String = "code_GitExecutablePath"
 Public Const PROJECT_PATH_PROPERTY As String = "code_GitProjectPath"
 Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long) 'For 32 Bit Systems
 
-' testing push origin master for web remote
-Public Sub GitRemotes()
-
-    Debug.Print "Git Remotes Dev"
-
-    ' get the git executable path
-    Dim gitExe As String
-    gitExe = GetSetting(CodeUtils.APPNAME, "FileInfo", GitCommands.EXE_PATH_PROPERTY, "")
- 
-     ' get the working directory path
-    Dim workingDir As String
-    workingDir = DocPropIO.GetItemFromDocProperties(PROJECT_PATH_PROPERTY)
-    
-    Shell command, 1
-
-    
-End Sub
 
 
 Public Sub GitCommit(ByVal message As String)
@@ -32,6 +15,7 @@ End Sub
 Public Sub GitStatus()
     Dim out As String
     out = RunGitAsProcess("status")
+    Debug.Print "status out = " & out
     MsgBox out
 End Sub
 

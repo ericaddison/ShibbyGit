@@ -17,7 +17,7 @@ Private Const Padding As Integer = 24
 
 Public Sub ExportAllMsgBox()
     Dim output As String
-    UI.NonModalMsgBox "Exporting files . . ."
+    UI.NonModalMsgBox "Exporting files" & vbCrLf & vbCrLf & "This could take a second or two . . ."
     Dim i As Integer
     For i = 1 To 10
         DoEvents
@@ -29,7 +29,16 @@ Public Sub ExportAllMsgBox()
 End Sub
 
 Public Sub ImportAllMsgBox()
-    MsgBox ImportAll
+    Dim output As String
+    UI.NonModalMsgBox "Importing files" & vbCrLf & vbCrLf & "This could take a second or two . . ."
+    Dim i As Integer
+    For i = 1 To 10
+        DoEvents
+        Sleep 2
+    Next i
+    output = ImportAll
+    NonModalMsgBoxForm.Hide
+    MsgBox output
 End Sub
 
 

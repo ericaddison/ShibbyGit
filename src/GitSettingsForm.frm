@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} GitSettingsForm 
    Caption         =   "ShibbyGit Settings"
-   ClientHeight    =   5568
+   ClientHeight    =   7320
    ClientLeft      =   36
    ClientTop       =   360
    ClientWidth     =   8580
@@ -13,6 +13,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
+
 Public Sub UserForm_Initialize()
     ' set the gitExe path text
     On Error Resume Next
@@ -27,6 +29,19 @@ Public Sub UserForm_Initialize()
         gitPath = DocPropIO.GetItemFromDocProperties(GitCommands.PROJECT_PATH_PROPERTY)
         ProjectPathTextBox.Text = gitPath
     On Error GoTo 0
+    
+    ' set the username and email fields
+    Dim userName As String
+    userName = GitCommands.RunGitAsProcess("config user.name")
+    userName = Left(userName, Len(userName) - 1)
+    UserNameBox.value = userName
+    
+    Dim userEmail As String
+    userEmail = GitCommands.RunGitAsProcess("config user.email")
+    userEmail = Left(userEmail, Len(userEmail) - 1)
+    UserEmailBox.value = userEmail
+    
+    
 End Sub
 
 
@@ -37,6 +52,8 @@ End Sub
 Private Sub OKButton_Click()
     SaveGitExe
     SaveProjectPath
+    SaveUserName
+    SaveUserEmail
     GitSettingsForm.Hide
 End Sub
 
@@ -90,4 +107,15 @@ Private Sub SaveGitExe()
 
     'save this one in the registry
     Call SaveSetting(CodeUtils.APPNAME, "FileInfo", GitCommands.EXE_PATH_PROPERTY, newPath)
+End Sub
+
+' save the user email to the git repo
+Private Sub SaveUserEmail()
+    GitCommands.RunGitAsProcess ("config --local user.email """ & UserEmailBox.value & """")
+End Sub
+
+
+' save the user name to the git repo
+Private Sub SaveUserName()
+    GitCommands.RunGitAsProcess ("config --local user.name """ & UserNameBox.value & """")
 End Sub

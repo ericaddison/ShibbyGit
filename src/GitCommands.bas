@@ -34,7 +34,6 @@ Public Sub GitAddAll()
     End If
 End Sub
 
-
 ' Rin git in a command shell with incoming options.
 ' Output is not returned, but full cmd shell interactivity
 ' is possible. Ends with a call to "pause" to keep the window open

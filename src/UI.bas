@@ -1,4 +1,8 @@
 Attribute VB_Name = "UI"
+Option Explicit
+
+
+
 Public Sub ShowGitSettingsForm()
     GitSettingsForm.Show
 End Sub

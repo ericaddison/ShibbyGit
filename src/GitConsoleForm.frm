@@ -69,6 +69,9 @@ Private Sub CommandBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shi
         
         ' display the output
         OutputBox.value = output
+        OutputBox.SelLength = 0
+        OutputBox.SelStart = 0
+        OutputBox.SetFocus
         KeyCode.value = 0
         
     ' up key: show previous command

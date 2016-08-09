@@ -17,7 +17,6 @@ Option Explicit
 Private CommandHistory As New Collection
 Private CommandIndex As Integer
 
-
 ' execute command when enter is pressed
 Private Sub CommandBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
 
@@ -94,22 +93,43 @@ End Sub
 
 Private Sub CommandBox_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
     If KeyCode = vbKeyReturn Then
-        GiveCommandBoxFocus
+        GiveCommandBoxFocusAndSelect
     End If
 End Sub
 
 Private Sub OutputBox_AfterUpdate()
-    GiveCommandBoxFocus
+    GiveCommandBoxFocusAndSelect
 End Sub
 
+
+Private Sub OutputBox_BeforeDropOrPaste(ByVal Cancel As MSForms.ReturnBoolean, ByVal Action As MSForms.fmAction, ByVal Data As MSForms.DataObject, ByVal X As Single, ByVal Y As Single, ByVal Effect As MSForms.ReturnEffect, ByVal Shift As Integer)
+    Cancel = True
+    GiveCommandBoxFocusAndSelect
+End Sub
 
 Private Sub OutputBox_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
-    GiveCommandBoxFocus
+    GiveCommandBoxFocusAndSelect
 End Sub
 
 
-Private Sub GiveCommandBoxFocus()
+Private Sub GiveCommandBoxFocusAndSelect()
     CommandBox.SetFocus
     CommandBox.SelStart = 0
     CommandBox.SelLength = Len(CommandBox.value)
 End Sub
+
+Private Sub OutputBox_MouseUp(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    If Button = vbKeyMButton Then
+        With CommandBox
+            .SelText = OutputBox.SelText
+            .SetFocus
+        End With
+    End If
+End Sub
+
+Private Sub CommandBox_MouseUp(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    If Button = vbKeyMButton Then
+        CommandBox.SelText = OutputBox.SelText
+    End If
+End Sub
+

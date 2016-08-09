@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} GitConsoleForm 
-   Caption         =   "VB Git Console"
-   ClientHeight    =   6372
+   Caption         =   "ShibbyGit Console"
+   ClientHeight    =   6084
    ClientLeft      =   36
    ClientTop       =   360
    ClientWidth     =   6204
@@ -38,7 +38,7 @@ Private Sub CommandBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shi
     If KeyCode = vbKeyReturn Then
      
         Dim useShell As Boolean
-        useShell = ShellBox.value = True Or Shift = 1
+        useShell = (Shift = 1)
              
         ' allow "git " to preceed options, for muscle memory!
         ' process "export" and "import" differently

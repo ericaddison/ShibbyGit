@@ -20,7 +20,7 @@ Private CommandIndex As Integer
 
 ' execute command when enter is pressed
 Private Sub CommandBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
-    Debug.Print Shift
+
     ' commandIndex checking
     If CommandIndex <= 0 Then
         CommandIndex = 1
@@ -37,7 +37,6 @@ Private Sub CommandBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shi
 
     ' return key: process command
     If KeyCode = vbKeyReturn Then
-        Debug.Print "Command: " & CommandBox.Text
      
         Dim useShell As Boolean
         useShell = ShellBox.value = True Or Shift = 1

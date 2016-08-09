@@ -20,20 +20,16 @@ Private needGitUserEmailUpdate As Boolean
 '****************************************************************
 ' initialize
 
-Public Sub UserForm_Initialize()
+Public Sub resetForm()
     ' set the gitExe path text
-    On Error Resume Next
-        Dim gitExe As String
-        gitExe = GetSetting(CodeUtils.APPNAME, "FileInfo", GitCommands.EXE_PATH_PROPERTY, "")
-        GitExeTextBox.Text = gitExe
-    On Error GoTo 0
+    Dim gitExe As String
+    gitExe = GetSetting(CodeUtils.APPNAME, "FileInfo", GitCommands.EXE_PATH_PROPERTY, "")
+    GitExeTextBox.Text = gitExe
     
     ' set the project path text
-    On Error Resume Next
-        Dim gitPath As String
-        gitPath = DocPropIO.GetItemFromDocProperties(GitCommands.PROJECT_PATH_PROPERTY)
-        ProjectPathTextBox.Text = gitPath
-    On Error GoTo 0
+    Dim gitPath As String
+    gitPath = DocPropIO.GetItemFromDocProperties(GitCommands.PROJECT_PATH_PROPERTY)
+    ProjectPathTextBox.Text = gitPath
     
     ' set the username and email fields
     Dim userName As String

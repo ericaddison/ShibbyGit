@@ -1,19 +1,23 @@
 Attribute VB_Name = "UI"
 Option Explicit
 
-
-
 Public Sub ShowGitSettingsForm()
+    Load GitSettingsForm
+    GitSettingsForm.resetForm
     GitSettingsForm.Show
 End Sub
 
 Public Sub ShowGitRemoteForm()
+    Load GitRemoteForm
+    GitRemoteForm.resetForm
     GitRemoteForm.Show False
 End Sub
 
 
 Public Sub ShowSetExportDirectoryForm()
-    SetWorkingDirectoryForm.Show
+    Load SetExportDirectoryForm
+    SetExportDirectoryForm.resetForm
+    SetExportDirectoryForm.Show
 End Sub
 
 Public Sub ShowGitCommitForm()

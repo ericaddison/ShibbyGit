@@ -20,6 +20,7 @@ Private CommandIndex As Integer
 
 ' execute command when enter is pressed
 Private Sub CommandBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Debug.Print Shift
     ' commandIndex checking
     If CommandIndex <= 0 Then
         CommandIndex = 1
@@ -38,25 +39,23 @@ Private Sub CommandBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shi
     If KeyCode = vbKeyReturn Then
         Debug.Print "Command: " & CommandBox.Text
      
+        Dim useShell As Boolean
+        useShell = ShellBox.value = True Or Shift = 1
              
         ' allow "git " to preceed options, for muscle memory!
         ' process "export" and "import" differently
         Dim output As String
         If CommandBox.Text Like "git *" Then
-            Dim command As String
-            command = Right(CommandBox.Text, Len(CommandBox.Text) - 4)
-            If ShellBox.value = True Then
-                output = "Shell exectution"
-                GitCommands.RunGitInShell (command)
-            Else
-                output = GitCommands.RunGitAsProcess(command, 1500)
-            End If
-        ElseIf CommandBox.Text = "export" Then
+            CommandBox.Text = Right(CommandBox.Text, Len(CommandBox.Text) - 4)
+        End If
+        
+        ' parse for available options
+        If CommandBox.Text = "export" Then
             output = CodeUtils.ExportAll
         ElseIf CommandBox.Text = "import" Then
             output = CodeUtils.ImportAll
         Else
-            If ShellBox.value = True Then
+            If useShell Then
                 output = "Shell exectution"
                 GitCommands.RunGitInShell (CommandBox.Text)
             Else

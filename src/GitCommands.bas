@@ -41,7 +41,7 @@ Public Sub RunGitInShell(ByVal options As String)
     Dim command As String
     command = "cmd /c echo Running 'git " & options & "'" & _
     " & " & GitCommands.GitExeWithPath & " " & options & " & pause"
-    Shell command, 1
+    shell command, 1
 End Sub
 
 

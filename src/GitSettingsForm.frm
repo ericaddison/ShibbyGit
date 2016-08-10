@@ -33,7 +33,7 @@ Public Sub resetForm()
     ' set the project path text
     ProjectPathTextBox.Text = ShibbySettings.GitProjectPath
     
-    ' set the username and email fields
+    ' set the username field
     Dim userName As String
     userName = GitCommands.RunGitAsProcess("config user.name")
     If Len(userName) > 0 Then
@@ -41,12 +41,16 @@ Public Sub resetForm()
     End If
     UserNameBox.value = userName
     
+    ' set the email field
     Dim userEmail As String
     userEmail = GitCommands.RunGitAsProcess("config user.email")
     If Len(userEmail) > 0 Then
         userEmail = Left(userEmail, Len(userEmail) - 1)
     End If
     UserEmailBox.value = userEmail
+    
+    ' set the frx box value
+    FrxCleanupBox.value = ShibbySettings.FrxCleanup
     
     needGitUserNameUpdate = False
     needGitUserEmailUpdate = False

@@ -5,6 +5,7 @@ Public Sub ShowGitSettingsForm()
     Load GitSettingsForm
     GitSettingsForm.resetForm
     GitSettingsForm.Show
+    Unload GitSettingsForm
 End Sub
 
 Public Sub ShowGitRemoteForm()
@@ -18,6 +19,7 @@ Public Sub ShowSetExportDirectoryForm()
     Load SetExportDirectoryForm
     SetExportDirectoryForm.resetForm
     SetExportDirectoryForm.Show
+    Unload SetExportDirectoryForm
 End Sub
 
 Public Sub ShowGitCommitForm()
@@ -25,11 +27,9 @@ Public Sub ShowGitCommitForm()
 End Sub
 
 Public Sub ShowGitOtherForm()
-    
     Load GitConsoleForm
     GitConsoleForm.OutputBox.ScrollBars = fmScrollBarsVertical
     GitConsoleForm.Show False
-    
 End Sub
 
 Public Sub NonModalMsgBox(ByVal message As String)

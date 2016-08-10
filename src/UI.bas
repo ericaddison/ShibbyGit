@@ -39,9 +39,10 @@ Public Sub NonModalMsgBox(ByVal message As String)
 End Sub
 
 
-Public Function FolderDialog() As String
+Public Function FolderDialog(Optional ByVal sTitle As String = "Browse") As String
     Dim fd As FileDialog
     Set fd = Application.FileDialog(msoFileDialogFolderPicker)
+    fd.title = sTitle
     With fd
         If .Show = -1 Then
             FolderDialog = .SelectedItems(1)
@@ -49,6 +50,19 @@ Public Function FolderDialog() As String
         End If
     End With
     FolderDialog = ""
+End Function
+
+Public Function FileDialog(Optional ByVal sTitle As String = "Browse") As String
+    Dim fd As FileDialog
+    Set fd = Application.FileDialog(msoFileDialogFilePicker)
+    fd.title = sTitle
+    With fd
+        If .Show = -1 Then
+            FileDialog = .SelectedItems(1)
+            Exit Function
+        End If
+    End With
+    FileDialog = ""
 End Function
 
 

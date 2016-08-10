@@ -4,7 +4,6 @@ Option Explicit
 
 Public Const EXPORT_DIRECTORY_PROPERTY As String = "code_ExportDirectory"
 Public Const APPNAME As String = "ShibbyGit"
-Private Const OldTag As String = "O"
 Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
 ' component type constants
@@ -18,11 +17,7 @@ Private Const Padding As Integer = 24
 Public Sub ExportAllMsgBox()
     Dim output As String
     UI.NonModalMsgBox "Exporting files" & vbCrLf & vbCrLf & "This could take a second or two . . ."
-    Dim i As Integer
-    For i = 1 To 10
-        DoEvents
-        Sleep 2
-    Next i
+    DoEventsAndWait 10, 2
     output = ExportAll
     NonModalMsgBoxForm.Hide
     MsgBox output
@@ -31,11 +26,7 @@ End Sub
 Public Sub ImportAllMsgBox()
     Dim output As String
     UI.NonModalMsgBox "Importing files" & vbCrLf & vbCrLf & "This could take a second or two . . ."
-    Dim i As Integer
-    For i = 1 To 10
-        DoEvents
-        Sleep 2
-    Next i
+    DoEventsAndWait 10, 2
     output = ImportAll
     NonModalMsgBoxForm.Hide
     MsgBox output
@@ -74,7 +65,6 @@ Public Function ExportAll() As String
     End If
     
     With Application.VBE.VBProjects.Item(projectInd).VBComponents
-    
         Dim ind As Integer
         Dim filesWritten As String
         Dim extension As String
@@ -131,28 +121,20 @@ Public Function ImportAll() As String
         ImportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.Name
         Exit Function
     End If
-    With Application.VBE.VBProjects.Item(projectInd).VBComponents
-    
 
-        ' first loop through files and delete modules to be imported
-        Dim file As String
-        Dim ModuleName As String
-        Dim filesRead As String
-        file = dir(importDir & "\")
-        While file <> ""
-            If CheckCodeType(file) <> -1 And file <> "CodeUtils.bas" Then
-                On Error Resume Next
-                    ModuleName = FileBaseName(file)
-                    .Item(ModuleName).Name = ModuleName & OldTag
-                    .Remove .Item(ModuleName & OldTag)
-                    .Import importDir & "\" & file
-                On Error GoTo 0
-                filesRead = filesRead & vbCrLf & ModuleName
-            End If
-            file = dir
-        Wend
-        
-    End With
+    ' first loop through files and delete modules to be imported
+    Dim file As String
+    Dim ModuleName As String
+    Dim filesRead As String
+    file = dir(importDir & "\")
+    While file <> ""
+        ModuleName = RemoveAndImportModule(projectInd, importDir & "\" & file)
+        If ModuleName <> "" Then
+            filesRead = filesRead & vbCrLf & ModuleName
+        End If
+        file = dir
+    Wend
+
 
     ImportAll = "ShibbyGit Modules Loaded: " & filesRead
 
@@ -180,23 +162,23 @@ End Function
 'used to test filepaths of commmand button   links to see if they work - change their color if not working
 ' from http://superuser.com/questions/649745/check-if-path-to-file-is-correct-on-excel-column
 Public Function FileOrDirExists(PathName As String) As Boolean
-  'Macro Purpose: Function returns TRUE if the specified file
-   Dim iTemp As Integer
-
- 'Ignore errors to allow for error evaluation
-On Error Resume Next
-iTemp = GetAttr(PathName)
-
- 'Check if error exists and set response appropriately
-Select Case Err.Number
-Case Is = 0
-    FileOrDirExists = True
-Case Else
-    FileOrDirExists = False
-End Select
-
- 'Resume error checking
-   On Error GoTo 0
+    'Macro Purpose: Function returns TRUE if the specified file
+    Dim iTemp As Integer
+    
+    'Ignore errors to allow for error evaluation
+    On Error Resume Next
+        iTemp = GetAttr(PathName)
+        
+        'Check if error exists and set response appropriately
+        Select Case Err.Number
+            Case Is = 0
+                FileOrDirExists = True
+            Case Else
+                FileOrDirExists = False
+        End Select
+    
+    'Resume error checking
+    On Error GoTo 0
 End Function
 
 
@@ -221,4 +203,44 @@ Private Function FindActiveFileVBProject() As Integer
             & vbCrLf & "Is this a new, unsaved presentation?"
     FindActiveFileVBProject = -1
 End Function
+
+
+Private Function RemoveAndImportModule(ByVal projectInd As Integer, ByVal file As String) As String
+    With Application.VBE.VBProjects.Item(projectInd).VBComponents
+        If CheckCodeType(file) <> -1 Then
+            Dim ModuleName As String
+            ModuleName = FileBaseName(file)
+            
+            ' doesn't import nonModalMsgBox for some reason!
+            If ModuleName = "NonModalMsgBoxForm" Then
+                Exit Function
+            End If
+            
+            ' don't want to write over this module! otherwise rename and remove
+            If ModuleName <> "CodeUtils" Then
+                If CheckCodeType(file) = 3 Then
+                    .Remove .Item(ModuleName)
+                Else
+                    .Item(ModuleName).Name = ModuleName & "R"
+                    .Remove .Item(ModuleName & "R")
+                End If
+                DoEventsAndWait 10, 2
+            End If
+            
+            ' import new module
+            Dim newModule As Variant
+            Set newModule = .Import(file)
+            RemoveAndImportModule = newModule.Name
+        End If
+    End With
+End Function
+
+
+Private Sub DoEventsAndWait(ByVal nLoops As Integer, ByVal sleepTimeMs As Integer)
+    Dim ind As Integer
+    For ind = 1 To nLoops
+        DoEvents
+        Sleep sleepTimeMs
+    Next ind
+End Sub
 

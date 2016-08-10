@@ -2,7 +2,7 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} GitSettingsForm 
    Caption         =   "ShibbyGit Settings"
    ClientHeight    =   7320
-   ClientLeft      =   30
+   ClientLeft      =   36
    ClientTop       =   360
    ClientWidth     =   8580
    OleObjectBlob   =   "GitSettingsForm.frx":0000
@@ -13,6 +13,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
+
 
 Private needGitUserNameUpdate As Boolean
 Private needGitUserEmailUpdate As Boolean
@@ -78,24 +80,12 @@ End Sub
 
 
 Private Sub GitExeBrowseButton_Click()
-    Dim fd As FileDialog
-    Set fd = Application.FileDialog(msoFileDialogFilePicker)
-    With fd
-        If .Show = -1 Then
-            GitExeTextBox.Text = .SelectedItems(1)
-        End If
-    End With
+    GitExeTextBox.Text = UI.FileDialog("Browser for git.exe")
 End Sub
 
 
 Private Sub ProjectPathBrowseButton_Click()
-    Dim fd As FileDialog
-    Set fd = Application.FileDialog(msoFileDialogFolderPicker)
-    With fd
-        If .Show = -1 Then
-            ProjectPathTextBox.Text = .SelectedItems(1)
-        End If
-    End With
+    ProjectPathTextBox.Text = UI.FolderDialog("Browse for Git project folder")
 End Sub
 
 

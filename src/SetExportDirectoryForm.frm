@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} SetExportDirectoryForm 
    Caption         =   "Set Import/Export Directory"
    ClientHeight    =   2472
-   ClientLeft      =   30
+   ClientLeft      =   36
    ClientTop       =   360
-   ClientWidth     =   6195
+   ClientWidth     =   6192
    OleObjectBlob   =   "SetExportDirectoryForm.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -15,6 +15,8 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 
+
+
 Public Sub resetForm()
     Dim dir As String
     dir = DocPropIO.GetItemFromDocProperties(CodeUtils.EXPORT_DIRECTORY_PROPERTY)
@@ -23,13 +25,7 @@ End Sub
 
 
 Private Sub BrowseButton_Click()
-    Dim fd As FileDialog
-    Set fd = Application.FileDialog(msoFileDialogFolderPicker)
-    With fd
-        If .Show = -1 Then
-            DirTextBox.Text = .SelectedItems(1)
-        End If
-    End With
+   DirTextBox.Text = UI.FolderDialog("Browse for Import/Export Folder")
 End Sub
 
 Private Sub CancelButton_Click()

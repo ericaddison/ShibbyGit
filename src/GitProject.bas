@@ -9,8 +9,6 @@ Public Sub RemoveUnusedFrx()
     
     Dim status As String
     status = GitCommands.RunGitAsProcess("status -s")
-    
-    Debug.Print status
   
     ' put all the status lines in a collection
     Dim strArray() As String
@@ -26,9 +24,8 @@ Public Sub RemoveUnusedFrx()
     ' loop through to see if frx has accomapnying frm
     ' if not, checkout the frx
     Dim checkoutFiles As String
-    Dim line As lineariant
+    Dim line As Variant
     For Each line In statusLines
-        Debug.Print line
         If line Like "*.frx" Then
             Dim form As String
             form = Left(line, Len(line) - 3)
@@ -44,14 +41,13 @@ End Sub
 
 
 Public Function InCollection(col As Collection, key As String) As Boolean
-
     On Error GoTo incol
     col.Item key
-    
 incol:
     InCollection = (err.Number = 0)
-
+    On Error GoTo 0
 End Function
+
 
 Private Function GetFileNameFromStatusLine(ByVal line As String) As String
     If Len(line) > 3 Then

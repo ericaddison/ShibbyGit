@@ -3,7 +3,6 @@ Attribute VB_Name = "CodeUtils"
 Option Explicit
 
 Public Const EXPORT_DIRECTORY_PROPERTY As String = "code_ExportDirectory"
-Public Const APPNAME As String = "ShibbyGit"
 Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
 ' component type constants
@@ -87,6 +86,12 @@ Public Function ExportAll() As String
     
     End With
      
+    ' clean up frx forms if requested
+    If ShibbySettings.FrxCleanup Then
+        GitProject.RemoveUnusedFrx
+    End If
+    
+    ' return list of exported files
     ExportAll = "ShibbyGit: " & vbCrLf & "Code Exported to " & exportDir & vbCrLf & filesWritten
 
 End Function

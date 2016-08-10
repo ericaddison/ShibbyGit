@@ -27,13 +27,11 @@ Private needGitUserEmailUpdate As Boolean
 Public Sub resetForm()
     ' set the gitExe path text
     Dim gitExe As String
-    gitExe = GetSetting(CodeUtils.APPNAME, "FileInfo", GitCommands.EXE_PATH_PROPERTY, "")
+    gitExe = ShibbySettings.GitExePath
     GitExeTextBox.Text = gitExe
     
     ' set the project path text
-    Dim gitPath As String
-    gitPath = DocPropIO.GetItemFromDocProperties(GitCommands.PROJECT_PATH_PROPERTY)
-    ProjectPathTextBox.Text = gitPath
+    ProjectPathTextBox.Text = ShibbySettings.GitProjectPath
     
     ' set the username and email fields
     Dim userName As String
@@ -68,6 +66,7 @@ Private Sub OKButton_Click()
     SaveProjectPath
     SaveUserName
     SaveUserEmail
+    SaveFrxCleanup
     GitSettingsForm.Hide
 End Sub
 
@@ -104,7 +103,7 @@ Private Sub SaveProjectPath()
     End If
 
     'save this one in the registry
-    DocPropIO.AddStringToDocProperties GitCommands.PROJECT_PATH_PROPERTY, newPath
+    ShibbySettings.GitProjectPath = newPath
 End Sub
 
 
@@ -119,7 +118,7 @@ Private Sub SaveGitExe()
     End If
 
     'save this one in the registry
-    Call SaveSetting(CodeUtils.APPNAME, "FileInfo", GitCommands.EXE_PATH_PROPERTY, newPath)
+    ShibbySettings.GitExePath = newPath
 End Sub
 
 ' save the user email to the git repo
@@ -141,6 +140,5 @@ End Sub
 
 ' save the frx setting
 Private Sub SaveFrxCleanup()
-    DocPropIO.
-        
+    ShibbySettings.FrxCleanup = FrxCleanupBox.value
 End Sub

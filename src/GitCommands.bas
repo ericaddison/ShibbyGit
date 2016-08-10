@@ -1,7 +1,6 @@
 Attribute VB_Name = "GitCommands"
 Option Explicit
-Public Const EXE_PATH_PROPERTY As String = "code_GitExecutablePath"
-Public Const PROJECT_PATH_PROPERTY As String = "code_GitProjectPath"
+
 Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long) 'For 32 Bit Systems
 
 
@@ -108,7 +107,7 @@ Private Function GetGitExe() As String
 
     ' get the git executable path
     Dim gitExe As String
-    gitExe = GetSetting(CodeUtils.APPNAME, "FileInfo", GitCommands.EXE_PATH_PROPERTY, "")
+    gitExe = ShibbySettings.GitExePath
     
     If gitExe = "" Or IsNull(gitExe) Then
         MsgBox "Please set the git executable path"
@@ -130,7 +129,7 @@ Private Function GetWorkingDir() As String
     
     ' get the working directory path
     Dim workingDir As String
-    workingDir = DocPropIO.GetItemFromDocProperties(PROJECT_PATH_PROPERTY)
+    workingDir = ShibbySettings.GitProjectPath
     
     ' not found in doc props, browse for one
     If workingDir = "" Then

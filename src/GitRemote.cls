@@ -20,11 +20,11 @@ Private pType As String
 '*******************************
 ' Accessors
 
-Public Property Get Name() As String
-    Name = pName
+Public Property Get name() As String
+    name = pName
 End Property
 
-Public Property Let Name(ByVal value As String)
+Public Property Let name(ByVal value As String)
     pName = value
 End Property
 

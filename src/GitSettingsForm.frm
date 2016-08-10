@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} GitSettingsForm 
    Caption         =   "ShibbyGit Settings"
-   ClientHeight    =   7320
+   ClientHeight    =   7812
    ClientLeft      =   36
    ClientTop       =   360
    ClientWidth     =   8580
@@ -137,4 +137,10 @@ Private Sub SaveUserName()
         GitCommands.RunGitAsProcess ("config --local user.name """ & UserNameBox.value & """")
     End If
     needGitUserNameUpdate = False
+End Sub
+
+' save the frx setting
+Private Sub SaveFrxCleanup()
+    DocPropIO.
+        
 End Sub

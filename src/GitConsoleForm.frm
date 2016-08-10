@@ -108,7 +108,7 @@ Private Sub OutputBox_AfterUpdate()
 End Sub
 
 
-Private Sub OutputBox_BeforeDropOrPaste(ByVal Cancel As MSForms.ReturnBoolean, ByVal Action As MSForms.fmAction, ByVal Data As MSForms.DataObject, ByVal X As Single, ByVal Y As Single, ByVal Effect As MSForms.ReturnEffect, ByVal Shift As Integer)
+Private Sub OutputBox_BeforeDropOrPaste(ByVal Cancel As MSForms.ReturnBoolean, ByVal Action As MSForms.fmAction, ByVal Data As MSForms.DataObject, ByVal x As Single, ByVal Y As Single, ByVal Effect As MSForms.ReturnEffect, ByVal Shift As Integer)
     Cancel = True
     GiveCommandBoxFocusAndSelect
 End Sub
@@ -124,7 +124,7 @@ Private Sub GiveCommandBoxFocusAndSelect()
     CommandBox.SelLength = Len(CommandBox.value)
 End Sub
 
-Private Sub OutputBox_MouseUp(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+Private Sub OutputBox_MouseUp(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Single, ByVal Y As Single)
     If Button = vbKeyMButton Then
         With CommandBox
             .SelText = OutputBox.SelText
@@ -133,7 +133,7 @@ Private Sub OutputBox_MouseUp(ByVal Button As Integer, ByVal Shift As Integer, B
     End If
 End Sub
 
-Private Sub CommandBox_MouseUp(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+Private Sub CommandBox_MouseUp(ByVal Button As Integer, ByVal Shift As Integer, ByVal x As Single, ByVal Y As Single)
     If Button = vbKeyMButton Then
         CommandBox.SelText = OutputBox.SelText
     End If

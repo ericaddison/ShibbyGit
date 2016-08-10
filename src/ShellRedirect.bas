@@ -107,7 +107,7 @@ If (CreatePipe(hRead, hWrite, tSA_CreatePipe, 0&) <> 0&) Then
         CloseHandle hWrite
         CloseHandle hRead
     Else
-        Err.Raise vbObject + 1236&, "CreateProcess", "CreateProcess Failed, Code: " & Err.LastDllError
+        err.Raise vbObject + 1236&, "CreateProcess", "CreateProcess Failed, Code: " & err.LastDllError
     End If
 End If
 End Function

@@ -38,7 +38,7 @@ Private Sub AddPushRemotesToList()
     Dim remote As GitRemote
     For Each remote In remotes
         If remote.RemoteType = "push" Then
-            RemoteBox.AddItem remote.Name
+            RemoteBox.AddItem remote.name
         End If
     Next remote
     
@@ -57,7 +57,7 @@ Private Sub AddFetchRemotesToList()
     Dim remote As GitRemote
     For Each remote In remotes
         If remote.RemoteType = "fetch" Then
-            RemoteBox.AddItem remote.Name
+            RemoteBox.AddItem remote.name
         End If
     Next remote
     
@@ -76,9 +76,9 @@ Private Sub AddBranchesToList()
     Dim br As GitBranch
     For Each br In branches
         If br.Active Then
-            BranchBox.AddItem "*" & br.Name, 0
+            BranchBox.AddItem "*" & br.name, 0
         Else
-            BranchBox.AddItem br.Name
+            BranchBox.AddItem br.name
         End If
     Next br
     

@@ -12,7 +12,7 @@ Public Function ParseBranches() As Collection
     For ind = LBound(branchNames) To UBound(branchNames)
         If Not branchNames(ind) = "" Then
             Set newBranch = New GitBranch
-            newBranch.Name = branchNames(ind)
+            newBranch.name = branchNames(ind)
             branches.Add newBranch
         End If
     Next ind
@@ -38,7 +38,7 @@ Public Function ParseRemotes() As Collection
             Dim remoteLine() As String
             remoteInfo(ind) = Replace(remoteInfo(ind), vbTab, " ")
             remoteLine = Split(remoteInfo(ind), " ")
-            newRemote.Name = remoteLine(0)
+            newRemote.name = remoteLine(0)
             newRemote.Url = remoteLine(1)
             newRemote.RemoteType = remoteLine(2)
             remotes.Add newRemote

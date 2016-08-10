@@ -9,7 +9,7 @@ Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 ' component type constants
 Private Const Module As Integer = 1
 Private Const ClassModule As Integer = 2
-Private Const Form As Integer = 3
+Private Const form As Integer = 3
 Private Const Document As Integer = 100
 Private Const Padding As Integer = 24
 
@@ -60,7 +60,7 @@ Public Function ExportAll() As String
     Dim projectInd As Integer
     projectInd = FindActiveFileVBProject
     If projectInd = -1 Then
-        ExportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.Name
+        ExportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.name
         Exit Function
     End If
     
@@ -73,15 +73,15 @@ Public Function ExportAll() As String
             Select Case .Item(ind).Type
                Case ClassModule
                    extension = ".cls"
-               Case Form
+               Case form
                    extension = ".frm"
                Case Module
                    extension = ".bas"
             End Select
 
             If (extension <> "") Then
-                .Item(ind).Export (exportDir & "\" & .Item(ind).Name & extension)
-                filesWritten = filesWritten & vbCrLf & .Item(ind).Name & extension
+                .Item(ind).Export (exportDir & "\" & .Item(ind).name & extension)
+                filesWritten = filesWritten & vbCrLf & .Item(ind).name & extension
             End If
         Next ind
     
@@ -118,7 +118,7 @@ Public Function ImportAll() As String
     Dim projectInd As Integer
     projectInd = FindActiveFileVBProject
     If projectInd = -1 Then
-        ImportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.Name
+        ImportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.name
         Exit Function
     End If
 
@@ -145,7 +145,7 @@ Private Function CheckCodeType(ByVal file As String) As Integer
     If file Like "*.bas" Then
         CheckCodeType = Module
     ElseIf file Like "*.frm" Then
-        CheckCodeType = Form
+        CheckCodeType = form
     ElseIf file Like "*.cls" Then
         CheckCodeType = ClassModule
     Else
@@ -170,7 +170,7 @@ Public Function FileOrDirExists(PathName As String) As Boolean
         iTemp = GetAttr(PathName)
         
         'Check if error exists and set response appropriately
-        Select Case Err.Number
+        Select Case err.Number
             Case Is = 0
                 FileOrDirExists = True
             Case Else
@@ -220,8 +220,8 @@ Private Function RemoveAndImportModule(ByVal projectInd As Integer, ByVal file A
             Dim moduleExists As Boolean
             On Error Resume Next
                 .Item (ModuleName)
-                moduleExists = (Err = 0)
-                Err.Clear
+                moduleExists = (err = 0)
+                err.Clear
             On Error GoTo 0
             
             ' rename and remove
@@ -229,7 +229,7 @@ Private Function RemoveAndImportModule(ByVal projectInd As Integer, ByVal file A
                 If CheckCodeType(file) = 3 Then
                     .Remove .Item(ModuleName)
                 Else
-                    .Item(ModuleName).Name = ModuleName & "R"
+                    .Item(ModuleName).name = ModuleName & "R"
                     .Remove .Item(ModuleName & "R")
                 End If
                 DoEventsAndWait 10, 2
@@ -238,7 +238,7 @@ Private Function RemoveAndImportModule(ByVal projectInd As Integer, ByVal file A
             ' import new module
             Dim newModule As Variant
             Set newModule = .Import(file)
-            RemoveAndImportModule = newModule.Name
+            RemoveAndImportModule = newModule.name
         End If
     End With
 End Function

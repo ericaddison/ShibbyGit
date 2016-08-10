@@ -114,7 +114,7 @@ Public Function ImportAll() As String
         Exit Function
     End If
     
-    ' import files
+    ' get project index from active file name
     Dim projectInd As Integer
     projectInd = FindActiveFileVBProject
     If projectInd = -1 Then
@@ -122,7 +122,7 @@ Public Function ImportAll() As String
         Exit Function
     End If
 
-    ' first loop through files and delete modules to be imported
+    ' import files
     Dim file As String
     Dim ModuleName As String
     Dim filesRead As String
@@ -211,13 +211,21 @@ Private Function RemoveAndImportModule(ByVal projectInd As Integer, ByVal file A
             Dim ModuleName As String
             ModuleName = FileBaseName(file)
             
-            ' doesn't import nonModalMsgBox for some reason!
-            If ModuleName = "NonModalMsgBoxForm" Then
+            ' don't import modules with running code!
+            If ModuleName = "NonModalMsgBoxForm" Or ModuleName = "CodeUtils" Then
                 Exit Function
             End If
             
-            ' don't want to write over this module! otherwise rename and remove
-            If ModuleName <> "CodeUtils" Then
+            ' check if module already exists in project
+            Dim moduleExists As Boolean
+            On Error Resume Next
+                .Item (ModuleName)
+                moduleExists = (Err = 0)
+                Err.Clear
+            On Error GoTo 0
+            
+            ' rename and remove
+            If moduleExists Then
                 If CheckCodeType(file) = 3 Then
                     .Remove .Item(ModuleName)
                 Else
@@ -243,4 +251,3 @@ Private Sub DoEventsAndWait(ByVal nLoops As Integer, ByVal sleepTimeMs As Intege
         Sleep sleepTimeMs
     Next ind
 End Sub
-

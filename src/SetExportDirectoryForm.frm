@@ -17,6 +17,7 @@ Attribute VB_Exposed = False
 
 
 
+
 Public Sub resetForm()
     Dim dir As String
     dir = DocPropIO.GetItemFromDocProperties(CodeUtils.EXPORT_DIRECTORY_PROPERTY)

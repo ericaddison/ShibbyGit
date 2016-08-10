@@ -20,6 +20,13 @@ Private Sub CancelButton_Click()
     GitCommitMessageForm.Hide
 End Sub
 
+
+Private Sub MessageTextBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    If KeyCode = vbKeyReturn Then
+        OKButton_Click
+    End If
+End Sub
+
 Private Sub OKButton_Click()
     Dim commitMessage As String
     commitMessage = MessageTextBox.Text

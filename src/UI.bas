@@ -1,5 +1,6 @@
 Attribute VB_Name = "UI"
 Option Explicit
+Private appHandler As ShibbyAppEventHandler
 
 Public Sub ShowGitSettingsForm()
     Load GitSettingsForm
@@ -76,4 +77,16 @@ End Function
 Private Sub MoveFormOnApplication(ByVal form As Variant)
     form.Left = Application.ActiveWindow.Left
     form.Top = Application.ActiveWindow.Top
+End Sub
+
+
+'************************************
+' Ribbon Control
+Public Sub OnRibbonLoad(ribbon As IRibbonUI)
+    initAppHandler
+End Sub
+
+Private Sub initAppHandler()
+    Set appHandler = New ShibbyAppEventHandler
+    Set appHandler.app = Application
 End Sub

@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} GitSettingsForm 
    Caption         =   "ShibbyGit Settings"
-   ClientHeight    =   7812
+   ClientHeight    =   7320
    ClientLeft      =   36
    ClientTop       =   360
    ClientWidth     =   8580
@@ -13,11 +13,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-
-
-
-
 Private needGitUserNameUpdate As Boolean
 Private needGitUserEmailUpdate As Boolean
 
@@ -27,9 +22,7 @@ Private needGitUserEmailUpdate As Boolean
 
 Public Sub resetForm()
     ' set the gitExe path text
-    Dim gitExe As String
-    gitExe = ShibbySettings.GitExePath
-    GitExeTextBox.Text = gitExe
+    GitExeTextBox.Text = ShibbySettings.GitExePath
     
     ' set the project path text
     ProjectPathTextBox.Text = ShibbySettings.GitProjectPath
@@ -53,6 +46,10 @@ Public Sub resetForm()
     ' set the frx box value
     FrxCleanupBox.value = ShibbySettings.FrxCleanup
     
+    ' set the frx box value
+    ExportOnSaveBox.value = ShibbySettings.ExportOnSave
+    
+    
     needGitUserNameUpdate = False
     needGitUserEmailUpdate = False
     
@@ -72,6 +69,7 @@ Private Sub OKButton_Click()
     SaveUserName
     SaveUserEmail
     SaveFrxCleanup
+    SaveExportOnSave
     GitSettingsForm.Hide
 End Sub
 
@@ -146,4 +144,9 @@ End Sub
 ' save the frx setting
 Private Sub SaveFrxCleanup()
     ShibbySettings.FrxCleanup = FrxCleanupBox.value
+End Sub
+
+' save the export on save setting
+Private Sub SaveExportOnSave()
+    ShibbySettings.ExportOnSave = ExportOnSaveBox.value
 End Sub

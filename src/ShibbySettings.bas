@@ -5,6 +5,7 @@ Private Const APPNAME As String = "ShibbyGit"
 Private Const EXE_PATH_PROPERTY As String = "code_GitExecutablePath"
 Private Const PROJECT_PATH_PROPERTY As String = "code_GitProjectPath"
 Private Const FRX_CLEANUP_PROPERTY As String = "code_FrxCleanup"
+Private Const EXPORT_ON_SAVE_PROPERTY As String = "code_ExportOnSave"
 
 ' get the git exe path
 Public Property Get GitExePath() As String
@@ -31,11 +32,20 @@ Public Property Get FrxCleanup() As Boolean
     FrxCleanup = DocPropIO.GetBooleanFromDocProperties(FRX_CLEANUP_PROPERTY)
 End Property
 
-' set the git project path
+' set the FrxCleanup setting
 Public Property Let FrxCleanup(ByVal newVal As Boolean)
     DocPropIO.AddBooleanToDocProperties FRX_CLEANUP_PROPERTY, newVal
 End Property
 
+' get the export on save setting
+Public Property Get ExportOnSave() As Boolean
+    ExportOnSave = DocPropIO.GetBooleanFromDocProperties(EXPORT_ON_SAVE_PROPERTY)
+End Property
+
+' set the git project path
+Public Property Let ExportOnSave(ByVal newVal As Boolean)
+    DocPropIO.AddBooleanToDocProperties EXPORT_ON_SAVE_PROPERTY, newVal
+End Property
 
 
 

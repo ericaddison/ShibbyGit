@@ -17,6 +17,7 @@ Attribute VB_Exposed = False
 
 
 
+
 Private needGitUserNameUpdate As Boolean
 Private needGitUserEmailUpdate As Boolean
 

@@ -207,12 +207,18 @@ Private Function FindActiveFileVBProject() As Integer
     With Application
         Dim ind As Integer
         For ind = 1 To .VBE.VBProjects.Count
-            If .VBE.VBProjects.Item(ind).FileName = .ActivePresentation.FullName Then
+            Dim VBFileName As String
+            On Error Resume Next
+                VBFileName = .VBE.VBProjects.Item(ind).FileName
+            On Error GoTo 0
+            If VBFileName = .ActivePresentation.FullName Then
                 FindActiveFileVBProject = ind
                 Exit Function
             End If
         Next ind
     End With
+    MsgBox "Could not find VB Project associated with open file: " & ActivePresentation.FullName _
+            & vbCrLf & "Is this a new, unsaved presentation?"
     FindActiveFileVBProject = -1
 End Function
 

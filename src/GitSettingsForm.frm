@@ -80,6 +80,7 @@ Private Sub OKButton_Click()
     SaveUserEmail
     SaveFrxCleanup
     SaveExportOnGit
+    SaveFileStructure
     GitSettingsForm.Hide
 End Sub
 
@@ -159,4 +160,9 @@ End Sub
 ' save the export on git setting
 Private Sub SaveExportOnGit()
     ShibbySettings.ExportOnGit = ExportOnGitBox.value
+End Sub
+
+' save the File structure
+Private Sub SaveFileStructure()
+    ShibbySettings.FileStructure = FileStructureBox.ListIndex
 End Sub

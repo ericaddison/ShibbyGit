@@ -28,21 +28,23 @@ Public Sub resetForm()
     ' set the project path text
     ProjectPathTextBox.Text = ShibbySettings.GitProjectPath
     
-    ' set the username field
-    Dim userName As String
-    userName = GitCommands.RunGitAsProcess("config user.name")
-    If Len(userName) > 0 Then
-        userName = Left(userName, Len(userName) - 1)
+    If GitExeTextBox.Text <> "" Then
+        ' set the username field
+        Dim userName As String
+        userName = GitCommands.RunGitAsProcess("config user.name")
+        If Len(userName) > 0 Then
+            userName = Left(userName, Len(userName) - 1)
+        End If
+        UserNameBox.value = userName
+        
+        ' set the email field
+        Dim userEmail As String
+        userEmail = GitCommands.RunGitAsProcess("config user.email")
+        If Len(userEmail) > 0 Then
+            userEmail = Left(userEmail, Len(userEmail) - 1)
+        End If
+        UserEmailBox.value = userEmail
     End If
-    UserNameBox.value = userName
-    
-    ' set the email field
-    Dim userEmail As String
-    userEmail = GitCommands.RunGitAsProcess("config user.email")
-    If Len(userEmail) > 0 Then
-        userEmail = Left(userEmail, Len(userEmail) - 1)
-    End If
-    UserEmailBox.value = userEmail
     
     ' set the frx box value
     FrxCleanupBox.value = ShibbySettings.FrxCleanup
@@ -50,6 +52,13 @@ Public Sub resetForm()
     ' set the frx box value
     ExportOnGitBox.value = ShibbySettings.ExportOnGit
     
+    ' Add items to the file structure box
+    FileStructureBox.AddItem "Flat File Stucture"
+    FileStructureBox.AddItem "Simple Src Structure"
+    FileStructureBox.AddItem "Separated Src Structure"
+    Dim fsIndex As ShibbyFileStructure
+    fsIndex = ShibbySettings.FileStructure
+    FileStructureBox.ListIndex = fsIndex
     
     needGitUserNameUpdate = False
     needGitUserEmailUpdate = False

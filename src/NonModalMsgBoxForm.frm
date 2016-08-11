@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} NonModalMsgBoxForm 
    Caption         =   "Message"
    ClientHeight    =   1488
-   ClientLeft      =   36
+   ClientLeft      =   30
    ClientTop       =   360
-   ClientWidth     =   3924
+   ClientWidth     =   3930
    OleObjectBlob   =   "NonModalMsgBoxForm.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

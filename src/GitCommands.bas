@@ -11,6 +11,9 @@ Public Sub GitCommit(ByVal message As String)
 End Sub
 
 Public Sub GitStatus()
+    If ShibbySettings.ExportOnGit Then
+        CodeUtils.ExportAll
+    End If
     Dim out As String
     out = RunGitAsProcess("status")
     MsgBox out

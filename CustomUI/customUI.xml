@@ -1,4 +1,4 @@
-<customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui" onLoad="UI.OnRibbonLoad"> 
+<customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui"> 
   <ribbon> 
     <tabs> 
       <tab id="CodeTab" label="ShibbyGit"> 

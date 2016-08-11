@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} SetExportDirectoryForm 
    Caption         =   "Set Import/Export Directory"
    ClientHeight    =   2472
-   ClientLeft      =   30
+   ClientLeft      =   36
    ClientTop       =   360
-   ClientWidth     =   6195
+   ClientWidth     =   6192
    OleObjectBlob   =   "SetExportDirectoryForm.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -20,9 +20,12 @@ Attribute VB_Exposed = False
 
 
 
+
+
+
 Public Sub resetForm()
     Dim dir As String
-    dir = DocPropIO.GetItemFromDocProperties(CodeUtils.EXPORT_DIRECTORY_PROPERTY)
+    dir = ShibbySettings.ImportExportPath
     DirTextBox.Text = dir
 End Sub
 
@@ -45,7 +48,7 @@ Private Sub OKButton_Click()
         Exit Sub
     End If
 
-    DocPropIO.AddStringToDocProperties CodeUtils.EXPORT_DIRECTORY_PROPERTY, newPath
+    ShibbySettings.ImportExportPath = newPath
     Me.Hide
 End Sub
 

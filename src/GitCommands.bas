@@ -7,6 +7,9 @@ Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long) 'For 32 B
 Public Sub GitCommit(ByVal message As String)
     Dim out As String
     out = RunGitAsProcess("commit -am """ & message & """")
+    If out = "" Then
+        out = "No output from commit"
+    End If
     MsgBox out
 End Sub
 
@@ -16,6 +19,9 @@ Public Sub GitStatus()
     End If
     Dim out As String
     out = RunGitAsProcess("status")
+    If out = "" Then
+        out = "No output from status"
+    End If
     MsgBox out
 End Sub
 
@@ -23,6 +29,9 @@ End Sub
 Public Sub GitLog()
     Dim out As String
     out = RunGitAsProcess("log --max-count=5")
+    If out = "" Then
+        out = "No output from log"
+    End If
     MsgBox out
 End Sub
 
@@ -39,10 +48,17 @@ End Sub
 ' Rin git in a command shell with incoming options.
 ' Output is not returned, but full cmd shell interactivity
 ' is possible. Ends with a call to "pause" to keep the window open
-Public Sub RunGitInShell(ByVal options As String)
+Public Sub RunGitInShell(ByVal options As String, Optional ByVal UseProjectPath As Boolean = True)
+    Dim gitExe As String
+    If UseProjectPath Then
+        gitExe = GitExeWithPath
+    Else
+        gitExe = GetGitExe
+    End If
+
     Dim command As String
     command = "cmd /c echo Running 'git " & options & "'" & _
-    " & " & GitCommands.GitExeWithPath & " " & options & " & pause"
+        " & " & gitExe & options & " & pause"
     shell command, 1
 End Sub
 
@@ -51,21 +67,25 @@ End Sub
 ' Launches a new process and returns the output
 ' path to git executable and project directory come from settings
 ' VBA will wait "waitTime" milliseconds for the process to complete. Default value is 20000 for 20s
-Public Function RunGitAsProcess(ByVal options As String, Optional ByVal waitTime As Long = 20000) As String
+Public Function RunGitAsProcess(ByVal options As String, Optional ByVal waitTime As Long = 20000, _
+        Optional ByVal UseProjectPath As Boolean = True) As String
 
     Dim gitExe As String
     gitExe = GetGitExe
     
-    Dim workingDir As String
-    workingDir = GetWorkingDir
-
-    ' crate the parameter string
     Dim parms As String
-    parms = " -C """ & workingDir & """ " & options
+    If UseProjectPath Then
+        options = GitPathOption(GetWorkingDir) & " " & options
+    End If
     
+    If gitExe = "" Then
+        RunGitAsProcess = "Failed to run Git as Process"
+        Exit Function
+    End If
+
     ' call git
     Dim output As String
-    output = ShellRedirect.Redirect(gitExe, parms, waitTime)
+    output = ShellRedirect.Redirect(gitExe, options, waitTime)
     
     RunGitAsProcess = output
 End Function
@@ -86,22 +106,8 @@ Public Function GitExeWithPath() As String
     If workingDir = "" Then
         Exit Function
     End If
-    
-    ' crate the parameter string
-    Dim command As String
-    If InStr(1, git, " ") Then
-        command = """" & git & """"
-    Else
-        command = git
-    End If
-    
-    If InStr(1, workingDir, " ") Then
-        command = command & " -C """ & workingDir & """ "
-    Else
-        command = command & " -C " & workingDir & " "
-    End If
 
-    GitExeWithPath = command
+    GitExeWithPath = git & " " & GitPathOption(workingDir) & " "
     
 End Function
 
@@ -114,13 +120,25 @@ Private Function GetGitExe() As String
     
     If gitExe = "" Or IsNull(gitExe) Then
         MsgBox "Please set the git executable path"
-        Exit Function
+        gitExe = UI.FileDialog
+        If (gitExe = "") Then
+            Exit Function
+        Else
+            ShibbySettings.GitExePath = gitExe
+        End If
     End If
     
     ' bad directory check
     If FileOrDirExists(gitExe) = False Then
         MsgBox "Cannot find git executable: " & gitExe
         Exit Function
+    End If
+    
+    
+    ' add quotes if spaces in the path
+    Dim command As String
+    If InStr(1, gitExe, " ") Then
+        gitExe = """" & gitExe & """"
     End If
     
     GetGitExe = gitExe
@@ -136,19 +154,29 @@ Private Function GetWorkingDir() As String
     
     ' not found in doc props, browse for one
     If workingDir = "" Then
+        MsgBox "Please set the git Project Path"
         workingDir = UI.FolderDialog
+        If (workingDir = "") Then
+            Exit Function
+        Else
+            ShibbySettings.GitProjectPath = workingDir
+        End If
     End If
     
-    ' browse cancelled, exit
-    If (workingDir = "") Then
-        Exit Function
-    End If
-        
     ' bad directory check
     If FileOrDirExists(workingDir) = False Then
-        MsgBox "Cannot find folder: " & workingDir
+        MsgBox "Cannot find project folder: " & workingDir
         Exit Function
     End If
     
     GetWorkingDir = workingDir
+End Function
+
+Private Function GitPathOption(ByVal path As String) As String
+    If InStr(1, path, " ") Then
+        GitPathOption = "-C """ & path & """ "
+    Else
+        GitPathOption = "-C " & path
+    End If
+    
 End Function

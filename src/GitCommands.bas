@@ -50,6 +50,11 @@ End Sub
 ' is possible. Ends with a call to "pause" to keep the window open
 Public Sub RunGitInShell(ByVal options As String, Optional ByVal UseProjectPath As Boolean = True)
     Dim gitExe As String
+    ' add quotes if spaces in the path
+    If InStr(1, gitExe, " ") Then
+        gitExe = """" & gitExe & """"
+    End If
+    
     If UseProjectPath Then
         gitExe = GitExeWithPath
     Else
@@ -134,13 +139,6 @@ Private Function GetGitExe() As String
         Exit Function
     End If
     
-    
-    ' add quotes if spaces in the path
-    Dim command As String
-    If InStr(1, gitExe, " ") Then
-        gitExe = """" & gitExe & """"
-    End If
-    
     GetGitExe = gitExe
 End Function
 
@@ -174,9 +172,9 @@ End Function
 
 Private Function GitPathOption(ByVal path As String) As String
     If InStr(1, path, " ") Then
-        GitPathOption = "-C """ & path & """ "
+        GitPathOption = " -C """ & path & """ "
     Else
-        GitPathOption = "-C " & path
+        GitPathOption = " -C " & path
     End If
     
 End Function

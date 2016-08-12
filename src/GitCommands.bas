@@ -50,10 +50,6 @@ End Sub
 ' is possible. Ends with a call to "pause" to keep the window open
 Public Sub RunGitInShell(ByVal options As String, Optional ByVal UseProjectPath As Boolean = True)
     Dim gitExe As String
-    ' add quotes if spaces in the path
-    If InStr(1, gitExe, " ") Then
-        gitExe = """" & gitExe & """"
-    End If
     
     If UseProjectPath Then
         gitExe = GitExeWithPath
@@ -64,6 +60,8 @@ Public Sub RunGitInShell(ByVal options As String, Optional ByVal UseProjectPath 
     Dim command As String
     command = "cmd /c echo Running 'git " & options & "'" & _
         " & " & gitExe & options & " & pause"
+        
+    Debug.Print command
     shell command, 1
 End Sub
 
@@ -76,7 +74,7 @@ Public Function RunGitAsProcess(ByVal options As String, Optional ByVal waitTime
         Optional ByVal UseProjectPath As Boolean = True) As String
 
     Dim gitExe As String
-    gitExe = GetGitExe
+    gitExe = GetGitExe(False)
     
     Dim parms As String
     If UseProjectPath Then
@@ -97,6 +95,7 @@ End Function
 
 
 ' get the gitExe path with the -C working directory parameter added
+' optional boolean quoteGitExe, if true, adds quotes around GitExe path if spaces in path
 Public Function GitExeWithPath() As String
     GitExeWithPath = ""
 
@@ -116,7 +115,7 @@ Public Function GitExeWithPath() As String
     
 End Function
 
-Private Function GetGitExe() As String
+Private Function GetGitExe(Optional quoteGitExe As Boolean = True) As String
     GetGitExe = ""
 
     ' get the git executable path
@@ -137,6 +136,11 @@ Private Function GetGitExe() As String
     If FileOrDirExists(gitExe) = False Then
         MsgBox "Cannot find git executable: " & gitExe
         Exit Function
+    End If
+    
+    ' add quotes if spaces in the path
+    If quoteGitExe And InStr(1, gitExe, " ") Then
+        gitExe = """" & gitExe & """"
     End If
     
     GetGitExe = gitExe

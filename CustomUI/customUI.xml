@@ -3,8 +3,8 @@
     <tabs> 
       <tab id="CodeTab" label="ShibbyGit"> 
         <group id="CodeUtils" label="Code Utils"> 
-          <button id="ExportAllButton" label="Export All" size="large" onAction="CodeUtils.ExportAllMsgBox" imageMso="ExportSavedExports" /> 
-          <button id="ImportAllButton" label="Import All" size="large" onAction="CodeUtils.ImportAllMsgBox" imageMso="ImportSavedImports" /> 
+          <button id="ExportAllButton" label="Export All" size="large" onAction="UI.ExportAllMsgBox" imageMso="ExportSavedExports" /> 
+          <button id="ImportAllButton" label="Import All" size="large" onAction="UI.ImportAllMsgBox" imageMso="ImportSavedImports" /> 
 	  <button id="SetFolderButton" label="Set Folder" size="large" onAction="UI.ShowSetExportDirectoryForm" imageMso="FileManageMenu" /> 
         </group > 
         <group id="Git" label="Git"> 

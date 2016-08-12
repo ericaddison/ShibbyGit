@@ -22,6 +22,10 @@ Private pFolder As String
 ' output: String with list of modules exported
 Public Function ExportAllString(ByVal folder As String) As String
     pFolder = folder
+    If Not FileUtils.FileOrDirExists(folder) Then
+        ExportAllString = "Invalid folder: " & folder
+        Exit Function
+    End If
     ExportAllString = ExportAll
 End Function
 
@@ -31,43 +35,12 @@ End Function
 ' output: String with list of modules imported
 Public Function ImportAllString(ByVal folder As String) As String
     pFolder = folder
+    If Not FileUtils.FileOrDirExists(folder) Then
+        ImportAllString = "Invalid folder: " & folder
+        Exit Function
+    End If
     ImportAllString = ImportAll
 End Function
-
-
-' public interface for export all
-' input: folder - the folder to export code modules to
-Public Sub ExportAllMsgBox()
-    pFolder = FileUtils.FolderBrowser("Browse for folder for export")
-    If pFolder = "" Then
-        Exit Sub
-    End If
-    UI.NonModalMsgBox "Exporting files" & vbCrLf & vbCrLf & "This could take a second or two . . ."
-    FileUtils.DoEventsAndWait 10, 2
-    
-    Dim output As String
-    output = ExportAll
-    
-    UI.HideNonModalMsgBox
-    MsgBox output
-End Sub
-
-' public interface for import all
-' input: folder - the folder to import code modules from
-Public Sub ImportAllMsgBox()
-    pFolder = FileUtils.FolderBrowser("Browse for code folder to import")
-    If pFolder = "" Then
-        Exit Sub
-    End If
-    UI.NonModalMsgBox "Importing files" & vbCrLf & vbCrLf & "This could take a second or two . . ."
-    FileUtils.DoEventsAndWait 10, 2
-    
-    Dim output As String
-    output = ImportAll
-    
-    UI.HideNonModalMsgBox
-    MsgBox output
-End Sub
 
 
 ' Find the index of the VBProject corresponding to

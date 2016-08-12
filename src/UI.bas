@@ -57,3 +57,41 @@ Private Sub MoveFormOnApplication(ByVal form As Variant)
     form.Left = Application.ActiveWindow.Left
     form.Top = Application.ActiveWindow.Top
 End Sub
+
+
+' public interface for export all
+' input: folder - the folder to export code modules to
+Public Sub ExportAllMsgBox()
+    Dim folder As String
+    folder = FileUtils.FolderBrowser("Browse for folder for export")
+    If folder = "" Then
+        Exit Sub
+    End If
+    NonModalMsgBox "Exporting files" & vbCrLf & vbCrLf & "This could take a second or two . . ."
+    FileUtils.DoEventsAndWait 10, 2
+    
+    Dim output As String
+    output = CodeUtils.ExportAllString(folder)
+    
+    HideNonModalMsgBox
+    MsgBox output
+End Sub
+
+
+' public interface for import all
+' input: folder - the folder to import code modules from
+Public Sub ImportAllMsgBox()
+    Dim folder As String
+    folder = FileUtils.FolderBrowser("Browse for code folder to import")
+    If folder = "" Then
+        Exit Sub
+    End If
+    NonModalMsgBox "Importing files" & vbCrLf & vbCrLf & "This could take a second or two . . ."
+    FileUtils.DoEventsAndWait 10, 2
+    
+    Dim output As String
+    output = CodeUtils.ImportAllString(folder)
+    
+    HideNonModalMsgBox
+    MsgBox output
+End Sub

@@ -9,7 +9,7 @@ Private Const EXPORT_ON_GIT_PROPERTY As String = "shibby_ExportOnGit"
 Private Const FILESTRUCTURE_PROPERTY As String = "shibby_FileStructure"
 Private Const IMPORTEXPORT_PATH_PROPERTY As String = "shibby_ImportExportPath"
 Public Enum ShibbyFileStructure
-    Flat = 0
+    flat = 0
     SimpleSrc = 1
     SeparatedSrc = 2
 End Enum
@@ -55,18 +55,18 @@ Public Property Let ExportOnGit(ByVal newVal As Boolean)
 End Property
 
 ' get the export on save setting
-Public Property Get FileStructure() As ShibbyFileStructure
+Public Property Get fileStructure() As ShibbyFileStructure
     Dim fs As Variant
     fs = DocPropIO.GetItemFromDocProperties(FILESTRUCTURE_PROPERTY)
     If fs = "" Then
-        FileStructure = Flat
+        fileStructure = flat
     Else
-        FileStructure = fs
+        fileStructure = fs
     End If
 End Property
 
 ' set the git project path
-Public Property Let FileStructure(ByRef newVal As ShibbyFileStructure)
+Public Property Let fileStructure(ByRef newVal As ShibbyFileStructure)
     DocPropIO.AddNumberToDocProperties FILESTRUCTURE_PROPERTY, newVal
 End Property
 

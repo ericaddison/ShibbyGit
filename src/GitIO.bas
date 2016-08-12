@@ -4,37 +4,49 @@ Private Const MODULEFOLDER As String = "modules"
 Private Const CLASSFOLDER As String = "classModules"
 Private Const FORMFOLDER As String = "forms"
 Private Const SOURCEFOLDER As String = "src"
+Private pFileStructure As ShibbyFileStructure
+Private pGitDir As String
+Private pProjectInd As Integer
+
+
+Public Sub test()
+    Debug.Print GitExport(ShibbySettings.GitProjectPath, SimpleSrc)
+End Sub
+
+
+' Public entry point for Git Export
+Public Function GitExport(ByVal gitDir As String, ByVal fileStructure As ShibbyFileStructure)
+    pFileStructure = fileStructure
+    pGitDir = gitDir
+    GitExport = GitExportAll
+End Function
+
 
 ' Export all code modules to git directory
 ' based on the selected file structure
 Private Function GitExportAll() As String
-    
-    ' get the export directory
-    Dim gitDir As String
-    gitDir = ShibbySettings.GitProjectPath
-    
+
     ' not found in doc props, browse for one
-    If gitDir = "" Then
-        gitDir = UI.FolderDialog
-        ShibbySettings.GitProjectPath = gitDir
-        If (gitDir = "") Then
+    If pGitDir = "" Then
+        pGitDir = UI.FolderDialog
+        ShibbySettings.GitProjectPath = pGitDir
+        If (pGitDir = "") Then
             Exit Function
         End If
     End If
     
     ' bad directory
-    If FileOrDirExists(gitDir) = False Then
-        MsgBox "Cannot find folder: " & gitDir
+    If FileOrDirExists(pGitDir) = False Then
+        MsgBox "Cannot find folder: " & pGitDir
         Exit Function
     End If
     
     ' create folders if needed
-    CheckCodeFolders gitDir
+    CheckCodeFolders
     
     ' write files
-    Dim projectInd As Integer
-    projectInd = CodeUtils.FindActiveFileVBProject
-    If projectInd = -1 Then
+    pProjectInd = CodeUtils.FindActiveFileVBProject
+    If pProjectInd = -1 Then
         GitExportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.name
         Exit Function
     End If
@@ -43,10 +55,10 @@ Private Function GitExportAll() As String
     Dim filesWritten As String
     Dim nextFile As String
     Dim nComps As Integer
-    nComps = Application.VBE.VBProjects.Item(projectInd).VBComponents.Count
+    nComps = Application.VBE.VBProjects.Item(pProjectInd).VBComponents.Count
     
     For compInd = 1 To nComps
-        nextFile = ExportToProperFolder(projectInd, compInd, gitDir)
+        nextFile = ExportToProperFolder(compInd)
         filesWritten = filesWritten & vbCrLf & nextFile
     Next compInd
      
@@ -56,7 +68,7 @@ Private Function GitExportAll() As String
     End If
     
     ' return list of exported files
-    GitExportAll = "ShibbyGit: " & vbCrLf & "Code Exported to " & gitDir & vbCrLf & filesWritten
+    GitExportAll = "ShibbyGit: " & vbCrLf & "Code Exported to " & pGitDir & vbCrLf & filesWritten
 
 End Function
 
@@ -78,12 +90,10 @@ End Function
 
 
 ' export one module to the proper directory
-' input: projectInd - the index of the desired VBProject in Application.VBE.VBProjects
-' input: compInd - the index of the desired component in project.VBComponents
-' input: gitDir - the root directory of the export
-' output: the path of the output file, relative to gitDir
-Private Function ExportToProperFolder(ByVal projectInd As Integer, ByVal compInd As Integer, ByVal gitDir As String)
-    With Application.VBE.VBProjects.Item(projectInd).VBComponents.Item(compInd)
+' input: compInd - the index of the desired component in project.VBComponents.Item(pProjectInd)
+' output: the path of the output file, relative to pGitDir
+Private Function ExportToProperFolder(ByVal compInd As Integer)
+    With Application.VBE.VBProjects.Item(pProjectInd).VBComponents.Item(compInd)
         
         Dim extension As String
         extension = GetExtensionFromModuleType(.Type)
@@ -93,14 +103,14 @@ Private Function ExportToProperFolder(ByVal projectInd As Integer, ByVal compInd
             file = SOURCEFOLDER & "\"
             
             ' flat file structure
-            If ShibbySettings.FileStructure = Flat Then
+            If pFileStructure = flat Then
                 file = .name & extension
-                .Export (gitDir & "\" & file)
+                .Export (pGitDir & "\" & file)
                 
             ' simple source folder structure
-            ElseIf ShibbySettings.FileStructure = SimpleSrc Then
+            ElseIf pFileStructure = SimpleSrc Then
                 file = file & .name & extension
-                .Export (gitDir & "\" & file)
+                .Export (pGitDir & "\" & file)
                 
             ' separated source folder structure
             Else
@@ -113,7 +123,7 @@ Private Function ExportToProperFolder(ByVal projectInd As Integer, ByVal compInd
                     file = file & MODULEFOLDER
                 End Select
                 file = file & "\" & .name & extension
-                .Export (gitDir & "\" & file)
+                .Export (pGitDir & "\" & file)
             End If
          End If
     End With
@@ -123,21 +133,21 @@ End Function
 
 ' Check for existence of required code folders based
 ' on the file structure type. Create if necessary
-Private Sub CheckCodeFolders(ByVal gitDir As String)
+Private Sub CheckCodeFolders()
     ' create folders if needed
-    If ShibbySettings.FileStructure <> Flat Then
-        If dir(gitDir & "\" & SOURCEFOLDER & "\") = "" Then
-            MkDir gitDir & "\" & SOURCEFOLDER & "\"
+    If pFileStructure <> flat Then
+        If dir(pGitDir & "\" & SOURCEFOLDER & "\") = "" Then
+            MkDir pGitDir & "\" & SOURCEFOLDER & "\"
         End If
-        If ShibbySettings.FileStructure = SeparatedSrc Then
-            If dir(gitDir & "\" & SOURCEFOLDER & "\" & MODULEFOLDER & "\") = "" Then
-                MkDir gitDir & "\" & SOURCEFOLDER & "\" & MODULEFOLDER & "\"
+        If pFileStructure = SeparatedSrc Then
+            If dir(pGitDir & "\" & SOURCEFOLDER & "\" & MODULEFOLDER & "\") = "" Then
+                MkDir pGitDir & "\" & SOURCEFOLDER & "\" & MODULEFOLDER & "\"
             End If
-            If dir(gitDir & "\" & SOURCEFOLDER & "\" & FORMFOLDER & "\") = "" Then
-                MkDir gitDir & "\" & SOURCEFOLDER & "\" & FORMFOLDER & "\"
+            If dir(pGitDir & "\" & SOURCEFOLDER & "\" & FORMFOLDER & "\") = "" Then
+                MkDir pGitDir & "\" & SOURCEFOLDER & "\" & FORMFOLDER & "\"
             End If
-            If dir(gitDir & "\" & SOURCEFOLDER & "\" & CLASSFOLDER & "\") = "" Then
-                MkDir gitDir & "\" & SOURCEFOLDER & "\" & CLASSFOLDER & "\"
+            If dir(pGitDir & "\" & SOURCEFOLDER & "\" & CLASSFOLDER & "\") = "" Then
+                MkDir pGitDir & "\" & SOURCEFOLDER & "\" & CLASSFOLDER & "\"
             End If
         End If
     End If

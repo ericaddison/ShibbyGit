@@ -69,7 +69,7 @@ Public Sub resetForm()
     FileStructureBox.AddItem "Simple Src Structure"
     FileStructureBox.AddItem "Separated Src Structure"
     Dim fsIndex As ShibbyFileStructure
-    fsIndex = ShibbySettings.FileStructure
+    fsIndex = ShibbySettings.fileStructure
     FileStructureBox.ListIndex = fsIndex
     
     needGitUserNameUpdate = False
@@ -176,5 +176,5 @@ End Sub
 
 ' save the File structure
 Private Sub SaveFileStructure()
-    ShibbySettings.FileStructure = FileStructureBox.ListIndex
+    ShibbySettings.fileStructure = FileStructureBox.ListIndex
 End Sub

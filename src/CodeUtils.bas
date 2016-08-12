@@ -6,11 +6,11 @@ Public Const EXPORT_DIRECTORY_PROPERTY As String = "code_ExportDirectory"
 Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
 ' component type constants
-Private Const Module As Integer = 1
-Private Const ClassModule As Integer = 2
-Private Const form As Integer = 3
-Private Const Document As Integer = 100
-Private Const Padding As Integer = 24
+Public Const Module As Integer = 1
+Public Const ClassModule As Integer = 2
+Public Const form As Integer = 3
+Public Const Document As Integer = 100
+Public Const Padding As Integer = 24
 
 
 Public Sub ExportAllMsgBox()
@@ -37,7 +37,7 @@ Public Function ExportAll() As String
     
     ' get the export directory
     Dim exportDir As String
-    exportDir = DocPropIO.GetItemFromDocProperties(EXPORT_DIRECTORY_PROPERTY)
+    exportDir = ShibbySettings.ImportExportPath
     
     ' not found in doc props, browse for one
     If exportDir = "" Then
@@ -101,7 +101,7 @@ Public Function ImportAll() As String
 
     ' get the export directory
     Dim importDir As String
-    importDir = DocPropIO.GetItemFromDocProperties(EXPORT_DIRECTORY_PROPERTY)
+    importDir = ShibbySettings.ImportExportPath
     
     ' not found in doc props, browse for one
     If importDir = "" Then
@@ -189,7 +189,7 @@ End Function
 
 ' Find the index of the VBProject corresponding to
 ' the active presentation
-Private Function FindActiveFileVBProject() As Integer
+Public Function FindActiveFileVBProject() As Integer
 
     With Application
         Dim ind As Integer

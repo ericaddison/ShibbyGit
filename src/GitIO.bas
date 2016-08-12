@@ -9,9 +9,21 @@ Private pGitDir As String
 Private pProjectInd As Integer
 
 
+'****************************************************
+' Public functions
+'****************************************************
+
 Public Sub test()
     Debug.Print GitExport(ShibbySettings.GitProjectPath, SimpleSrc)
 End Sub
+
+
+' Public entry point for Git Import
+Public Function GitImport(ByVal gitDir As String, ByVal fileStructure As ShibbyFileStructure)
+    pFileStructure = fileStructure
+    pGitDir = gitDir
+    GitImport = GitImportAll
+End Function
 
 
 ' Public entry point for Git Export
@@ -22,24 +34,62 @@ Public Function GitExport(ByVal gitDir As String, ByVal fileStructure As ShibbyF
 End Function
 
 
+'****************************************************
+' Private functions
+'****************************************************
+
+' check that the incoming folder is valid
+Private Function CheckGitFolder() As Boolean
+    CheckGitFolder = True
+    ' check the incoming folder
+    Dim folderCheck As String
+    folderCheck = FileUtils.VerifyFolder(pGitDir)
+    If folderCheck = FileUtils.BAD_FOLDER Then
+        CheckGitFolder = False
+        Exit Function
+    ElseIf folderCheck <> FileUtils.GOOD_FOLDER Then
+        pGitDir = folderCheck
+        ShibbySettings.GitProjectPath = pGitDir
+    End If
+End Function
+
+
+' Import all code modules from git directory
+' based on the selected file structure
+Private Function GitImportAll() As String
+
+    If Not CheckGitFolder Then
+        Exit Function
+    End If
+    
+    ' import files
+    Dim file As String
+    Dim ModuleName As String
+    Dim filesRead As String
+    file = dir(pGitDir & "\")
+    While file <> ""
+        ModuleName = RemoveAndImportModule(projectInd, pGitDir & "\" & file)
+        If ModuleName <> "" Then
+            filesRead = filesRead & vbCrLf & ModuleName
+        End If
+        file = dir
+    Wend
+
+
+    ImportAll = "ShibbyGit Modules Loaded: " & filesRead
+
+End Function
+
+
+
 ' Export all code modules to git directory
 ' based on the selected file structure
 Private Function GitExportAll() As String
-
-    ' not found in doc props, browse for one
-    If pGitDir = "" Then
-        pGitDir = UI.FolderDialog
-        ShibbySettings.GitProjectPath = pGitDir
-        If (pGitDir = "") Then
-            Exit Function
-        End If
-    End If
     
-    ' bad directory
-    If FileOrDirExists(pGitDir) = False Then
-        MsgBox "Cannot find folder: " & pGitDir
+    If Not CheckGitFolder Then
         Exit Function
     End If
+    
     
     ' create folders if needed
     CheckCodeFolders

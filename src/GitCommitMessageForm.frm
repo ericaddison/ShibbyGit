@@ -19,7 +19,7 @@ Attribute VB_Exposed = False
 
 
 Private Sub CancelButton_Click()
-    GitCommitMessageForm.Hide
+    GitCommitMessageForm.hide
 End Sub
 
 
@@ -41,6 +41,6 @@ Private Sub OKButton_Click()
     End If
     
     GitCommands.GitCommit (commitMessage)
-    GitCommitMessageForm.Hide
+    GitCommitMessageForm.hide
 End Sub
 

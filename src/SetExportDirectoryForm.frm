@@ -14,16 +14,6 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
-
-
-
-
-
-
-
-
-
-
 Public Sub resetForm()
     Dim dir As String
     dir = ShibbySettings.ImportExportPath
@@ -32,11 +22,11 @@ End Sub
 
 
 Private Sub BrowseButton_Click()
-   DirTextBox.Text = UI.FolderDialog("Browse for Import/Export Folder")
+   DirTextBox.Text = FileUtils.FolderBrowser("Browse for Import/Export Folder")
 End Sub
 
 Private Sub CancelButton_Click()
-    Me.Hide
+    Me.hide
 End Sub
 
 Private Sub OKButton_Click()
@@ -44,13 +34,13 @@ Private Sub OKButton_Click()
     Dim newPath As String
     newPath = DirTextBox.Text
     
-    If FileOrDirExists(newPath) = False Then
+    If FileUtils.FileOrDirExists(newPath) = False Then
         MsgBox "Cannot find folder: " & newPath
         Exit Sub
     End If
 
     ShibbySettings.ImportExportPath = newPath
-    Me.Hide
+    Me.hide
 End Sub
 
 

@@ -33,7 +33,7 @@ End Sub
 
 Public Sub ShowGitOtherForm()
     If ShibbySettings.ExportOnGit Then
-        CodeUtils.ExportAll
+        CodeUtils.ExportAllString ShibbySettings.ImportExportPath
     End If
     Load GitConsoleForm
     MoveFormOnApplication GitConsoleForm
@@ -48,32 +48,9 @@ Public Sub NonModalMsgBox(ByVal message As String)
     NonModalMsgBoxForm.Label1.Caption = message
 End Sub
 
-
-Public Function FolderDialog(Optional ByVal sTitle As String = "Browse") As String
-    Dim fd As FileDialog
-    Set fd = Application.FileDialog(msoFileDialogFolderPicker)
-    fd.title = sTitle
-    With fd
-        If .Show = -1 Then
-            FolderDialog = .SelectedItems(1)
-            Exit Function
-        End If
-    End With
-    FolderDialog = ""
-End Function
-
-Public Function FileDialog(Optional ByVal sTitle As String = "Browse") As String
-    Dim fd As FileDialog
-    Set fd = Application.FileDialog(msoFileDialogFilePicker)
-    fd.title = sTitle
-    With fd
-        If .Show = -1 Then
-            FileDialog = .SelectedItems(1)
-            Exit Function
-        End If
-    End With
-    FileDialog = ""
-End Function
+Public Sub HideNonModalMsgBox()
+    NonModalMsgBoxForm.hide
+End Sub
 
 
 Private Sub MoveFormOnApplication(ByVal form As Variant)

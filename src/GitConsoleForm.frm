@@ -54,9 +54,9 @@ Private Sub CommandBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shi
         
         ' parse for available options
         If CommandBox.Text = "export" Then
-            output = CodeUtils.ExportAll
+            output = CodeUtils.ExportAllString(ShibbySettings.ImportExportPath)
         ElseIf CommandBox.Text = "import" Then
-            output = CodeUtils.ImportAll
+            output = CodeUtils.ImportAllString(ShibbySettings.ImportExportPath)
         Else
             If useShell Then
                 output = "Shell exectution"

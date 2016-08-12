@@ -3,7 +3,6 @@ Attribute VB_Name = "CodeUtils"
 Option Explicit
 
 Public Const EXPORT_DIRECTORY_PROPERTY As String = "code_ExportDirectory"
-Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
 ' component type constants
 Public Const Module As Integer = 1
@@ -12,205 +11,99 @@ Public Const form As Integer = 3
 Public Const Document As Integer = 100
 Public Const Padding As Integer = 24
 
+Private pFolder As String
 
+'****************************************************
+' Public functions
+'****************************************************
+
+' public interface for export all, no msg box
+' input: folder - the folder to export code modules to
+' output: String with list of modules exported
+Public Function ExportAllString(ByVal folder As String) As String
+    pFolder = folder
+    ExportAllString = ExportAll
+End Function
+
+
+' public interface for import all, no msg box
+' input: folder - the folder to import code modules from
+' output: String with list of modules imported
+Public Function ImportAllString(ByVal folder As String) As String
+    pFolder = folder
+    ImportAllString = ImportAll
+End Function
+
+
+' public interface for export all
+' input: folder - the folder to export code modules to
 Public Sub ExportAllMsgBox()
-    Dim output As String
+    pFolder = FileUtils.FolderBrowser("Browse for folder for export")
+    If pFolder = "" Then
+        Exit Sub
+    End If
     UI.NonModalMsgBox "Exporting files" & vbCrLf & vbCrLf & "This could take a second or two . . ."
-    DoEventsAndWait 10, 2
-    output = ExportAll
-    NonModalMsgBoxForm.Hide
-    MsgBox output
-End Sub
-
-Public Sub ImportAllMsgBox()
+    FileUtils.DoEventsAndWait 10, 2
+    
     Dim output As String
-    UI.NonModalMsgBox "Importing files" & vbCrLf & vbCrLf & "This could take a second or two . . ."
-    DoEventsAndWait 10, 2
-    output = ImportAll
-    NonModalMsgBoxForm.Hide
+    output = ExportAll
+    
+    UI.HideNonModalMsgBox
     MsgBox output
 End Sub
 
-
-
-Public Function ExportAll() As String
-    
-    ' get the export directory
-    Dim exportDir As String
-    exportDir = ShibbySettings.ImportExportPath
-    
-    ' not found in doc props, browse for one
-    If exportDir = "" Then
-        exportDir = UI.FolderDialog
+' public interface for import all
+' input: folder - the folder to import code modules from
+Public Sub ImportAllMsgBox()
+    pFolder = FileUtils.FolderBrowser("Browse for code folder to import")
+    If pFolder = "" Then
+        Exit Sub
     End If
+    UI.NonModalMsgBox "Importing files" & vbCrLf & vbCrLf & "This could take a second or two . . ."
+    FileUtils.DoEventsAndWait 10, 2
     
-    ' browse cancelled, exit
-    If (exportDir = "") Then
-        Exit Function
-    End If
+    Dim output As String
+    output = ImportAll
     
-    ' bad directory
-    If FileOrDirExists(exportDir) = False Then
-        MsgBox "Cannot find folder: " & exportDir
-        Exit Function
-    End If
-    
-    ' write files
-    Dim projectInd As Integer
-    projectInd = FindActiveFileVBProject
-    If projectInd = -1 Then
-        ExportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.name
-        Exit Function
-    End If
-    
-    With Application.VBE.VBProjects.Item(projectInd).VBComponents
-        Dim ind As Integer
-        Dim filesWritten As String
-        Dim extension As String
-        For ind = 1 To .Count
-            extension = ""
-            Select Case .Item(ind).Type
-               Case ClassModule
-                   extension = ".cls"
-               Case form
-                   extension = ".frm"
-               Case Module
-                   extension = ".bas"
-            End Select
-
-            If (extension <> "") Then
-                .Item(ind).Export (exportDir & "\" & .Item(ind).name & extension)
-                filesWritten = filesWritten & vbCrLf & .Item(ind).name & extension
-            End If
-        Next ind
-    
-    End With
-     
-    ' clean up frx forms if requested
-    If ShibbySettings.FrxCleanup Then
-        GitProject.RemoveUnusedFrx
-    End If
-    
-    ' return list of exported files
-    ExportAll = "ShibbyGit: " & vbCrLf & "Code Exported to " & exportDir & vbCrLf & filesWritten
-
-End Function
-
-
-Public Function ImportAll() As String
-
-    ' get the export directory
-    Dim importDir As String
-    importDir = ShibbySettings.ImportExportPath
-    
-    ' not found in doc props, browse for one
-    If importDir = "" Then
-        importDir = UI.FolderDialog
-    End If
-    
-    ' browse cancelled, exit
-    If (importDir = "") Then
-        Exit Function
-    End If
-    
-    ' bad directory check
-    If FileOrDirExists(importDir) = False Then
-        MsgBox "Cannot find folder: " & importDir
-        Exit Function
-    End If
-    
-    ' get project index from active file name
-    Dim projectInd As Integer
-    projectInd = FindActiveFileVBProject
-    If projectInd = -1 Then
-        ImportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.name
-        Exit Function
-    End If
-
-    ' import files
-    Dim file As String
-    Dim ModuleName As String
-    Dim filesRead As String
-    file = dir(importDir & "\")
-    While file <> ""
-        ModuleName = RemoveAndImportModule(projectInd, importDir & "\" & file)
-        If ModuleName <> "" Then
-            filesRead = filesRead & vbCrLf & ModuleName
-        End If
-        file = dir
-    Wend
-
-
-    ImportAll = "ShibbyGit Modules Loaded: " & filesRead
-
-End Function
-
-Private Function CheckCodeType(ByVal file As String) As Integer
-
-    If file Like "*.bas" Then
-        CheckCodeType = Module
-    ElseIf file Like "*.frm" Then
-        CheckCodeType = form
-    ElseIf file Like "*.cls" Then
-        CheckCodeType = ClassModule
-    Else
-        CheckCodeType = -1
-    End If
-
-End Function
-
-
-Private Function FileBaseName(ByVal file As String) As String
-    FileBaseName = CreateObject("Scripting.FileSystemObject").GetBaseName(file)
-End Function
-
-'used to test filepaths of commmand button   links to see if they work - change their color if not working
-' from http://superuser.com/questions/649745/check-if-path-to-file-is-correct-on-excel-column
-Public Function FileOrDirExists(PathName As String) As Boolean
-    'Macro Purpose: Function returns TRUE if the specified file
-    Dim iTemp As Integer
-    
-    'Ignore errors to allow for error evaluation
-    On Error Resume Next
-        iTemp = GetAttr(PathName)
-        
-        'Check if error exists and set response appropriately
-        Select Case err.Number
-            Case Is = 0
-                FileOrDirExists = True
-            Case Else
-                FileOrDirExists = False
-        End Select
-    
-    'Resume error checking
-    On Error GoTo 0
-End Function
+    UI.HideNonModalMsgBox
+    MsgBox output
+End Sub
 
 
 ' Find the index of the VBProject corresponding to
 ' the active presentation
-Public Function FindActiveFileVBProject() As Integer
+' output: the index of the VBProject corresponding to the active filename
+'           -1 if not found
+Public Function FindFileVBProject(Optional ByVal fileName As String = "") As Integer
+    If fileName = "" Then
+        fileName = ActivePresentation.FullName
+    End If
 
     With Application
         Dim ind As Integer
         For ind = 1 To .VBE.VBProjects.Count
             Dim VBFileName As String
             On Error Resume Next
-                VBFileName = .VBE.VBProjects.Item(ind).FileName
+                VBFileName = .VBE.VBProjects.Item(ind).fileName
             On Error GoTo 0
-            If VBFileName = .ActivePresentation.FullName Then
-                FindActiveFileVBProject = ind
+            If VBFileName = fileName Then
+                FindFileVBProject = ind
                 Exit Function
             End If
         Next ind
     End With
-    MsgBox "Could not find VB Project associated with open file: " & ActivePresentation.FullName _
+    
+    MsgBox "Could not find VB Project associated with open file: " & fileName _
             & vbCrLf & "Is this a new, unsaved presentation?"
-    FindActiveFileVBProject = -1
+    FindFileVBProject = -1
 End Function
 
 
-Private Function RemoveAndImportModule(ByVal projectInd As Integer, ByVal file As String) As String
+' remove a code module and import
+' input: projectInd - the index of the desired VBProject in Application.VBE.VBProjects
+' input: file - the full path to the file for import
+' output: the name of the imported module, or "" if none
+Public Function RemoveAndImportModule(ByVal projectInd As Integer, ByVal file As String) As String
     With Application.VBE.VBProjects.Item(projectInd).VBComponents
         If CheckCodeType(file) <> -1 Then
             Dim ModuleName As String
@@ -249,10 +142,96 @@ Private Function RemoveAndImportModule(ByVal projectInd As Integer, ByVal file A
 End Function
 
 
-Private Sub DoEventsAndWait(ByVal nLoops As Integer, ByVal sleepTimeMs As Integer)
-    Dim ind As Integer
-    For ind = 1 To nLoops
-        DoEvents
-        Sleep sleepTimeMs
-    Next ind
-End Sub
+' return a Module type based on the file extension
+' input: file - filename of a code module
+' output: integer corresponding to module type
+Public Function CheckCodeType(ByVal file As String) As Integer
+
+    If file Like "*.bas" Then
+        CheckCodeType = Module
+    ElseIf file Like "*.frm" Then
+        CheckCodeType = form
+    ElseIf file Like "*.cls" Then
+        CheckCodeType = ClassModule
+    Else
+        CheckCodeType = -1
+    End If
+
+End Function
+
+
+'****************************************************
+' Private functions
+'****************************************************
+
+Private Function ExportAll() As String
+
+    ' write files
+    Dim projectInd As Integer
+    projectInd = FindFileVBProject
+    If projectInd = -1 Then
+        ExportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.name
+        Exit Function
+    End If
+    
+    With Application.VBE.VBProjects.Item(projectInd).VBComponents
+        Dim ind As Integer
+        Dim filesWritten As String
+        Dim extension As String
+        For ind = 1 To .Count
+            extension = ""
+            Select Case .Item(ind).Type
+               Case ClassModule
+                   extension = ".cls"
+               Case form
+                   extension = ".frm"
+               Case Module
+                   extension = ".bas"
+            End Select
+
+            If (extension <> "") Then
+                .Item(ind).Export (pFolder & "\" & .Item(ind).name & extension)
+                filesWritten = filesWritten & vbCrLf & .Item(ind).name & extension
+            End If
+        Next ind
+    
+    End With
+     
+    ' clean up frx forms if requested
+    If ShibbySettings.FrxCleanup Then
+        GitProject.RemoveUnusedFrx
+    End If
+    
+    ' return list of exported files
+    ExportAll = "ShibbyGit: " & vbCrLf & "Code Exported to " & pFolder & vbCrLf & filesWritten
+
+End Function
+
+
+Private Function ImportAll() As String
+
+    ' get project index from active file name
+    Dim projectInd As Integer
+    projectInd = FindFileVBProject
+    If projectInd = -1 Then
+        ImportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.name
+        Exit Function
+    End If
+
+    ' import files
+    Dim file As String
+    Dim ModuleName As String
+    Dim filesRead As String
+    file = dir(pFolder & "\")
+    While file <> ""
+        ModuleName = RemoveAndImportModule(projectInd, pFolder & "\" & file)
+        If ModuleName <> "" Then
+            filesRead = filesRead & vbCrLf & ModuleName
+        End If
+        file = dir
+    Wend
+
+
+    ImportAll = "ShibbyGit Modules Loaded: " & filesRead
+
+End Function

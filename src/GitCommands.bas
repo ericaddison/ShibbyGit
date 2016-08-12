@@ -15,7 +15,7 @@ End Sub
 
 Public Sub GitStatus()
     If ShibbySettings.ExportOnGit Then
-        CodeUtils.ExportAll
+        CodeUtils.ExportAllString ShibbySettings.ImportExportPath
     End If
     Dim out As String
     out = RunGitAsProcess("status")
@@ -124,7 +124,7 @@ Private Function GetGitExe(Optional quoteGitExe As Boolean = True) As String
     
     If gitExe = "" Or IsNull(gitExe) Then
         MsgBox "Please set the git executable path"
-        gitExe = UI.FileDialog
+        gitExe = FileUtils.FileBrowser
         If (gitExe = "") Then
             Exit Function
         Else
@@ -157,7 +157,7 @@ Private Function GetWorkingDir() As String
     ' not found in doc props, browse for one
     If workingDir = "" Then
         MsgBox "Please set the git Project Path"
-        workingDir = UI.FolderDialog
+        workingDir = FileUtils.FolderBrowser
         If (workingDir = "") Then
             Exit Function
         Else

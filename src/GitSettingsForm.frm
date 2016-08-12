@@ -82,7 +82,7 @@ End Sub
 ' component callbacks
 
 Private Sub CancelButton_Click()
-    GitSettingsForm.Hide
+    GitSettingsForm.hide
 End Sub
 
 Private Sub OKButton_Click()
@@ -93,7 +93,7 @@ Private Sub OKButton_Click()
     SaveFrxCleanup
     SaveExportOnGit
     SaveFileStructure
-    GitSettingsForm.Hide
+    GitSettingsForm.hide
 End Sub
 
 Private Sub UserEmailBox_Change()
@@ -106,12 +106,12 @@ End Sub
 
 
 Private Sub GitExeBrowseButton_Click()
-    GitExeTextBox.Text = UI.FileDialog("Browser for git.exe")
+    GitExeTextBox.Text = FileUtils.FileBrowser("Browser for git.exe")
 End Sub
 
 
 Private Sub ProjectPathBrowseButton_Click()
-    ProjectPathTextBox.Text = UI.FolderDialog("Browse for Git project folder")
+    ProjectPathTextBox.Text = FileUtils.FolderBrowser("Browse for Git project folder")
 End Sub
 
 
@@ -123,7 +123,7 @@ Private Sub SaveProjectPath()
     Dim newPath As String
     newPath = ProjectPathTextBox.Text
     
-    If newPath <> "" And FileOrDirExists(newPath) = False Then
+    If newPath <> "" And FileUtils.FileOrDirExists(newPath) = False Then
         MsgBox "Cannot find file: " & newPath
         Exit Sub
     End If
@@ -138,7 +138,7 @@ Private Sub SaveGitExe()
     Dim newPath As String
     newPath = GitExeTextBox.Text
     
-    If newPath <> "" And FileOrDirExists(newPath) = False Then
+    If newPath <> "" And FileUtils.FileOrDirExists(newPath) = False Then
         MsgBox "Cannot find file: " & newPath
         Exit Sub
     End If

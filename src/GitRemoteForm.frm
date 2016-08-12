@@ -97,7 +97,7 @@ End Sub
 
 
 Private Sub DoneButton_Click()
-    GitRemoteForm.Hide
+    GitRemoteForm.hide
 End Sub
 
 Private Sub OKButton_Click()

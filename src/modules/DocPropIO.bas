@@ -3,8 +3,8 @@ Attribute VB_Name = "DocPropIO"
 
 Public Function GetItemFromDocProperties(ByVal name As String) As Variant
   Dim docProps As Office.DocumentProperties
-  Set docProps = ActivePresentation.CustomDocumentProperties
-    
+  Set docProps = GetDocProps
+
   On Error Resume Next
     
     Dim val As String
@@ -22,7 +22,7 @@ End Function
 
 Public Function GetBooleanFromDocProperties(ByVal name As String) As Boolean
   Dim docProps As Office.DocumentProperties
-  Set docProps = ActivePresentation.CustomDocumentProperties
+  Set docProps = GetDocProps
     
   On Error Resume Next
     
@@ -41,7 +41,7 @@ End Function
 
 Public Sub AddStringToDocProperties(ByVal name As String, ByVal value As Variant)
   Dim docProps As Office.DocumentProperties
-  Set docProps = ActivePresentation.CustomDocumentProperties
+  Set docProps = GetDocProps
     
   On Error Resume Next
     docProps.Item(name).Delete
@@ -52,7 +52,7 @@ End Sub
 
 Public Sub AddBooleanToDocProperties(ByVal name As String, ByVal value As Boolean)
   Dim docProps As Office.DocumentProperties
-  Set docProps = ActivePresentation.CustomDocumentProperties
+  Set docProps = GetDocProps
     
   On Error Resume Next
     docProps.Item(name).Delete
@@ -64,7 +64,7 @@ End Sub
 
 Public Sub AddNumberToDocProperties(ByVal name As String, ByVal value As Variant)
   Dim docProps As Office.DocumentProperties
-  Set docProps = ActivePresentation.CustomDocumentProperties
+  Set docProps = GetDocProps
     
   On Error Resume Next
     docProps.Item(name).Delete
@@ -73,4 +73,14 @@ Public Sub AddNumberToDocProperties(ByVal name As String, ByVal value As Variant
   
 End Sub
 
+
+Private Function GetDocProps() As DocumentProperties
+    #If APPNAME = "PowerPoint" Then
+        Set GetDocProps = ActivePresentation.CustomDocumentProperties
+    #ElseIf APPNAME = "Excel" Then
+        Set GetDocProps = ActiveWorkbook.CustomDocumentProperties
+    #ElseIf APPNAME = "Word" Then
+        Set GetDocProps = ActiveDocument.CustomDocumentProperties
+    #End If
+End Function
 

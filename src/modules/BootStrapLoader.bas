@@ -24,9 +24,17 @@ Public Sub LoadShibbyGitCode()
     file = dir(srcFolder & "\modules\")
     On Error Resume Next
         While file <> ""
+            Debug.Print file
             If file Like "*.bas" Then
                 Application.VBE.ActiveVBProject.VBComponents.Import (srcFolder & "\modules\" & file)
             End If
+            
+            If err.Number = 1004 Then
+                MsgBox "You must ""trust access to the VBA project object model"" in " & vbCrLf & _
+                    "File->Options->Trust Center->Trust Center Settings->Macro Settings"
+                Exit Sub
+            End If
+            
             file = dir
         Wend
     On Error GoTo 0
@@ -52,6 +60,8 @@ Public Sub LoadShibbyGitCode()
     On Error GoTo 0
 
 End Sub
+
+
 
 
 

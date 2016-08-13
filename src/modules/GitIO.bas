@@ -60,7 +60,7 @@ Private Function GitImportAll() As String
     ' project ind
     pProjectInd = CodeUtils.FindFileVBProject
     If pProjectInd = -1 Then
-        GitImportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.name
+        GitImportAll = "Uh oh! Could not find VBProject associated with " & ShibbySettings.GetProjectName
         Exit Function
     End If
     
@@ -102,7 +102,7 @@ Private Function GitExportAll() As String
     ' write files
     pProjectInd = CodeUtils.FindFileVBProject
     If pProjectInd = -1 Then
-        GitExportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.name
+        GitExportAll = "Uh oh! Could not find VBProject associated with " & ShibbySettings.GetProjectName
         Exit Function
     End If
     

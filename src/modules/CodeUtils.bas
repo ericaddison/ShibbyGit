@@ -42,7 +42,7 @@ End Function
 '           -1 if not found
 Public Function FindFileVBProject(Optional ByVal fileName As String = "") As Integer
     If fileName = "" Then
-        fileName = ActivePresentation.FullName
+        fileName = ShibbySettings.GetProjectFileName
     End If
 
     With Application
@@ -60,7 +60,7 @@ Public Function FindFileVBProject(Optional ByVal fileName As String = "") As Int
     End With
     
     MsgBox "Could not find VB Project associated with open file: " & fileName _
-            & vbCrLf & "Is this a new, unsaved presentation?"
+            & vbCrLf & "Is this a new, unsaved document?"
     FindFileVBProject = -1
 End Function
 
@@ -152,7 +152,7 @@ Private Function ExportAll() As String
     Dim projectInd As Integer
     projectInd = FindFileVBProject
     If projectInd = -1 Then
-        ExportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.name
+        ExportAll = "Uh oh! Could not find VBProject associated with " & ShibbySettings.GetProjectName
         Exit Function
     End If
     
@@ -196,7 +196,7 @@ Private Function ImportSelected(ByVal files As FileDialogSelectedItems) As Strin
     Dim projectInd As Integer
     projectInd = FindFileVBProject
     If projectInd = -1 Then
-        ImportSelected = "Uh oh! Could not find VBProject associated with " & ActivePresentation.name
+        ImportSelected = "Uh oh! Could not find VBProject associated with " & ShibbySettings.GetProjectName
         Exit Function
     End If
 

@@ -1,6 +1,12 @@
 Attribute VB_Name = "ShibbySettings"
 Option Explicit
 
+' specify application here. Uncomment appropriate line
+#Const OFFICEAPP = "PowerPoint"
+'#Const OFFICEAPP = "Excel"
+'#Const OFFICEAPP = "Word"
+'#Const OFFICEAPP = "Outlook"
+
 Private Const APPNAME As String = "ShibbyGit"
 Private Const EXE_PATH_PROPERTY As String = "shibby_GitExecutablePath"
 Private Const PROJECT_PATH_PROPERTY As String = "shibby_GitProjectPath"
@@ -12,6 +18,46 @@ Public Enum ShibbyFileStructure
     SimpleSrc = 1
     SeparatedSrc = 2
 End Enum
+
+'***************************************************************
+' App dependent info
+'***************************************************************
+
+Public Function GetProjectFileName() As String
+    #If OFFICEAPP = "PowerPoint" Then
+        GetProjectFileName = ActivePresentation.FullName
+    #ElseIf OFFICEAPP = "Excel" Then
+        GetProjectFileName = ActiveWorkbook.FullName
+    #ElseIf OFFICEAPP = "Word" Then
+        GetProjectFileName = ActiveDocument.FullName
+    #End If
+End Function
+
+Public Function GetProjectName() As String
+    #If OFFICEAPP = "PowerPoint" Then
+        GetProjectName = ActivePresentation.name
+    #ElseIf OFFICEAPP = "Excel" Then
+        GetProjectName = ActiveWorkbook.name
+    #ElseIf OFFICEAPP = "Word" Then
+        GetProjectName = ActiveDocument.name
+    #End If
+End Function
+
+Public Function GetDocProps() As DocumentProperties
+    #If OFFICEAPP = "PowerPoint" Then
+        Set GetDocProps = ActivePresentation.CustomDocumentProperties
+    #ElseIf OFFICEAPP = "Excel" Then
+        Set GetDocProps = ActiveWorkbook.CustomDocumentProperties
+    #ElseIf OFFICEAPP = "Word" Then
+        Set GetDocProps = ActiveDocument.CustomDocumentProperties
+    #End If
+End Function
+
+
+'***************************************************************
+' Property accessors
+'***************************************************************
+
 
 ' get the git exe path
 Public Property Get GitExePath() As String

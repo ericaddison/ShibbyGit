@@ -1,12 +1,6 @@
 Attribute VB_Name = "ShibbySettings"
 Option Explicit
 
-' specify application here. Uncomment appropriate line
-#Const OFFICEAPP = "PowerPoint"
-'#Const OFFICEAPP = "Excel"
-'#Const OFFICEAPP = "Word"
-'#Const OFFICEAPP = "Outlook"
-
 Private Const APPNAME As String = "ShibbyGit"
 Private Const EXE_PATH_PROPERTY As String = "shibby_GitExecutablePath"
 Private Const PROJECT_PATH_PROPERTY As String = "shibby_GitProjectPath"
@@ -24,33 +18,38 @@ End Enum
 '***************************************************************
 
 Public Function GetProjectFileName() As String
-    #If OFFICEAPP = "PowerPoint" Then
-        GetProjectFileName = ActivePresentation.FullName
-    #ElseIf OFFICEAPP = "Excel" Then
-        GetProjectFileName = ActiveWorkbook.FullName
-    #ElseIf OFFICEAPP = "Word" Then
-        GetProjectFileName = ActiveDocument.FullName
-    #End If
+    Dim name As String
+    name = Application.name
+    
+    Dim app As Object
+    Set app = Application
+    
+    Select Case name
+        Case "Microsoft PowerPoint"
+            GetProjectFileName = app.ActivePresentation.FullName
+        Case "Microsoft Excel"
+            GetProjectFileName = app.ActiveSheet.FullName
+        Case "Microsoft Word"
+            GetProjectFileName = app.ActiveDocument.FullName
+      End Select
+    
 End Function
 
 Public Function GetProjectName() As String
-    #If OFFICEAPP = "PowerPoint" Then
-        GetProjectName = ActivePresentation.name
-    #ElseIf OFFICEAPP = "Excel" Then
-        GetProjectName = ActiveWorkbook.name
-    #ElseIf OFFICEAPP = "Word" Then
-        GetProjectName = ActiveDocument.name
-    #End If
-End Function
-
-Public Function GetDocProps() As DocumentProperties
-    #If OFFICEAPP = "PowerPoint" Then
-        Set GetDocProps = ActivePresentation.CustomDocumentProperties
-    #ElseIf OFFICEAPP = "Excel" Then
-        Set GetDocProps = ActiveWorkbook.CustomDocumentProperties
-    #ElseIf OFFICEAPP = "Word" Then
-        Set GetDocProps = ActiveDocument.CustomDocumentProperties
-    #End If
+    Dim name As String
+    name = Application.name
+    
+    Dim app As Object
+    Set app = Application
+    
+    Select Case name
+        Case "Microsoft PowerPoint"
+            GetProjectName = app.ActivePresentation.name
+        Case "Microsoft Excel"
+            GetProjectName = app.ActiveSheet.name
+        Case "Microsoft Word"
+            GetProjectName = app.ActiveDocument.name
+      End Select
 End Function
 
 

@@ -74,13 +74,20 @@ Public Sub AddNumberToDocProperties(ByVal name As String, ByVal value As Variant
 End Sub
 
 
-Private Function GetDocProps() As DocumentProperties
-    #If APPNAME = "PowerPoint" Then
-        Set GetDocProps = ActivePresentation.CustomDocumentProperties
-    #ElseIf APPNAME = "Excel" Then
-        Set GetDocProps = ActiveWorkbook.CustomDocumentProperties
-    #ElseIf APPNAME = "Word" Then
-        Set GetDocProps = ActiveDocument.CustomDocumentProperties
-    #End If
+Public Function GetDocProps() As DocumentProperties
+    Dim name As String
+    name = Application.name
+    
+    Dim app As Object
+    Set app = Application
+    
+    Select Case name
+        Case "Microsoft PowerPoint"
+            Set GetDocProps = ActivePresentation.CustomDocumentProperties
+        Case "Microsoft Excel"
+            Set GetDocProps = ActiveWorkbook.CustomDocumentProperties
+        Case "Microsoft Word"
+            Set GetDocProps = ActiveDocument.CustomDocumentProperties
+    End Select
 End Function
 

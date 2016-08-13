@@ -54,9 +54,9 @@ Private Sub CommandBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shi
         
         ' parse for available options
         If CommandBox.Text = "export" Then
-            output = CodeUtils.ExportAllString(ShibbySettings.ImportExportPath)
+            output = GitIO.GitExport(ShibbySettings.GitProjectPath, ShibbySettings.fileStructure)
         ElseIf CommandBox.Text = "import" Then
-            output = CodeUtils.ImportAllString(ShibbySettings.ImportExportPath)
+            output = GitIO.GitImport(ShibbySettings.GitProjectPath, ShibbySettings.fileStructure)
         Else
             If useShell Then
                 output = "Shell exectution"

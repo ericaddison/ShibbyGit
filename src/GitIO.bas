@@ -68,7 +68,7 @@ Private Function GitImportAll() As String
     Dim filesRead As String
     file = dir(pGitDir & "\")
     While file <> ""
-        ModuleName = RemoveAndImportModule(projectInd, pGitDir & "\" & file)
+        ModuleName = RemoveAndImportModule(pProjectInd, pGitDir & "\" & file)
         If ModuleName <> "" Then
             filesRead = filesRead & vbCrLf & ModuleName
         End If
@@ -76,7 +76,7 @@ Private Function GitImportAll() As String
     Wend
 
 
-    ImportAll = "ShibbyGit Modules Loaded: " & filesRead
+    GitImportAll = "ShibbyGit Modules Loaded: " & filesRead
 
 End Function
 
@@ -95,7 +95,7 @@ Private Function GitExportAll() As String
     CheckCodeFolders
     
     ' write files
-    pProjectInd = CodeUtils.FindActiveFileVBProject
+    pProjectInd = CodeUtils.FindFileVBProject
     If pProjectInd = -1 Then
         GitExportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.name
         Exit Function

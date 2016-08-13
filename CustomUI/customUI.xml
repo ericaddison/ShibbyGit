@@ -5,7 +5,6 @@
         <group id="CodeUtils" label="Code Utils"> 
           <button id="ExportAllButton" label="Export Code" size="large" onAction="UI.ExportAllMsgBox" imageMso="ExportSavedExports" /> 
           <button id="ImportAllButton" label="Import Code" size="large" onAction="UI.ImportSelectedMsgBox" imageMso="ImportSavedImports" /> 
-	  <button id="SetFolderButton" label="Set Folder" size="large" onAction="UI.ShowSetExportDirectoryForm" imageMso="FileManageMenu" /> 
         </group > 
         <group id="Git" label="Git"> 
 	  <button id="SetGitPathButton" label="Git Settings" size="large" onAction="UI.ShowGitSettingsForm" imageMso="FileManageMenu" />

@@ -7,7 +7,6 @@ Private Const PROJECT_PATH_PROPERTY As String = "shibby_GitProjectPath"
 Private Const FRX_CLEANUP_PROPERTY As String = "shibby_FrxCleanup"
 Private Const EXPORT_ON_GIT_PROPERTY As String = "shibby_ExportOnGit"
 Private Const FILESTRUCTURE_PROPERTY As String = "shibby_FileStructure"
-Private Const IMPORTEXPORT_PATH_PROPERTY As String = "shibby_ImportExportPath"
 Public Enum ShibbyFileStructure
     flat = 0
     SimpleSrc = 1
@@ -69,14 +68,3 @@ End Property
 Public Property Let fileStructure(ByRef newVal As ShibbyFileStructure)
     DocPropIO.AddNumberToDocProperties FILESTRUCTURE_PROPERTY, newVal
 End Property
-
-' get the import/export path
-Public Property Get ImportExportPath() As String
-    ImportExportPath = DocPropIO.GetItemFromDocProperties(IMPORTEXPORT_PATH_PROPERTY)
-End Property
-
-' set the import/export path
-Public Property Let ImportExportPath(ByVal newPath As String)
-    DocPropIO.AddStringToDocProperties IMPORTEXPORT_PATH_PROPERTY, newPath
-End Property
-

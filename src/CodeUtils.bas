@@ -2,8 +2,6 @@ Attribute VB_Name = "CodeUtils"
 ' Any functions to help with the actual coding process
 Option Explicit
 
-Public Const EXPORT_DIRECTORY_PROPERTY As String = "code_ExportDirectory"
-
 ' component type constants
 Public Const Module As Integer = 1
 Public Const ClassModule As Integer = 2

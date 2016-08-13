@@ -17,14 +17,6 @@ Public Sub ShowGitRemoteForm()
 End Sub
 
 
-Public Sub ShowSetExportDirectoryForm()
-    Load SetExportDirectoryForm
-    SetExportDirectoryForm.resetForm
-    MoveFormOnApplication SetExportDirectoryForm
-    SetExportDirectoryForm.Show
-    Unload SetExportDirectoryForm
-End Sub
-
 Public Sub ShowGitCommitForm()
     Load GitCommitMessageForm
     MoveFormOnApplication GitCommitMessageForm
@@ -33,7 +25,7 @@ End Sub
 
 Public Sub ShowGitOtherForm()
     If ShibbySettings.ExportOnGit Then
-        CodeUtils.ExportAllString ShibbySettings.ImportExportPath
+        GitIO.GitExport ShibbySettings.GitProjectPath, ShibbySettings.fileStructure
     End If
     Load GitConsoleForm
     MoveFormOnApplication GitConsoleForm

@@ -15,7 +15,7 @@ End Sub
 
 Public Sub GitStatus()
     If ShibbySettings.ExportOnGit Then
-        CodeUtils.ExportAllString ShibbySettings.ImportExportPath
+        GitIO.GitExport ShibbySettings.GitProjectPath, ShibbySettings.fileStructure
     End If
     Dim out As String
     out = RunGitAsProcess("status")

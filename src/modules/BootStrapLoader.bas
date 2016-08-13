@@ -20,50 +20,47 @@ Public Sub LoadShibbyGitCode()
     End If
     
     ' import files
-    Dim file As String
-    file = dir(srcFolder & "\modules\")
-    On Error Resume Next
-        While file <> ""
-            Debug.Print file
-            If file Like "*.bas" Then
-                Application.VBE.ActiveVBProject.VBComponents.Import (srcFolder & "\modules\" & file)
-            End If
-            
-            If err.Number = 1004 Then
-                MsgBox "You must ""trust access to the VBA project object model"" in " & vbCrLf & _
-                    "File->Options->Trust Center->Trust Center Settings->Macro Settings"
-                Exit Sub
-            End If
-            
-            file = dir
-        Wend
-    On Error GoTo 0
-    
-    file = dir(srcFolder & "\forms\")
-    On Error Resume Next
-        While file <> ""
-            If file Like "*.frm" Then
-                Application.VBE.ActiveVBProject.VBComponents.Import (srcFolder & "\forms\" & file)
-            End If
-            file = dir
-        Wend
-    On Error GoTo 0
-    
-    file = dir(srcFolder & "\classModules\")
-    On Error Resume Next
-        While file <> ""
-            If file Like "*.cls" Then
-                Application.VBE.ActiveVBProject.VBComponents.Import (srcFolder & "\classModules\" & file)
-            End If
-            file = dir
-        Wend
-    On Error GoTo 0
+    With Application.VBE.ActiveVBProject.VBComponents
+        Dim file As String
+        file = dir(srcFolder & "\modules\")
+        On Error GoTo LoadError
+            While file <> ""
+                If file Like "*.bas" Then
+                    .Import (srcFolder & "\modules\" & file)
+                End If
+                file = dir
+            Wend
+        
+        file = dir(srcFolder & "\forms\")
+        On Error Resume Next
+            While file <> ""
+                If file Like "*.frm" Then
+                    .Import (srcFolder & "\forms\" & file)
+                End If
+                file = dir
+            Wend
 
+        file = dir(srcFolder & "\classModules\")
+        On Error Resume Next
+            While file <> ""
+                If file Like "*.cls" Then
+                    .Import (srcFolder & "\classModules\" & file)
+                End If
+                file = dir
+            Wend
+        On Error GoTo 0
+    
+        .Remove .Item("BootStrapLoader1")
+    End With
+    
+    Exit Sub
+LoadError:
+    MsgBox "Error bootstrapping ShibbyGit: " & err.Number & vbCrLf & _
+        "You may need to ""trust access to the VBA project object model"" in " & vbCrLf & _
+        "File->Options->Trust Center->Trust Center Settings->Macro Settings"
+    err.Clear
+    Exit Sub
 End Sub
-
-
-
-
 
 
 

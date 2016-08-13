@@ -38,7 +38,7 @@ Private Function CheckGitFolder() As Boolean
     CheckGitFolder = True
     ' check the incoming folder
     Dim folderCheck As String
-    folderCheck = FileUtils.VerifyFolder(pGitDir)
+    folderCheck = FileUtils.VerifyFolder(pGitDir, "Please select Git project folder")
     If folderCheck = FileUtils.BAD_FOLDER Then
         CheckGitFolder = False
         Exit Function
@@ -77,6 +77,10 @@ Private Function GitImportAll() As String
             "\" & FORMFOLDER, pProjectInd)
         filesRead = filesRead & CodeUtils.ImportCodeFromFolder(pGitDir & "\" & SOURCEFOLDER & _
             "\" & CLASSFOLDER, pProjectInd)
+    End If
+    
+    If filesRead = "" Then
+        filesRead = "<No files imported>"
     End If
     GitImportAll = "ShibbyGit Modules Loaded: " & filesRead
 
@@ -119,6 +123,9 @@ Private Function GitExportAll() As String
     End If
     
     ' return list of exported files
+    If filesWritten = "" Then
+        filesWritten = "<No files exported>"
+    End If
     GitExportAll = "ShibbyGit: " & vbCrLf & "Code Exported to " & pGitDir & vbCrLf & filesWritten
 
 End Function
@@ -187,17 +194,17 @@ End Function
 Private Sub CheckCodeFolders()
     ' create folders if needed
     If pFileStructure <> flat Then
-        If dir(pGitDir & "\" & SOURCEFOLDER & "\") = "" Then
+        If Not FileUtils.FileOrDirExists(pGitDir & "\" & SOURCEFOLDER & "\") Then
             MkDir pGitDir & "\" & SOURCEFOLDER & "\"
         End If
         If pFileStructure = SeparatedSrc Then
-            If dir(pGitDir & "\" & SOURCEFOLDER & "\" & MODULEFOLDER & "\") = "" Then
+            If Not FileUtils.FileOrDirExists(pGitDir & "\" & SOURCEFOLDER & "\" & MODULEFOLDER & "\") Then
                 MkDir pGitDir & "\" & SOURCEFOLDER & "\" & MODULEFOLDER & "\"
             End If
-            If dir(pGitDir & "\" & SOURCEFOLDER & "\" & FORMFOLDER & "\") = "" Then
+            If Not FileUtils.FileOrDirExists(pGitDir & "\" & SOURCEFOLDER & "\" & FORMFOLDER & "\") Then
                 MkDir pGitDir & "\" & SOURCEFOLDER & "\" & FORMFOLDER & "\"
             End If
-            If dir(pGitDir & "\" & SOURCEFOLDER & "\" & CLASSFOLDER & "\") = "" Then
+            If Not FileUtils.FileOrDirExists(pGitDir & "\" & SOURCEFOLDER & "\" & CLASSFOLDER & "\") Then
                 MkDir pGitDir & "\" & SOURCEFOLDER & "\" & CLASSFOLDER & "\"
             End If
         End If

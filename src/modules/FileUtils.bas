@@ -14,7 +14,7 @@ Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 ' output: if folder is good, outputs string GOOD_FOLDER
 '           if folder is bad and none is chosen, outputs string BAD_FOLDER
 '           if folder is bad but a good one is chosen, output the new folder
-Public Function VerifyFolder(ByVal folder As String) As String
+Public Function VerifyFolder(ByVal folder As String, Optional sTitle As String = "Browse") As String
     
     ' bad directory, browse for new one
     If FileOrDirExists(folder) = False Then
@@ -23,7 +23,7 @@ Public Function VerifyFolder(ByVal folder As String) As String
     
     ' if nothing, browse for new folder
     If folder = "" Then
-        folder = FolderBrowser
+        folder = FolderBrowser(sTitle)
         ' if browse is cancelled, exit
         If (folder = "") Then
             VerifyFolder = BAD_FOLDER

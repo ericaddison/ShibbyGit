@@ -97,6 +97,9 @@ Public Sub GitExportMsgBox()
     
     Dim output As String
     output = GitIO.GitExport(ShibbySettings.GitProjectPath, ShibbySettings.fileStructure)
+    If output = "" Then
+        output = "No files exported"
+    End If
     
     HideNonModalMsgBox
     MsgBox output
@@ -109,6 +112,9 @@ Public Sub GitImportMsgBox()
     
     Dim output As String
     output = GitIO.GitImport(ShibbySettings.GitProjectPath, ShibbySettings.fileStructure)
+    If output = "" Then
+        output = "No files imported"
+    End If
     
     HideNonModalMsgBox
     MsgBox output

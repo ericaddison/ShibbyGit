@@ -4,7 +4,9 @@
       <tab id="CodeTab" label="ShibbyGit"> 
         <group id="CodeUtils" label="Code Utils"> 
           <button id="ExportAllButton" label="Export Code" size="large" onAction="UI.ExportAllMsgBox" imageMso="ExportSavedExports" /> 
-          <button id="ImportAllButton" label="Import Code" size="large" onAction="UI.ImportSelectedMsgBox" imageMso="ImportSavedImports" /> 
+          <button id="ImportAllButton" label="Import Code" size="large" onAction="UI.ImportSelectedMsgBox" imageMso="ImportSavedImports" />
+          <button id="GitExportButton" label="Git Export" size="large" onAction="UI.GitExportMsgBox" imageMso="ExportSavedExports" /> 
+          <button id="GitImportButton" label="Git Import" size="large" onAction="UI.GitImportMsgBox" imageMso="ImportSavedImports" />  
         </group > 
         <group id="Git" label="Git"> 
 	  <button id="SetGitPathButton" label="Git Settings" size="large" onAction="UI.ShowGitSettingsForm" imageMso="FileManageMenu" />

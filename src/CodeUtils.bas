@@ -125,6 +125,22 @@ Public Function CheckCodeType(ByVal file As String) As Integer
 
 End Function
 
+' import all code modules from the given folder to the VBProject with the given index
+Public Function ImportCodeFromFolder(ByVal folder As String, ByVal projectInd As Integer) As String
+    Dim file As String
+    Dim ModuleName As String
+    Dim filesRead As String
+    file = dir(folder & "\")
+    While file <> ""
+        ModuleName = RemoveAndImportModule(projectInd, folder & "\" & file)
+        If ModuleName <> "" Then
+            filesRead = filesRead & vbCrLf & ModuleName
+        End If
+        file = dir
+    Wend
+    ImportCodeFromFolder = filesRead
+End Function
+
 
 '****************************************************
 ' Private functions

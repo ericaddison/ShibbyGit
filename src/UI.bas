@@ -52,7 +52,6 @@ End Sub
 
 
 ' public interface for export all
-' input: folder - the folder to export code modules to
 Public Sub ExportAllMsgBox()
     Dim folder As String
     folder = FileUtils.FolderBrowser("Browse for folder for export")
@@ -71,7 +70,6 @@ End Sub
 
 
 ' public interface for import from
-' input: folder - the folder to import code modules from
 Public Sub ImportSelectedMsgBox()
     Dim files As FileDialogSelectedItems
     Set files = FileUtils.FileBrowserMultiSelect("Browse for code files to import", _
@@ -86,6 +84,31 @@ Public Sub ImportSelectedMsgBox()
     
     Dim output As String
     output = CodeUtils.ImportSelectedString(files)
+    
+    HideNonModalMsgBox
+    MsgBox output
+End Sub
+
+
+' public interface for GitExport
+Public Sub GitExportMsgBox()
+    NonModalMsgBox "Exporting files to Git Folder" & vbCrLf & vbCrLf & "This could take a second or two . . ."
+    FileUtils.DoEventsAndWait 10, 2
+    
+    Dim output As String
+    output = GitIO.GitExport(ShibbySettings.GitProjectPath, ShibbySettings.fileStructure)
+    
+    HideNonModalMsgBox
+    MsgBox output
+End Sub
+
+' public interface for GitImport
+Public Sub GitImportMsgBox()
+    NonModalMsgBox "Importing files from Git Folder" & vbCrLf & vbCrLf & "This could take a second or two . . ."
+    FileUtils.DoEventsAndWait 10, 2
+    
+    Dim output As String
+    output = GitIO.GitImport(ShibbySettings.GitProjectPath, ShibbySettings.fileStructure)
     
     HideNonModalMsgBox
     MsgBox output

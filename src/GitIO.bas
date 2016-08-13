@@ -13,11 +13,6 @@ Private pProjectInd As Integer
 ' Public functions
 '****************************************************
 
-Public Sub test()
-    Debug.Print GitExport(ShibbySettings.GitProjectPath, SimpleSrc)
-End Sub
-
-
 ' Public entry point for Git Import
 Public Function GitImport(ByVal gitDir As String, ByVal fileStructure As ShibbyFileStructure) As String
     pFileStructure = fileStructure
@@ -62,20 +57,27 @@ Private Function GitImportAll() As String
         Exit Function
     End If
     
+    ' project ind
+    pProjectInd = CodeUtils.FindFileVBProject
+    If pProjectInd = -1 Then
+        GitImportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.name
+        Exit Function
+    End If
+    
     ' import files
-    Dim file As String
-    Dim ModuleName As String
     Dim filesRead As String
-    file = dir(pGitDir & "\")
-    While file <> ""
-        ModuleName = RemoveAndImportModule(pProjectInd, pGitDir & "\" & file)
-        If ModuleName <> "" Then
-            filesRead = filesRead & vbCrLf & ModuleName
-        End If
-        file = dir
-    Wend
-
-
+    If pFileStructure = flat Then
+        filesRead = CodeUtils.ImportCodeFromFolder(pGitDir, pProjectInd)
+    ElseIf pFileStructure = SimpleSrc Then
+        filesRead = CodeUtils.ImportCodeFromFolder(pGitDir & "\" & SOURCEFOLDER, pProjectInd)
+    ElseIf pFileStructure = SeparatedSrc Then
+        filesRead = CodeUtils.ImportCodeFromFolder(pGitDir & "\" & SOURCEFOLDER & _
+            "\" & MODULEFOLDER, pProjectInd)
+        filesRead = filesRead & CodeUtils.ImportCodeFromFolder(pGitDir & "\" & SOURCEFOLDER & _
+            "\" & FORMFOLDER, pProjectInd)
+        filesRead = filesRead & CodeUtils.ImportCodeFromFolder(pGitDir & "\" & SOURCEFOLDER & _
+            "\" & CLASSFOLDER, pProjectInd)
+    End If
     GitImportAll = "ShibbyGit Modules Loaded: " & filesRead
 
 End Function
@@ -89,7 +91,6 @@ Private Function GitExportAll() As String
     If Not CheckGitFolder Then
         Exit Function
     End If
-    
     
     ' create folders if needed
     CheckCodeFolders

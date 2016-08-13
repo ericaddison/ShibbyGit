@@ -78,19 +78,22 @@ Public Sub ExportAllMsgBox()
 End Sub
 
 
-' public interface for import all
+' public interface for import from
 ' input: folder - the folder to import code modules from
-Public Sub ImportAllMsgBox()
-    Dim folder As String
-    folder = FileUtils.FolderBrowser("Browse for code folder to import")
-    If folder = "" Then
+Public Sub ImportSelectedMsgBox()
+    Dim files As FileDialogSelectedItems
+    Set files = FileUtils.FileBrowserMultiSelect("Browse for code files to import", _
+            "VBA Code Module", "*.bas; *.frm; *.cls")
+    
+    If files Is Nothing Then
         Exit Sub
     End If
+    
     NonModalMsgBox "Importing files" & vbCrLf & vbCrLf & "This could take a second or two . . ."
     FileUtils.DoEventsAndWait 10, 2
     
     Dim output As String
-    output = CodeUtils.ImportAllString(folder)
+    output = CodeUtils.ImportSelectedString(files)
     
     HideNonModalMsgBox
     MsgBox output

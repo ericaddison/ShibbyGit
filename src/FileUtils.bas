@@ -99,10 +99,15 @@ End Function
 ' Launch a file browser dialog
 ' optional input: sTitle - title of the browser dialog
 ' output: path to selected file
-Public Function FileBrowser(Optional ByVal sTitle As String = "Browse") As String
+Public Function FileBrowser(Optional ByVal sTitle As String = "Browse", _
+        Optional ByVal filterDescription As String = "", _
+        Optional ByVal filterExtenstion As String = "") As String
     Dim fd As FileDialog
     Set fd = Application.FileDialog(msoFileDialogFilePicker)
     fd.title = sTitle
+    If filterExtenstion <> "" Then
+        fd.Filters.Add filterDescription, filterExtenstion, 1
+    End If
     With fd
         If .Show = -1 Then
             FileBrowser = .SelectedItems(1)
@@ -110,4 +115,27 @@ Public Function FileBrowser(Optional ByVal sTitle As String = "Browse") As Strin
         End If
     End With
     FileBrowser = ""
+End Function
+
+' Launch a file browser dialog with multiselect on
+' optional input: sTitle - title of the browser dialog
+' output: selected items collection
+Public Function FileBrowserMultiSelect(Optional ByVal sTitle As String = "Browse", _
+        Optional ByVal filterDescription As String = "", _
+        Optional ByVal filterExtenstion As String = "") As FileDialogSelectedItems
+        
+    Dim fd As FileDialog
+    Set fd = Application.FileDialog(msoFileDialogFilePicker)
+    fd.title = sTitle
+    If filterExtenstion <> "" Then
+        fd.Filters.Add filterDescription, filterExtenstion, 1
+    End If
+    fd.InitialView = msoFileDialogViewList
+    With fd
+        If .Show = -1 Then
+            Set FileBrowserMultiSelect = .SelectedItems
+            Exit Function
+        End If
+    End With
+    Set FileBrowserMultiSelect = Nothing
 End Function

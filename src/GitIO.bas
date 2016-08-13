@@ -19,7 +19,7 @@ End Sub
 
 
 ' Public entry point for Git Import
-Public Function GitImport(ByVal gitDir As String, ByVal fileStructure As ShibbyFileStructure)
+Public Function GitImport(ByVal gitDir As String, ByVal fileStructure As ShibbyFileStructure) As String
     pFileStructure = fileStructure
     pGitDir = gitDir
     GitImport = GitImportAll
@@ -27,7 +27,7 @@ End Function
 
 
 ' Public entry point for Git Export
-Public Function GitExport(ByVal gitDir As String, ByVal fileStructure As ShibbyFileStructure)
+Public Function GitExport(ByVal gitDir As String, ByVal fileStructure As ShibbyFileStructure) As String
     pFileStructure = fileStructure
     pGitDir = gitDir
     GitExport = GitExportAll

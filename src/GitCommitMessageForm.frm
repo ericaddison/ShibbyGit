@@ -18,6 +18,7 @@ Attribute VB_Exposed = False
 
 
 
+
 Private Sub CancelButton_Click()
     GitCommitMessageForm.hide
 End Sub

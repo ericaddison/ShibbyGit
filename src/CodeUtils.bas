@@ -30,16 +30,11 @@ Public Function ExportAllString(ByVal folder As String) As String
 End Function
 
 
-' public interface for import all, no msg box
+' public interface for import, no msg box
 ' input: folder - the folder to import code modules from
 ' output: String with list of modules imported
-Public Function ImportAllString(ByVal folder As String) As String
-    pFolder = folder
-    If Not FileUtils.FileOrDirExists(folder) Then
-        ImportAllString = "Invalid folder: " & folder
-        Exit Function
-    End If
-    ImportAllString = ImportAll
+Public Function ImportSelectedString(ByVal files As FileDialogSelectedItems) As String
+    ImportSelectedString = ImportSelected(files)
 End Function
 
 
@@ -181,30 +176,28 @@ Private Function ExportAll() As String
 End Function
 
 
-Private Function ImportAll() As String
+Private Function ImportSelected(ByVal files As FileDialogSelectedItems) As String
 
     ' get project index from active file name
     Dim projectInd As Integer
     projectInd = FindFileVBProject
     If projectInd = -1 Then
-        ImportAll = "Uh oh! Could not find VBProject associated with " & ActivePresentation.name
+        ImportSelected = "Uh oh! Could not find VBProject associated with " & ActivePresentation.name
         Exit Function
     End If
 
     ' import files
-    Dim file As String
+    Dim file As Variant
     Dim ModuleName As String
     Dim filesRead As String
-    file = dir(pFolder & "\")
-    While file <> ""
-        ModuleName = RemoveAndImportModule(projectInd, pFolder & "\" & file)
+    For Each file In files
+        ModuleName = RemoveAndImportModule(projectInd, file)
         If ModuleName <> "" Then
             filesRead = filesRead & vbCrLf & ModuleName
         End If
-        file = dir
-    Wend
+    Next file
 
 
-    ImportAll = "ShibbyGit Modules Loaded: " & filesRead
+    ImportSelected = "ShibbyGit Modules Loaded: " & filesRead
 
 End Function

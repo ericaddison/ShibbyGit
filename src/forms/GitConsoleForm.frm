@@ -19,6 +19,7 @@ Attribute VB_Exposed = False
 
 
 
+
 Option Explicit
 Private CommandHistory As New Collection
 Private CommandIndex As Integer

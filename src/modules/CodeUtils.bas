@@ -84,8 +84,8 @@ Public Function RemoveAndImportModule(ByVal projectInd As Integer, ByVal file As
             Dim moduleExists As Boolean
             On Error Resume Next
                 .Item (ModuleName)
-                moduleExists = (err = 0)
-                err.Clear
+                moduleExists = (Err = 0)
+                Err.Clear
             On Error GoTo 0
             
             ' rename and remove

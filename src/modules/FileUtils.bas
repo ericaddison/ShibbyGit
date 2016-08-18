@@ -55,7 +55,7 @@ Public Function FileOrDirExists(PathName As String) As Boolean
         iTemp = GetAttr(PathName)
         
         'Check if error exists and set response appropriately
-        Select Case err.Number
+        Select Case Err.Number
             Case Is = 0
                 FileOrDirExists = True
             Case Else

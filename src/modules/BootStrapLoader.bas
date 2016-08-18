@@ -55,10 +55,10 @@ Public Sub LoadShibbyGitCode()
     
     Exit Sub
 LoadError:
-    MsgBox "Error bootstrapping ShibbyGit: " & err.Number & vbCrLf & _
+    MsgBox "Error bootstrapping ShibbyGit: " & Err.Number & vbCrLf & _
         "You may need to ""trust access to the VBA project object model"" in " & vbCrLf & _
         "File->Options->Trust Center->Trust Center Settings->Macro Settings"
-    err.Clear
+    Err.Clear
     Exit Sub
 End Sub
 

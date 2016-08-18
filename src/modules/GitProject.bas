@@ -44,7 +44,7 @@ Public Function InCollection(col As Collection, key As String) As Boolean
     On Error GoTo incol
     col.Item key
 incol:
-    InCollection = (err.Number = 0)
+    InCollection = (Err.Number = 0)
     On Error GoTo 0
 End Function
 

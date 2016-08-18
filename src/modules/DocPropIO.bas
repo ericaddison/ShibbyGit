@@ -1,17 +1,18 @@
 Attribute VB_Name = "DocPropIO"
+' intentionally NOT option explicit so GetDocProps works
 
+Private docProps As Office.DocumentProperties
 
-Public Function GetItemFromDocProperties(ByVal name As String) As Variant
-  Dim docProps As Office.DocumentProperties
+Public Function GetItemFromDocProperties(ByVal name As String, Optional defaultValue As Variant = "") As Variant
   Set docProps = GetDocProps
-
+    
   On Error Resume Next
     
     Dim val As String
     val = docProps.Item(name).value
-    If err.Number <> 0 Then
-        err.Clear
-        val = ""
+    If Err.Number <> 0 Then
+        Err.Clear
+        val = defaultValue
     End If
 
   On Error GoTo 0
@@ -20,17 +21,16 @@ Public Function GetItemFromDocProperties(ByVal name As String) As Variant
 End Function
 
 
-Public Function GetBooleanFromDocProperties(ByVal name As String) As Boolean
-  Dim docProps As Office.DocumentProperties
+Public Function GetBooleanFromDocProperties(ByVal name As String, Optional defaultValue As Boolean = False) As Boolean
   Set docProps = GetDocProps
     
   On Error Resume Next
     
     Dim val As Boolean
     val = docProps.Item(name).value
-    If err.Number <> 0 Then
-        err.Clear
-        val = False
+    If Err.Number <> 0 Then
+        Err.Clear
+        val = defaultValue
     End If
 
   On Error GoTo 0
@@ -40,7 +40,6 @@ End Function
 
 
 Public Sub AddStringToDocProperties(ByVal name As String, ByVal value As Variant)
-  Dim docProps As Office.DocumentProperties
   Set docProps = GetDocProps
     
   On Error Resume Next
@@ -51,7 +50,6 @@ Public Sub AddStringToDocProperties(ByVal name As String, ByVal value As Variant
 End Sub
 
 Public Sub AddBooleanToDocProperties(ByVal name As String, ByVal value As Boolean)
-  Dim docProps As Office.DocumentProperties
   Set docProps = GetDocProps
     
   On Error Resume Next
@@ -63,7 +61,6 @@ End Sub
 
 
 Public Sub AddNumberToDocProperties(ByVal name As String, ByVal value As Variant)
-  Dim docProps As Office.DocumentProperties
   Set docProps = GetDocProps
     
   On Error Resume Next
@@ -72,6 +69,14 @@ Public Sub AddNumberToDocProperties(ByVal name As String, ByVal value As Variant
   docProps.Add name:=name, LinkToContent:=False, value:=value, Type:=msoPropertyTypeNumber
   
 End Sub
+
+Public Sub RemoveDocProp(ByVal name As String)
+  Set docProps = GetDocProps
+  On Error Resume Next
+    docProps.Item(name).Delete
+  On Error GoTo 0
+End Sub
+
 
 
 Public Function GetDocProps() As DocumentProperties

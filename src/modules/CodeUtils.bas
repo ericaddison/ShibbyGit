@@ -215,3 +215,20 @@ Private Function ImportSelected(ByVal files As FileDialogSelectedItems) As Strin
     ImportSelected = "ShibbyGit Modules Loaded: " & filesRead
 
 End Function
+
+
+Private Sub test()
+    Dim proc As New Process
+    proc.StartInfo.fileName = "cmd.exe"
+    proc.StartInfo.Arguments = "/k ipconfig"
+    proc.StartInfo.CreateNoWindow = True
+    proc.StartInfo.UseShellExecute = False
+    proc.StartInfo.RedirectStandardOutput = True
+    proc.Start()
+    proc.WaitForExit()
+
+    Dim output() As String = proc.StandardOutput.ReadToEnd.Split(CChar(vbLf))
+    For Each ln As String In output
+        RichTextBox1.AppendText (ln & vbNewLine)
+    Next
+End Sub

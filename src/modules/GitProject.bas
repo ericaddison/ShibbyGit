@@ -1,5 +1,5 @@
 Attribute VB_Name = "GitProject"
-
+Option Explicit
 
 ' Look for .frx files in the git status
 ' if present, check for associated .frm

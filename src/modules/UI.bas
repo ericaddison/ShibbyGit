@@ -1,7 +1,19 @@
 Attribute VB_Name = "UI"
 Option Explicit
 
-Public Sub ShowGitSettingsForm()
+Public Sub DoGitAddAll(control As IRibbonControl)
+    GitCommands.GitAddAll
+End Sub
+
+Public Sub DoGitStatus(control As IRibbonControl)
+    GitCommands.GitStatus
+End Sub
+
+Public Sub DoGitLog(control As IRibbonControl)
+    GitCommands.GitLog
+End Sub
+
+Public Sub ShowGitSettingsForm(control As IRibbonControl)
     Load GitSettingsForm
     GitSettingsForm.resetForm
     MoveFormOnApplication GitSettingsForm
@@ -9,7 +21,7 @@ Public Sub ShowGitSettingsForm()
     Unload GitSettingsForm
 End Sub
 
-Public Sub ShowGitRemoteForm()
+Public Sub ShowGitRemoteForm(control As IRibbonControl)
     Load GitRemoteForm
     GitRemoteForm.resetForm
     MoveFormOnApplication GitRemoteForm
@@ -17,13 +29,13 @@ Public Sub ShowGitRemoteForm()
 End Sub
 
 
-Public Sub ShowGitCommitForm()
+Public Sub ShowGitCommitForm(control As IRibbonControl)
     Load GitCommitMessageForm
     MoveFormOnApplication GitCommitMessageForm
     GitCommitMessageForm.Show
 End Sub
 
-Public Sub ShowGitOtherForm()
+Public Sub ShowGitOtherForm(control As IRibbonControl)
     If ShibbySettings.ExportOnGit Then
         GitIO.GitExport ShibbySettings.GitProjectPath, ShibbySettings.fileStructure
     End If
@@ -52,7 +64,7 @@ End Sub
 
 
 ' public interface for export all
-Public Sub ExportAllMsgBox()
+Public Sub ExportAllMsgBox(control As IRibbonControl)
     Dim folder As String
     folder = FileUtils.FolderBrowser("Browse for folder for export")
     If folder = "" Then
@@ -70,7 +82,7 @@ End Sub
 
 
 ' public interface for import from
-Public Sub ImportSelectedMsgBox()
+Public Sub ImportSelectedMsgBox(control As IRibbonControl)
     Dim files As FileDialogSelectedItems
     Set files = FileUtils.FileBrowserMultiSelect("Browse for code files to import", _
             "VBA Code Module", "*.bas; *.frm; *.cls")
@@ -91,7 +103,7 @@ End Sub
 
 
 ' public interface for GitExport
-Public Sub GitExportMsgBox()
+Public Sub GitExportMsgBox(control As IRibbonControl)
     NonModalMsgBox "Exporting files to Git Folder" & vbCrLf & vbCrLf & "This could take a second or two . . ."
     FileUtils.DoEventsAndWait 10, 2
     
@@ -106,7 +118,7 @@ Public Sub GitExportMsgBox()
 End Sub
 
 ' public interface for GitImport
-Public Sub GitImportMsgBox()
+Public Sub GitImportMsgBox(control As IRibbonControl)
     NonModalMsgBox "Importing files from Git Folder" & vbCrLf & vbCrLf & "This could take a second or two . . ."
     FileUtils.DoEventsAndWait 10, 2
     
@@ -119,3 +131,5 @@ Public Sub GitImportMsgBox()
     HideNonModalMsgBox
     MsgBox output
 End Sub
+
+

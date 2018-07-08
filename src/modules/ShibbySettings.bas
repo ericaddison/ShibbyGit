@@ -28,7 +28,7 @@ Public Function GetProjectFileName() As String
         Case "Microsoft PowerPoint"
             GetProjectFileName = app.ActivePresentation.FullName
         Case "Microsoft Excel"
-            GetProjectFileName = app.ActiveSheet.FullName
+            GetProjectFileName = app.ActiveWorkbook.FullName
         Case "Microsoft Word"
             GetProjectFileName = app.ActiveDocument.FullName
       End Select
@@ -46,7 +46,7 @@ Public Function GetProjectName() As String
         Case "Microsoft PowerPoint"
             GetProjectName = app.ActivePresentation.name
         Case "Microsoft Excel"
-            GetProjectName = app.ActiveSheet.name
+            GetProjectName = app.ActiveWorkbook.name
         Case "Microsoft Word"
             GetProjectName = app.ActiveDocument.name
       End Select
